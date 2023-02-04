@@ -144,6 +144,19 @@ class Home extends Component {
             )}
           </Typography>
 
+
+
+          {updates.map((item)=>{
+            return(
+              <div>
+                <br></br>
+                <UpdateItem author={item.author} title={item.title} content={item.content}></UpdateItem>
+                <br></br>
+              </div>
+            )
+          })}
+
+
         </Grid>
       </Grid>
     )

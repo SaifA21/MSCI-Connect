@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import {Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText, TableRow} from "@material-ui/core/";
-import UpdateItem from './UpdateItem/UpdateItem';
 
 
 //Dev mode
@@ -115,17 +114,7 @@ class Home extends Component {
   render() {
     const { classes } = this.props;
 
-    const updates = [
-      {
-        "author":"thev",
-        "content":"hello",
-        "title":"title22"
-      },{
-        "author":"thev2",
-        "content":"hello322",
-        "title":"crazy news"
-      }
-    ]
+
 
     const mainMessage = (
       <Grid
@@ -156,6 +145,7 @@ class Home extends Component {
           </Typography>
 
 
+
           {updates.map((item)=>{
             return(
               <div>
@@ -165,6 +155,7 @@ class Home extends Component {
               </div>
             )
           })}
+
 
         </Grid>
       </Grid>

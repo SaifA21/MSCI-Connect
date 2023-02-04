@@ -155,6 +155,7 @@ class Home extends Component {
             )}
           </Typography>
 
+
           {updates.map((item)=>{
             return(
               <div>

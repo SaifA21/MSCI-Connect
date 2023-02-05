@@ -39,13 +39,13 @@ class App extends Component {
       <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-              <Button color="inherit" onClick={() => history.push('/')}>News Home</Button>
+              <Button color="inherit" onClick={() => history.push('/news')}>News Home</Button>
               <Button color="inherit" onClick={() => history.push('/chat')}>Chat</Button>
               <Button color="inherit" onClick={() => history.push('/polls')}>Polls</Button>
               <Button color="inherit" onClick={() => history.push('/timeline')}>Timeline</Button>
-              <Button color="inherit" onClick={() => history.push('/signout')}>Student Lookup</Button>
-              <Button color="inherit" onClick={() => history.push('/signout')}>FAQ</Button>
-              <Button color="inherit" onClick={() => history.push('/signout')}>Terms and Conditions</Button>
+              <Button color="inherit" onClick={() => history.push('/studentLookup')}>Student Lookup</Button>
+              <Button color="inherit" onClick={() => history.push('/faq')}>FAQ</Button>
+              <Button color="inherit" onClick={() => history.push('/termsconditions')}>Terms and Conditions</Button>
               <Button color="inherit" onClick={() => history.push('/signout')}>Sign Out</Button>
             </Toolbar>
           </AppBar>

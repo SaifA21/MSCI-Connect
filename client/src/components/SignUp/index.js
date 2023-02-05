@@ -9,8 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../contexts/AuthContext';
-
-
+import { Link } from 'react-router-dom';
 
 export default function SignUp() {
 
@@ -61,7 +60,7 @@ export default function SignUp() {
 
 
     if (checkBox === true && name !== '' &&  password.length>= 6 && email.includes("@uwaterloo.ca")){
-      console.log('no')
+      console.log('Signing Up User')
   
       try{
 
@@ -128,6 +127,10 @@ export default function SignUp() {
 
             <Grid item > 
             <Button variant='contained' onClick = {handleSubmit}>Sign Up</Button>
+            </Grid>
+
+            <Grid item > 
+              <Typography > Alredy a user? <Link to = '/signin'>Sign In</Link></Typography>
             </Grid>
 
 

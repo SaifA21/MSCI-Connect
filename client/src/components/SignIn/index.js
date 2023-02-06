@@ -19,27 +19,45 @@ export default function SignIn() {
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState('');
 
-
+  const [error, setError] = React.useState('');
   
 
-  const handleSubmit = () =>{
+  const handleSubmit = async () =>{
+    setEmailError('')
+    setPasswordError('')
+    setError('')
    
 
+    if (password.length<6){
+
+        setPasswordError("Enter valid password")
+    }
+
+    if (!email.includes('@uwaterloo.ca')){
+
+        setEmailError("Enter valid @uwaterloo.ca email")
+    }
 
     if (password.length>= 6 && email.includes("@uwaterloo.ca")){
     
       try{
 
-        signIn(email,password)
+        await signIn(email,password)
         console.log("Signing In!")
       
       } catch{
         console.log("Failed to sign in")
+        setError('Invalid email/password combination')
       }
     
     }
 
+    else{
+        
+    }
+
   }
+
 
 
   return (
@@ -70,6 +88,10 @@ export default function SignIn() {
                 handle = {setPassword}
                 error = {passwordError}>
               </Password>
+            </Grid>
+
+            <Grid item > 
+              <Typography style={{color:"red"}} >{error}</Typography>
             </Grid>
 
 

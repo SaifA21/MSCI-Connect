@@ -20,9 +20,9 @@ export default function PrivateRoute({
 
     <Router history={history}>
       <Switch>
-      <Route path="/SignUp" exact component={SignUp} />
+      <Route path="/signup" exact component={SignUp} />
       <Route exact path="/home"  component={Home} />
-      <Route path="/SignIn" exact component={SignIn} />
+      <Route path="/signin" exact component={SignIn} />
       <Route path="/lookup" exact component={LookUp} />
       <Route path="/chat" exact component={Chat} />
       <Route path="/polls" exact component={Polls} />

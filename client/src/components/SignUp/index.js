@@ -33,7 +33,7 @@ export default function SignUp() {
   };
 
 
-  const handleSubmit = () =>{
+  const handleSubmit = async () =>{
     setNameErorr('')
     setEmailError('')
     setPasswordError('')
@@ -49,7 +49,7 @@ export default function SignUp() {
     }
 
     if(password.length < 6){
-      setPasswordError("Please enter a password with at least 6 characters!")
+      setPasswordError("Please enter a password with at least 6 characters")
     }
 
     if(checkBox == false){
@@ -64,7 +64,7 @@ export default function SignUp() {
   
       try{
 
-        signUp(email,password)
+        await signUp(email,password)
       
       } catch{
         console.log("Failed to create an account")
@@ -122,7 +122,7 @@ export default function SignUp() {
 
             
             <Grid item > 
-              <Typography >{checkBoxError}</Typography>
+              <Typography style={{color:"red"}} >{checkBoxError}</Typography>
             </Grid>
 
             <Grid item > 
@@ -130,7 +130,7 @@ export default function SignUp() {
             </Grid>
 
             <Grid item > 
-              <Typography > Alredy a user? <Link to = '/signin'>Sign In</Link></Typography>
+              <Typography> Alredy a user? <Link to = '/signin'>Sign In</Link></Typography>
             </Grid>
 
 

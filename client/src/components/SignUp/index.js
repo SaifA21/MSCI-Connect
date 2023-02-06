@@ -10,10 +10,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 
 export default function SignUp() {
 
   const {signUp} = useAuth() 
+  const history = useHistory()
 
 
   const [name, setName] = React.useState('');
@@ -65,6 +68,7 @@ export default function SignUp() {
       try{
 
         await signUp(email,password)
+        history.push('/signin')
       
       } catch{
         console.log("Failed to create an account")

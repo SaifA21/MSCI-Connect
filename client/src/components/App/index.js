@@ -19,6 +19,8 @@ import PrivateRoute from '../Navigation/PrivateRoute.js';
 import { AuthProvider } from '../../contexts/AuthContext';
 import SignIn from '../SignIn';
 import LookUp from '../LookUp';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 
@@ -40,9 +42,13 @@ class App extends Component {
     this.listener();
   }
 
+  
+
 
   render() {
+
     return (
+      
       <Router> 
         <AuthProvider>
 

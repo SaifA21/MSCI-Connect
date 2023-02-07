@@ -105,6 +105,10 @@ export default function SignIn() {
               <Typography > Not a user? <Link to = '/signup'>Sign Up</Link></Typography>
             </Grid>
 
+            <Grid item > 
+              <Typography ><Link to = '/reset'>Forgot Password?</Link></Typography>
+            </Grid>
+
 
 
         </Grid>)

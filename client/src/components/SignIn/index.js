@@ -5,13 +5,14 @@ import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
-import SignUp from '../SignUp';
+import { useHistory } from 'react-router-dom';
 
 
 
 export default function SignIn() {
 
   const {signIn} = useAuth() 
+  const history = useHistory()
 
   const [email, setEmail] = React.useState('');
   const [emailError, setEmailError] = React.useState('');
@@ -44,6 +45,7 @@ export default function SignIn() {
 
         await signIn(email,password)
         console.log("Signing In!")
+        history.push('/home')
       
       } catch{
         console.log("Failed to sign in")

@@ -1,6 +1,6 @@
 import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
-import Chat from "../Chat";
+import Chat from "../chat";
 import FAQ from "../FAQ";
 import SignIn from "../SignIn";
 import Home from '../Home';
@@ -12,6 +12,7 @@ import TC from "../TC";
 import Timeline from "../Timeline";
 import history from './history';
 import { useAuth } from "../../contexts/AuthContext";
+import Reset from "../Reset";
 
 export default function PrivateRoute({
   
@@ -45,6 +46,7 @@ export default function PrivateRoute({
       <Route path="/faq" exact component={FAQ} />
       <Route path="/tc" exact component={TC} />
       <Route path="/timeline" exact component={Timeline} />
+      <Route path="/reset" exact component={Reset} />
       <Route path="/signout" exact component={SignOut} />
       <Route exact path='/' component={defaultPage} />
       </Switch>

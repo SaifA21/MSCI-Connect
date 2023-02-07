@@ -22,6 +22,11 @@ export function AuthProvider ({children}){
         return auth.signInWithEmailAndPassword(email,password)
     }
 
+    function resetPassword(email) {
+        return auth.sendPasswordResetEmail(email)
+    }
+
+
     function signOut() {
         return auth.signOut()
     }
@@ -43,7 +48,7 @@ export function AuthProvider ({children}){
     
     
     
-    const value = {currentUser, signUp, signIn, signOut}
+    const value = {currentUser, signUp, signIn, resetPassword, signOut}
 
     return(
         <AuthContext.Provider value = {value}>

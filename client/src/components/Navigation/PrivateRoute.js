@@ -1,6 +1,6 @@
 import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
-import Chat from "../Chat";
+import  Chat from '../Chat'
 import FAQ from "../FAQ";
 import SignIn from "../SignIn";
 import Home from '../Home';

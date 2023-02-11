@@ -55,7 +55,7 @@ export default function SignUp() {
       setPasswordError("Please enter a password with at least 6 characters")
     }
 
-    if(checkBox == false){
+    if(checkBox === false){
       setCheckBoxError("Please accept the Terms & Condtions!")
     }
 

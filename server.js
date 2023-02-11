@@ -14,26 +14,23 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 
-app.post('/api/loadUserSettings', (req, res) => {
+app.post('/api/addChat', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let userID = req.body.userID;
+	let sql = `INSERT INTO Chats (content, author, class) VALUES
+	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
-	let sql = `SELECT mode FROM user WHERE userID = ?`;
-	console.log(sql);
-	let data = [userID];
-	console.log(data);
 
-	connection.query(sql, data, (error, results, fields) => {
-		if (error) {
+	connection.query(sql,(error, results, fields) => {
+		if (error){
 			return console.error(error.message);
 		}
 
-		let string = JSON.stringify(results);
-		//let obj = JSON.parse(string);
-		res.send({ express: string });
 	});
+
 	connection.end();
+
+
 });
 
 

@@ -176,7 +176,6 @@ const Selection = (props) => {
 const AddMessageForm = (props) => {
 
   const addChat =  () => {
-    console.log('here')
     callApiAddChat()
       .then(res => {
         var parsed = JSON.parse(res.express);
@@ -185,9 +184,7 @@ const AddMessageForm = (props) => {
   } 
   
   const callApiAddChat = async () => {
-    console.log('here2')
 
-    
     const url = serverURL + "/api/addChat"
   
     const response = await fetch(url, {

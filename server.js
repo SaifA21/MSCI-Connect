@@ -33,6 +33,27 @@ app.post('/api/addChat', (req,res) => {
 
 });
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/addUser', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO Users (username, email, firebaseID) VALUES
+	 ("${req.body.name}", '${req.body.email}', '${req.body.firebaseID}');`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+	});
+
+	connection.end();
+
+
+});
+
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

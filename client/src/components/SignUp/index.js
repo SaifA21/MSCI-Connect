@@ -12,12 +12,14 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+const serverURL = '';
+//const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3075";
 
 export default function SignUp() {
 
   const {signUp} = useAuth() 
+  const{currentUser} = useAuth()
   const history = useHistory()
-
 
   const [name, setName] = React.useState('');
   const [nameError, setNameErorr] = React.useState('');
@@ -68,6 +70,14 @@ export default function SignUp() {
       try{
 
         await signUp(email,password)
+  
+        var user = {
+          name: name,
+          email: email,
+          firebaseID: currentUser.uid
+        }
+
+        addUser(user)
         history.push('/signin')
       
       } catch{
@@ -76,6 +86,34 @@ export default function SignUp() {
     
     }
 
+  }
+
+  const addUser =  (user) => {
+    callApiAddUser(user)
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+      })
+      
+  
+  } 
+  
+  const callApiAddUser = async (user) => {
+
+    const url = serverURL + "/api/addUser"
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user)
+  
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.message);
+    return body;
+  
   }
 
 

@@ -9,6 +9,7 @@ import {Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, Input
 import UpdateItem from './UpdateItem/UpdateItem';
 import { useState } from 'react';
 
+
 //Dev mode
 const serverURL = ""; //enable for dev mode
 
@@ -68,6 +69,52 @@ const styles = theme => ({
 
 });
 
+const Sort = () => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Sort by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          //value={age}
+          //onChange={handleChange}
+        >
+          <MenuItem value={10}>Newest to Oldest</MenuItem>
+          <MenuItem value={20}>Oldest to Newest</MenuItem>
+        </Select>
+      </FormControl>
+  )
+}
+
+const Filter = (props) => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Filter by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          //value={age}
+          onChange={(event)=>{
+                  
+            props.filterSelection(event.target.value)
+            console.log(event.target.value)
+
+          }}
+        >
+          <MenuItem value=""><em>None</em></MenuItem>
+          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+          <MenuItem value={'Co-op'}>Co-op</MenuItem>
+          <MenuItem value={'General'}>General</MenuItem>
+        </Select>
+      </FormControl>
+  )
+}
 
 const NewsUpdates = (props) => {
 
@@ -83,21 +130,32 @@ const NewsUpdates = (props) => {
     }
   ]);
 
-/*
+  React.useEffect(() =>{
+    loadUpdates();
+  },[])
+
+  React.useEffect(() =>{
+    console.log(updates)
+  },[updates])
+
+
   const loadUpdates = () => {
     callApiLoadUpdates()
     .then(res => {
         var parsed = JSON.parse(res.express);
-        changeMovies(parsed);
-        console.log(movies);
+        console.log(parsed)
+        changeUpdates(parsed);
+        //console.log(updates);
+        /*
         var mappedDict=new Object();
         parsed.map((item) => {
           mappedDict[item.id]=item.name
         })
         console.log(mappedDict);
         changeMovieDict(mappedDict);
+        */
       }
-    ).then(console.log(movies))
+    ).then(console.log(updates))
   }
   
   const callApiLoadUpdates = async () => {
@@ -107,15 +165,18 @@ const NewsUpdates = (props) => {
     if (response.status !== 200) throw Error(body.message);
     return body;
   }
-*/
+
 
   return(
     <div>
+
       {updates.map((item)=>{
         return(
           <div>
+
             <br></br>
-            <UpdateItem author={item.author} title={item.title} content={item.content}></UpdateItem>
+            
+            <UpdateItem author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
             <br></br>
           </div>
         )

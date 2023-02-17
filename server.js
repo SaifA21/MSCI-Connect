@@ -38,7 +38,8 @@ app.post('/api/addChat', (req,res) => {
 app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `SELECT * FROM NewsUpdates`
+	let sql = `select  updateID, title, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.NewsUpdates.author) as username from t2nirmal.NewsUpdates order by updateID desc;
+	`
 
 
 	connection.query(sql,(error, results, fields) => {

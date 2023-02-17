@@ -18,7 +18,7 @@ app.post('/api/addChat', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
-	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.messagebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -31,6 +31,27 @@ app.post('/api/addChat', (req,res) => {
 	connection.end();
 
 
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/loadUpdates', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `SELECT * FROM NewsUpdates`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

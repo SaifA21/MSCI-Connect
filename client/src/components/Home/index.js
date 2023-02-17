@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import {Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText, TableRow} from "@material-ui/core/";
 import UpdateItem from './UpdateItem/UpdateItem';
-
+import { useState } from 'react';
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -69,6 +69,66 @@ const styles = theme => ({
 });
 
 
+const NewsUpdates = (props) => {
+
+  const[updates,changeUpdates]=useState([
+    {
+      "author":"thev",
+      "content":"hello",
+      "title":"title22"
+    },{
+      "author":"thev2",
+      "content":"hello322",
+      "title":"crazy news"
+    }
+  ]);
+
+/*
+  const loadUpdates = () => {
+    callApiLoadUpdates()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        changeMovies(parsed);
+        console.log(movies);
+        var mappedDict=new Object();
+        parsed.map((item) => {
+          mappedDict[item.id]=item.name
+        })
+        console.log(mappedDict);
+        changeMovieDict(mappedDict);
+      }
+    ).then(console.log(movies))
+  }
+  
+  const callApiLoadUpdates = async () => {
+    const url = serverURL + "/api/loadUpdates";
+    const response = await fetch(url, {method: "POST"});
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+*/
+
+  return(
+    <div>
+      {updates.map((item)=>{
+        return(
+          <div>
+            <br></br>
+            <UpdateItem author={item.author} title={item.title} content={item.content}></UpdateItem>
+            <br></br>
+          </div>
+        )
+      })}
+
+    </div>
+
+  )
+
+}
+
+
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -112,20 +172,12 @@ class Home extends Component {
     return body;
   }
 
+  
+
   render() {
     const { classes } = this.props;
 
-    const updates = [
-      {
-        "author":"thev",
-        "content":"hello",
-        "title":"title22"
-      },{
-        "author":"thev2",
-        "content":"hello322",
-        "title":"crazy news"
-      }
-    ]
+    
 
     const mainMessage = (
       <Grid
@@ -155,15 +207,7 @@ class Home extends Component {
             )}
           </Typography>
 
-          {updates.map((item)=>{
-            return(
-              <div>
-                <br></br>
-                <UpdateItem author={item.author} title={item.title} content={item.content}></UpdateItem>
-                <br></br>
-              </div>
-            )
-          })}
+          
 
 
         </Grid>
@@ -175,11 +219,7 @@ class Home extends Component {
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <Paper
-            className={classes.paper}
-          >
-            {mainMessage}
-          </Paper>
+          <NewsUpdates/>
 
         </div>
       </MuiThemeProvider>

@@ -55,6 +55,26 @@ app.post('/api/loadUpdates', (req,res) => {
 	connection.end();
 });
 
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/checkAdmin', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `select admin from t2nirmal.Users where firebaseID = ${req.body}`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+});
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/addUser', (req,res) => {

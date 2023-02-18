@@ -8,6 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import {Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText, TableRow} from "@material-ui/core/";
 import UpdateItem from './UpdateItem/UpdateItem';
 import { useState } from 'react';
+import { useDB } from '../../contexts/DBContext';
 
 
 //Dev mode
@@ -117,6 +118,10 @@ const Filter = (props) => {
 }
 
 const NewsUpdates = (props) => {
+
+  const {admin} = useDB() 
+
+  console.log(admin)
 
   const[updates,changeUpdates]=useState([
     {

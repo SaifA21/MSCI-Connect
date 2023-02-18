@@ -34,6 +34,26 @@ app.post('/api/addChat', (req,res) => {
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/addUpdate', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
+	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+	});
+
+	connection.end();
+
+
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/loadUpdates', (req,res) => {
 

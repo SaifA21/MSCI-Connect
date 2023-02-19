@@ -75,6 +75,36 @@ app.post('/api/loadUpdates', (req,res) => {
 	connection.end();
 });
 
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/loadPolls', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let filter;
+	if(req.body.filter!=""){
+		filter=" where class = '"+req.body.filter+"'";
+	}else{
+		filter=""
+	}
+
+	let sql = `select  * from Polls order by pollID desc;`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+});
+
 /////////////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/checkAdmin', (req,res) => {

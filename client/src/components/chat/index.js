@@ -38,17 +38,7 @@ export default function Chat() {
   const [selection, setSelection] = React.useState('');
   const [selectionError, setSelectionError] = React.useState('');
 
-  const[messages, setMessages]=useState([
-    {
-      "author":"thev",
-      "content":"hello",
-      "topic":"title22"
-    },{
-      "author":"thev2",
-      "content":"hello322",
-      "topic":"crazy news"
-    }
-  ])
+  const[messages, setMessages]=useState([])
 
   React.useEffect(()=>{
     loadMessages()
@@ -58,6 +48,10 @@ export default function Chat() {
   React.useEffect(()=>{
     loadMessages()
   },[])
+
+  React.useEffect(() =>{
+    console.log(messages)
+  },[messages])
 
   var message = {
       firebaseID: currentUser.uid,
@@ -75,7 +69,7 @@ export default function Chat() {
     callApiLoadMessages(filter, sort)
     .then(res => {
         var parsed = JSON.parse(res.express);
-        console.log(parsed)
+        console.log("parsed:"+parsed)
         setMessages(parsed);
         //console.log(updates);
         /*

@@ -7,6 +7,16 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import {Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText, TableRow} from "@material-ui/core/";
 import UpdateItem from './UpdateItem/UpdateItem';
+import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import IconButton from '@material-ui/core/IconButton';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 
 //Dev mode
@@ -68,6 +78,286 @@ const styles = theme => ({
 
 });
 
+const Sort = () => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Sort by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          //value={age}
+          //onChange={handleChange}
+        >
+          <MenuItem value={10}>Newest to Oldest</MenuItem>
+          <MenuItem value={20}>Oldest to Newest</MenuItem>
+        </Select>
+      </FormControl>
+  )
+}
+
+const Filter = (props) => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Filter by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          //value={age}
+          onChange={(event)=>{
+                  
+            props.filterSelection(event.target.value)
+            console.log(event.target.value)
+
+          }}
+        >
+          <MenuItem value=""><em>None</em></MenuItem>
+          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+          <MenuItem value={'Co-op'}>Co-op</MenuItem>
+          <MenuItem value={'General'}>General</MenuItem>
+        </Select>
+      </FormControl>
+  )
+}
+
+const NewsUpdates = (props) => {
+  const{currentUser} = useAuth()
+  const[admin, setAdmin]=useState(true)
+
+  const [filter, setFilter] = React.useState('');
+
+  const [title, setTitle] = React.useState('');
+  const [titleError, setTitleError] = React.useState('');
+
+  const [body, setBody] = React.useState('');
+  const [bodyError, setBodyError] = React.useState('');
+
+  const [selection, setSelection] = React.useState('');
+  const [selectionError, setSelectionError] = React.useState('');
+
+    const[updates,changeUpdates]=useState([
+    {
+      "author":"thev",
+      "content":"hello",
+      "title":"title22"
+    },{
+      "author":"thev2",
+      "content":"hello322",
+      "title":"crazy news"
+    }
+  ]);
+
+  var update = {
+    firebaseID: currentUser.uid,
+    updatebody: body,
+    filter: selection,
+    updatetitle: title
+  }
+
+  React.useEffect(() =>{
+    loadUpdates();
+  },[])
+
+  React.useEffect(() =>{
+    console.log(updates)
+  },[updates])
+
+
+  const loadUpdates = () => {
+    callApiLoadUpdates()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        changeUpdates(parsed);
+        //console.log(updates);
+        /*
+        var mappedDict=new Object();
+        parsed.map((item) => {
+          mappedDict[item.id]=item.name
+        })
+        console.log(mappedDict);
+        changeMovieDict(mappedDict);
+        */
+      }
+    ).then(console.log(updates))
+  }
+  
+  const callApiLoadUpdates = async () => {
+    const url = serverURL + "/api/loadUpdates";
+    const response = await fetch(url, {method: "POST"});
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+
+  return(
+
+    
+    <div>
+      {admin &&
+        (<AddUpdateForm topic = {setSelection} title = {setTitle} body = {setBody} update = {update}>
+
+        </AddUpdateForm>)
+      }
+      {updates.map((item)=>{
+        return(
+          <div>
+
+            <br></br>
+            
+            <UpdateItem author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
+            <br></br>
+          </div>
+        )
+      })}
+      
+    </div>
+
+  )
+
+}
+
+/////////////////////////////////////////////////////////
+
+const AddUpdateForm = (props) => {
+
+  const addUpdate =  () => {
+    callApiAddUpdate()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+      })
+  
+  } 
+  
+  const callApiAddUpdate = async () => {
+
+    const url = serverURL + "/api/addUpdate"
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props.update)
+  
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.update);
+    return body;
+  
+  }
+  
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    
+    setOpen(false);
+  };
+
+  const handlePost = () => {
+    addUpdate()
+    setOpen(false);
+  };
+
+
+  return(
+      <div>
+        <IconButton color = 'primary' aria-label="add" onClick={handleClickOpen}>
+          <AddCircleOutlineIcon style={{ fontSize: 40 }}/>
+        </IconButton>
+        
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>New Update</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please enter your update below and select the subject it is closest related to.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Title"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.title(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Content"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.body(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+            
+            
+          <Selection topic={props.topic}>
+          </Selection>
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handlePost} color="primary">
+              Post
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+
+}
+
+////////////////////////////////////////////////////////////
+const Selection = (props) => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Filter by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          onChange={(event)=>{        
+            props.topic(event.target.value)
+            console.log(event.target.value)
+
+          }}
+        >
+          <MenuItem value=""><em>None</em></MenuItem>
+          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+          <MenuItem value={'Co-op'}>Co-op</MenuItem>
+          <MenuItem value={'General'}>General</MenuItem>
+        </Select>
+      </FormControl>
+  )
+}
+
+
+
+/////////////////////////////////////////////////////////////
 
 class Home extends Component {
   constructor(props) {
@@ -112,20 +402,12 @@ class Home extends Component {
     return body;
   }
 
+  
+
   render() {
     const { classes } = this.props;
 
-    const updates = [
-      {
-        "author":"thev",
-        "content":"hello",
-        "title":"title22"
-      },{
-        "author":"thev2",
-        "content":"hello322",
-        "title":"crazy news"
-      }
-    ]
+    
 
     const mainMessage = (
       <Grid
@@ -155,15 +437,7 @@ class Home extends Component {
             )}
           </Typography>
 
-          {updates.map((item)=>{
-            return(
-              <div>
-                <br></br>
-                <UpdateItem author={item.author} title={item.title} content={item.content}></UpdateItem>
-                <br></br>
-              </div>
-            )
-          })}
+          
 
 
         </Grid>
@@ -175,11 +449,7 @@ class Home extends Component {
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <Paper
-            className={classes.paper}
-          >
-            {mainMessage}
-          </Paper>
+          <NewsUpdates/>
 
         </div>
       </MuiThemeProvider>

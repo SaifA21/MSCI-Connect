@@ -18,7 +18,7 @@ app.post('/api/addChat', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
-	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.messagebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -31,6 +31,68 @@ app.post('/api/addChat', (req,res) => {
 	connection.end();
 
 
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/addUpdate', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
+	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+	});
+
+	connection.end();
+
+
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/loadUpdates', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `select  updateID, title, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.NewsUpdates.author) as username from t2nirmal.NewsUpdates order by updateID desc;
+	`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/checkAdmin', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `select admin from t2nirmal.Users where firebaseID = ${req.body}`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

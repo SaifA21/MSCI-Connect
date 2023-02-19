@@ -16,7 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useAuth } from '../../contexts/AuthContext';
 import { useHistory } from 'react-router-dom'
-
+import MessageItem from './MessageItem/MessageItem.js';
 
 const serverURL = '';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3075";
@@ -30,25 +30,82 @@ export default function Chat() {
   const history = useHistory()
   
   const [filter, setFilter] = React.useState('');
+  const [sort, setSort] = React.useState('');
  
-
   const [body, setBody] = React.useState('');
   const [bodyError, setBodyError] = React.useState('');
 
   const [selection, setSelection] = React.useState('');
   const [selectionError, setSelectionError] = React.useState('');
 
+  const[messages, setMessages]=useState([
+    {
+      "author":"thev",
+      "content":"hello",
+      "topic":"title22"
+    },{
+      "author":"thev2",
+      "content":"hello322",
+      "topic":"crazy news"
+    }
+  ])
+
+  React.useEffect(()=>{
+    loadMessages()
+    console.log(filter)
+  },[filter,sort])
+
+  React.useEffect(()=>{
+    loadMessages()
+  },[])
+
   var message = {
       firebaseID: currentUser.uid,
       messagebody: body,
       filter: selection
     }
-    
 
-   
+  var loadProperties={
+      filter: filter,
+      sort: sort
+    }
+    
+  const loadMessages = () => {
+    console.log('three', filter, sort)
+    callApiLoadMessages(filter, sort)
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        setMessages(parsed);
+        //console.log(updates);
+        /*
+        var mappedDict=new Object();
+        parsed.map((item) => {
+          mappedDict[item.id]=item.name
+        })
+        console.log(mappedDict);
+        changeMovieDict(mappedDict);
+        */
+      }
+    ).then(console.log(messages))
+  }
+
+  const callApiLoadMessages = async (props) => {
+    
+    const url = serverURL + "/api/loadMessages";
+    console.log(loadProperties)
+    const response = await fetch(url, {method: "POST", headers: {
+      "Content-Type": "application/json",
+    },body: JSON.stringify({filter: filter, sort: sort})});
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+  
     return (
+      <div>
       <Grid 
-      container spacing ={2}
+      container spacing ={1}
       direction = "column"
       alignItems = "center"
       justifyContent = "center"
@@ -65,7 +122,7 @@ export default function Chat() {
             >
             
                 <Grid item > 
-                  <Sort></Sort>
+                  <Sort sortSelection = {setSort}></Sort>
                 </Grid>
 
                 <Grid item >
@@ -78,12 +135,25 @@ export default function Chat() {
                 </Grid>
 
                 <Grid item >
-                  <div></div>
+                  <div>wewe</div>
                 </Grid>
 
             </Grid>
+            <div>we</div>
+            <div>we23</div>
+            
           </Grid>
-          )
+          {messages.map((item)=>{
+            return(
+              <div>
+                <br></br>
+                <MessageItem author={item.author} title={item.title} content={item.content}></MessageItem>
+                <br></br>
+              </div>
+            )
+          })}
+          </div>
+      )
 
 
 
@@ -95,7 +165,7 @@ export default function Chat() {
   
 
 
-const Sort = () => {
+const Sort = (props) => {
 
   return(
   <FormControl variant="filled" style={{minWidth: 300}}>
@@ -104,7 +174,10 @@ const Sort = () => {
           labelId="sortBySelector"
           id="sortBySelector"
           //value={age}
-          //onChange={handleChange}
+          onChange={(event)=>{
+            props.sortSelection(event.target.value)
+            console.log(event.target.value)
+          }}
         >
           <MenuItem value=""><em>None</em></MenuItem>
           <MenuItem value={10}>Newest to Oldest</MenuItem>

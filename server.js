@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 
 
 app.post('/api/addChat', (req,res) => {
-
+	console.log(req.body.messagebody)
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
 	 ("${req.body.messagebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
@@ -116,7 +116,44 @@ app.post('/api/addUser', (req,res) => {
 
 });
 
+////////////////////////////////////////////////////////////////
+app.post('/api/loadMessages', (req,res) => {
 
+	let connection = mysql.createConnection(config);
+
+	let filter;
+	if(req.body.filter!=""){
+		filter=" where class = '"+req.body.filter+"'";
+	}else{
+		filter=""
+	}
+
+	let sort;
+	if(req.body.sort=="0" || req.body.sort=="10"){
+		sort = " order by chatID desc;"
+	}else if(req.body.sort=="20"){
+		sort = " order by chatID asc;"
+	}else{
+		sort = " order by chatID desc;"
+	}
+
+	let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats ${filter} ${sort}`
+	console.log(sql)
+	
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	
+	connection.end();
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

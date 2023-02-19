@@ -58,8 +58,7 @@ app.post('/api/addUser', (req,res) => {
 app.post('/api/loadMessages', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	console.log("1121212"+req.method)
-	console.log("1121212"+req.body.filter)
+
 	let filter;
 	if(req.body.filter!=""){
 		filter=" where class = '"+req.body.filter+"'";
@@ -78,17 +77,7 @@ app.post('/api/loadMessages', (req,res) => {
 
 	let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats ${filter} ${sort}`
 	console.log(sql)
-	/*
-	if(req.body.filter=="" && req.body.sort==""){
-		let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats order by chatID desc;`
-	}else if(req.body.filter!="" && req.body.sort==""){
-		let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats where filter=${req.body.filter} order by chatID desc;`
-	}else if(req.body.filter=="" && req.body.sort!=""){
-		let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats where filter=${req.body.filter} and order by chatID desc;`
-	}else{
-
-	}
-	*/
+	
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){

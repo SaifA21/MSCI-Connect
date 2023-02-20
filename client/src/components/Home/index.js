@@ -142,13 +142,9 @@ const NewsUpdates = (props) => {
 
     const[updates,changeUpdates]=useState([
     {
-      "author":"thev",
-      "content":"hello",
-      "title":"title22"
-    },{
-      "author":"thev2",
-      "content":"hello322",
-      "title":"crazy news"
+      "author":"",
+      "content":"",
+      "title":""
     }
   ]);
 
@@ -174,15 +170,6 @@ const NewsUpdates = (props) => {
         var parsed = JSON.parse(res.express);
         console.log(parsed)
         changeUpdates(parsed);
-        //console.log(updates);
-        /*
-        var mappedDict=new Object();
-        parsed.map((item) => {
-          mappedDict[item.id]=item.name
-        })
-        console.log(mappedDict);
-        changeMovieDict(mappedDict);
-        */
       }
     ).then(console.log(updates))
   }

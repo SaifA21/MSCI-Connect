@@ -17,7 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-
+import Navbar from '../Navigation/Navbar.js'
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -137,7 +137,10 @@ const Filter = (props) => {
 
 const NewsUpdates = (props) => {
   const{currentUser} = useAuth()
-  const[admin, setAdmin]=useState(true)
+
+  const[allowed,setAllowed]=useState(0)
+  const[permitted,setPermitted]=useState({admin:0})
+  const[admin, setAdmin]=useState([{admin:0}])
 
   const [filter, setFilter] = React.useState('');
 
@@ -150,6 +153,14 @@ const NewsUpdates = (props) => {
 
   const [selection, setSelection] = React.useState('');
   const [selectionError, setSelectionError] = React.useState('');
+  
+   const [mainPagefilter, setmainPageFilter] = React.useState('');
+  
+  React.useEffect(()=>{
+    loadUpdates()
+    console.log(mainPagefilter)
+  },[mainPagefilter])
+
 
     const[updates,changeUpdates]=useState([
     {
@@ -158,6 +169,10 @@ const NewsUpdates = (props) => {
       "title":""
     }
   ]);
+
+  var firebaseID = {
+    firebaseID: currentUser.uid
+  }
 
   var update = {
     firebaseID: currentUser.uid,
@@ -169,6 +184,21 @@ const NewsUpdates = (props) => {
   React.useEffect(() =>{
     loadUpdates();
   },[""])
+
+  React.useEffect(() =>{
+    console.log(currentUser)
+    checkAdmin();
+    console.log(admin)
+  },[])
+
+  
+  React.useEffect(() =>{
+    setPermitted(admin[0]);
+  },[admin])
+  
+  React.useEffect(() =>{
+    setAllowed(permitted.admin);
+  },[permitted])
 
   React.useEffect(() =>{
     console.log(updates)
@@ -196,21 +226,47 @@ const NewsUpdates = (props) => {
     return body;
   }
 
-  const [mainPagefilter, setmainPageFilter] = React.useState('');
+  const checkAdmin = () => {
+    callApiCheckAdmin()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        setAdmin(parsed)
+      }
+    ).then(console.log(admin))
+  }
   
-  React.useEffect(()=>{
-    loadUpdates()
-    console.log(mainPagefilter)
-  },[mainPagefilter])
-
+  const callApiCheckAdmin = async (props) => {
+    console.log('running')
+    const url = serverURL + "/api/checkAdmin";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({firebaseID: currentUser.uid})
+  
+    });
+    
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    
+    return body;
+  }
 
   return(
-      
     
     <div>
-      <ButtonMailingList update ={update} />
-      <Filter  mainPagefilter = {setmainPageFilter}></Filter> 
-      {admin &&
+
+    {currentUser.uid!=null && (
+
+    <div>
+      <Navbar></Navbar>
+       <ButtonMailingList update ={update} />
+       <Filter  mainPagefilter = {setmainPageFilter}></Filter> 
+      {allowed==1 &&
+
+
         (<AddUpdateForm topic = {setSelection} title = {setTitle} body = {setBody} update = {update}>
 
         </AddUpdateForm>)
@@ -229,7 +285,8 @@ const NewsUpdates = (props) => {
       })}
       
     </div>
-
+    )}
+    </div>
   )
 
 }

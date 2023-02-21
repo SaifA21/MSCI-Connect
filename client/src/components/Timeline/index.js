@@ -33,9 +33,7 @@ export default function Timeline() {
     
 const TimelineTable = () => {
 
-  const [rows, setRows] = React.useState([
-    {itemName:'Cupcake', itemType: 305, class: 3.7, date: 67}
-  ]);
+  const [rows, setRows] = React.useState([]);
   
   React.useEffect(() =>{
       getTimeline();
@@ -45,7 +43,6 @@ const TimelineTable = () => {
       callApiGetTimeline()
         .then(res => {
           var parsed = JSON.parse(res.express);
-          console.log(parsed)
           setRows(parsed)
           
         })
@@ -58,18 +55,10 @@ const TimelineTable = () => {
       const body = await response.json();
 
       if (response.status != 200) throw Error(body.message);
-      console.log(body)
       
       return body;
     
     }
-
-
-  console.log('hi')
-
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
 
   
   function descendingComparator(a, b, orderBy) {
@@ -183,16 +172,10 @@ const TimelineTable = () => {
           [classes.highlight]: numSelected > 0,
         })}
       >
-        {numSelected > 0 ? (
-          <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
             Timeline
-          </Typography>
-        )}
-  
+        </Typography>
+      
 
       </Toolbar>
     );
@@ -281,15 +264,12 @@ const TimelineTable = () => {
                       >
                         
                         
-                        
                         <TableCell padding="checkbox">
                           <IconButton color = 'primary' aria-label="add">
                             <StarBorderIcon></StarBorderIcon>
                           </IconButton>
                         </TableCell>
                                         
-        
-                       
                        
                         <TableCell component="th" scope="row" padding="none">
                           {row.itemName}
@@ -314,25 +294,4 @@ const TimelineTable = () => {
       </div>
     );
 
-
-
-
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    

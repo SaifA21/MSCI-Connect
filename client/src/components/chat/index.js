@@ -17,6 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useAuth } from '../../contexts/AuthContext';
 import { useHistory } from 'react-router-dom'
 import MessageItem from './MessageItem/MessageItem.js';
+import Navbar from '../Navigation/Navbar.js'
 
 const serverURL = '';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3075";
@@ -98,6 +99,9 @@ export default function Chat() {
   
     return (
       <div>
+      {currentUser.uid!=null && 
+      (<div>
+      <Navbar></Navbar>
       <Grid 
       container spacing ={1}
       direction = "column"
@@ -146,7 +150,9 @@ export default function Chat() {
               </div>
             )
           })}
+          </div>)}
           </div>
+          
       )
 
 

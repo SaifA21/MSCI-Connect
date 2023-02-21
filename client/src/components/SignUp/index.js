@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import {auth} from '../Firebase/firebase'
+
 
 const serverURL = '';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3075";
@@ -18,7 +20,8 @@ const serverURL = '';
 export default function SignUp() {
 
   const {signUp} = useAuth() 
-  const{currentUser} = useAuth()
+  const {signIn} = useAuth() 
+
   const history = useHistory()
 
   const [name, setName] = React.useState('');
@@ -32,6 +35,8 @@ export default function SignUp() {
 
   const [checkBox, setCheckBox] = React.useState(false);
   const [checkBoxError, setCheckBoxError] = React.useState('');
+
+  var newUser = ''
 
   const handleClick = (event) => {
     setCheckBox(event.target.checked);
@@ -69,16 +74,33 @@ export default function SignUp() {
   
       try{
 
-        await signUp(email,password)
+
+        await auth.createUserWithEmailAndPassword(email,password)
+        await signIn(email,password)
+
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            newUser = user.uid
+            console.log(user.uid)
+            // ...
+          }
+        });
   
+       
+
+        await signIn(email, password) 
+        
         var user = {
           name: name,
           email: email,
-          firebaseID: currentUser.uid
+          firebaseID: newUser
         }
+        console.log ('user', user)
 
         addUser(user)
-        history.push('/signin')
+        
+
+        history.push('/home')
       
       } catch{
         console.log("Failed to create an account")
@@ -88,7 +110,8 @@ export default function SignUp() {
 
   }
 
-  const addUser =  (user) => {
+  const addUser = async (user) => {
+    
     callApiAddUser(user)
       .then(res => {
         var parsed = JSON.parse(res.express);
@@ -115,6 +138,7 @@ export default function SignUp() {
     return body;
   
   }
+
 
 
   return (

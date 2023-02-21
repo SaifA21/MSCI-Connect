@@ -16,16 +16,43 @@ app.use(express.static(path.join(__dirname, "client/build")));
 ////////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/addChat', (req,res) => {
-	console.log(req.body.messagebody)
+	//console.log(req.body.messagebody)
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
 	 ("${req.body.messagebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+
 
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
+
+	});
+
+	connection.end();
+
+
+});
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/checkAdmin', (req,res) => {
+	console.log("welwkere"+req.body.firebaseID)
+	let connection = mysql.createConnection(config);
+	let sql = `select admin from Users where firebaseID = '${req.body.firebaseID}';`
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		console.log(results)
+		if (error){
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results)
+		//console.log(string)
+		res.send({express: string})
 
 	});
 
@@ -38,9 +65,7 @@ app.post('/api/addChat', (req,res) => {
 app.post('/api/addUpdate', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
-	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
-
+	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -51,9 +76,7 @@ app.post('/api/addUpdate', (req,res) => {
 
 	connection.end();
 
-
 });
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -62,11 +85,12 @@ app.post('/api/addMailingList', (req,res) => {
 	let connection = mysql.createConnection(config);
 	let sql = `UPDATE Users SET mailingList = 1 where firebaseID = '${req.body.firebaseID}';`
 
-
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
 
 	});
 
@@ -80,7 +104,9 @@ app.post('/api/addMailingList', (req,res) => {
 app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
+
 	let sql = `select  updateID, title, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.NewsUpdates.author) as username from s5sayed.NewsUpdates order by updateID desc;
+
 	`
 
 
@@ -89,7 +115,7 @@ app.post('/api/loadUpdates', (req,res) => {
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
@@ -119,7 +145,7 @@ app.post('/api/loadPolls', (req,res) => {
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
@@ -143,9 +169,7 @@ app.post('/api/checkAdmin', (req,res) => {
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
-	});
-	connection.end();
-});
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -191,14 +215,13 @@ app.post('/api/loadMessages', (req,res) => {
 
 	let sql = `select  chatID, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.Chats.author) as username from s5sayed.Chats ${filter} ${sort}`
 	console.log(sql)
-	
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
@@ -214,14 +237,16 @@ app.post('/api/loadMessages', (req,res) => {
 app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
+
 	let sql = `select * from s5sayed.TimelineItems`
+
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 

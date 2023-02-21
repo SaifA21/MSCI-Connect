@@ -16,6 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { useAuth } from '../../contexts/AuthContext';
+import Navbar from '../Navigation/Navbar.js'
 
 const serverURL = '';
 console.warn = () => {};
@@ -23,16 +25,23 @@ console.warn = () => {};
 
 export default function Timeline() {
   
-
+  const{currentUser} = useAuth()
   return (
+    <div>
+    {currentUser.uid!=null && (
+
+    <div>
+    <Navbar></Navbar>
     <TimelineTable></TimelineTable>
+    </div>)}
+    </div>
   )
 }
  
 
     
 const TimelineTable = () => {
-
+  const{currentUser} = useAuth()
   const [rows, setRows] = React.useState([
     {itemName:'Cupcake', itemType: 305, class: 3.7, date: 67}
   ]);

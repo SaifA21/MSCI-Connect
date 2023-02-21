@@ -24,7 +24,10 @@ import { useAuth } from '../../contexts/AuthContext';
 
 
 
-class App extends Component {
+export default function App() {
+  //const{currentUser} = useAuth()
+
+  /*
   constructor(props) {
     super(props);
 
@@ -32,7 +35,7 @@ class App extends Component {
       //
     };
   }
-
+ 
   componentDidMount() {
     //
   }
@@ -41,37 +44,18 @@ class App extends Component {
   componentWillUnmount() {
     this.listener();
   }
-
-  
-
-
-  render() {
+   */
 
     return (
       <Router> 
         <AuthProvider>
 
         <div>
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-              <Toolbar>
-                <Button color="inherit" onClick={() => history.push('/home')}>News Home</Button>
-                <Button color="inherit" onClick={() => history.push('/chat')}>Chat</Button>
-                <Button color="inherit" onClick={() => history.push('/polls')}>Polls</Button>
-                <Button color="inherit" onClick={() => history.push('/timeline')}>Timeline</Button>
-                <Button color="inherit" onClick={() => history.push('/lookup')}>Student Lookup</Button>
-                <Button color="inherit" onClick={() => history.push('/faq')}>FAQ</Button>
-                <Button color="inherit" onClick={() => history.push('/tc')}>Terms and Conditions</Button>
-                <Button color="inherit" onClick={() => history.push('/signout')}>Sign Out</Button>
-              </Toolbar>
-            </AppBar>
-          </Box>
+        
           <PrivateRoute exact path="/" component={SignIn}/>
         </div>
         </AuthProvider>
       </Router>
     );
-  }
+  
 }
-
-export default App;

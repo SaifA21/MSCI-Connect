@@ -184,9 +184,10 @@ const NewsUpdates = (props) => {
 
 
   return(
-
+      
     
     <div>
+      <ButtonMailingList update ={update} />
       {admin &&
         (<AddUpdateForm topic = {setSelection} title = {setTitle} body = {setBody} update = {update}>
 
@@ -197,6 +198,7 @@ const NewsUpdates = (props) => {
           <div>
 
             <br></br>
+            
             
             <UpdateItem author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
             <br></br>
@@ -209,6 +211,46 @@ const NewsUpdates = (props) => {
   )
 
 }
+////////////
+const ButtonMailingList= (props) => {
+
+  const addMailingList =  () => {
+    callApiAddMailingList()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+      })
+  
+  } 
+  
+  const callApiAddMailingList = async () => {
+
+    const url = serverURL + "/api/addMailingList"
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props.update)
+  
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.update);
+    return body;
+  }
+
+  const handleMailingList = () => {
+    addMailingList();
+  };
+
+  return(
+    <div> 
+      <Button onClick={handleMailingList}>Subscribe to Mailing List</Button>
+    </div>
+  )
+}
+
+
 
 /////////////////////////////////////////////////////////
 
@@ -239,6 +281,9 @@ const AddUpdateForm = (props) => {
     return body;
   
   }
+
+
+  
   
 
   const [open, setOpen] = React.useState(false);

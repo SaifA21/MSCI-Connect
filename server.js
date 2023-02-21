@@ -19,7 +19,7 @@ app.post('/api/addChat', (req,res) => {
 	console.log(req.body.messagebody)
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
-	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.messagebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -39,7 +39,28 @@ app.post('/api/addUpdate', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
-	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+	});
+
+	connection.end();
+
+
+});
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/addMailingList', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `UPDATE Users SET mailingList = 1 where firebaseID = '${req.body.firebaseID}';`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -59,7 +80,7 @@ app.post('/api/addUpdate', (req,res) => {
 app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates order by updateID desc;
+	let sql = `select  updateID, title, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.NewsUpdates.author) as username from s5sayed.NewsUpdates order by updateID desc;
 	`
 
 
@@ -111,7 +132,7 @@ app.post('/api/loadPolls', (req,res) => {
 app.post('/api/checkAdmin', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select admin from sabuosba.Users where firebaseID = ${req.body}`
+	let sql = `select admin from s5sayed.Users where firebaseID = ${req.body}`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -168,7 +189,7 @@ app.post('/api/loadMessages', (req,res) => {
 		sort = " order by chatID desc;"
 	}
 
-	let sql = `select  chatID, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
+	let sql = `select  chatID, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.Chats.author) as username from s5sayed.Chats ${filter} ${sort}`
 	console.log(sql)
 	
 
@@ -193,7 +214,7 @@ app.post('/api/loadMessages', (req,res) => {
 app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select * from sabuosba.TimelineItems`
+	let sql = `select * from s5sayed.TimelineItems`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){

@@ -16,16 +16,42 @@ app.use(express.static(path.join(__dirname, "client/build")));
 ////////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/addChat', (req,res) => {
-	console.log(req.body.messagebody)
+	//console.log(req.body.messagebody)
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
-	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.messagebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
+
+	});
+
+	connection.end();
+
+
+});
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/checkAdmin', (req,res) => {
+	console.log("welwkere"+req.body.firebaseID)
+	let connection = mysql.createConnection(config);
+	let sql = `select admin from Users where firebaseID = '${req.body.firebaseID}';`
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		console.log(results)
+		if (error){
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results)
+		//console.log(string)
+		res.send({express: string})
 
 	});
 
@@ -39,13 +65,15 @@ app.post('/api/addUpdate', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
-	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
 
 	});
 
@@ -59,7 +87,7 @@ app.post('/api/addUpdate', (req,res) => {
 app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates order by updateID desc;
+	let sql = `select  updateID, title, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.NewsUpdates.author) as username from t2nirmal.NewsUpdates order by updateID desc;
 	`
 
 
@@ -68,7 +96,7 @@ app.post('/api/loadUpdates', (req,res) => {
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
@@ -98,7 +126,7 @@ app.post('/api/loadPolls', (req,res) => {
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
@@ -106,25 +134,7 @@ app.post('/api/loadPolls', (req,res) => {
 	connection.end();
 });
 
-/////////////////////////////////////////////////////////////////////////////////////
 
-app.post('/api/checkAdmin', (req,res) => {
-
-	let connection = mysql.createConnection(config);
-	let sql = `select admin from sabuosba.Users where firebaseID = ${req.body}`
-
-	connection.query(sql,(error, results, fields) => {
-		if (error){
-			return console.error(error.message);
-		}
-
-		console.log(results);
-		let string = JSON.stringify(results)
-		res.send({express: string})
-
-	});
-	connection.end();
-});
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -168,8 +178,8 @@ app.post('/api/loadMessages', (req,res) => {
 		sort = " order by chatID desc;"
 	}
 
-	let sql = `select  chatID, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
-	console.log(sql)
+	let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats ${filter} ${sort}`
+	//console.log(sql)
 	
 
 	connection.query(sql,(error, results, fields) => {
@@ -177,7 +187,7 @@ app.post('/api/loadMessages', (req,res) => {
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 
@@ -193,14 +203,14 @@ app.post('/api/loadMessages', (req,res) => {
 app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select * from sabuosba.TimelineItems`
+	let sql = `select * from t2nirmal.TimelineItems`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
 
-		console.log(results);
+		//console.log(results);
 		let string = JSON.stringify(results)
 		res.send({express: string})
 

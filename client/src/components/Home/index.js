@@ -17,7 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-
+import Navbar from '../Navigation/Navbar.js'
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -127,7 +127,10 @@ const Filter = (props) => {
 
 const NewsUpdates = (props) => {
   const{currentUser} = useAuth()
-  const[admin, setAdmin]=useState(true)
+
+  const[allowed,setAllowed]=useState(0)
+  const[permitted,setPermitted]=useState({admin:0})
+  const[admin, setAdmin]=useState([{admin:0}])
 
   const [filter, setFilter] = React.useState('');
 
@@ -148,6 +151,10 @@ const NewsUpdates = (props) => {
     }
   ]);
 
+  var firebaseID = {
+    firebaseID: currentUser.uid
+  }
+
   var update = {
     firebaseID: currentUser.uid,
     updatebody: body,
@@ -158,6 +165,21 @@ const NewsUpdates = (props) => {
   React.useEffect(() =>{
     loadUpdates();
   },[])
+
+  React.useEffect(() =>{
+    console.log(currentUser)
+    checkAdmin();
+    console.log(admin)
+  },[])
+
+  
+  React.useEffect(() =>{
+    setPermitted(admin[0]);
+  },[admin])
+  
+  React.useEffect(() =>{
+    setAllowed(permitted.admin);
+  },[permitted])
 
   React.useEffect(() =>{
     console.log(updates)
@@ -182,12 +204,41 @@ const NewsUpdates = (props) => {
     return body;
   }
 
-
-  return(
-
+  const checkAdmin = () => {
+    callApiCheckAdmin()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        setAdmin(parsed)
+      }
+    ).then(console.log(admin))
+  }
+  
+  const callApiCheckAdmin = async (props) => {
+    console.log('running')
+    const url = serverURL + "/api/checkAdmin";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({firebaseID: currentUser.uid})
+  
+    });
     
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    
+    return body;
+  }
+  
+  return(
     <div>
-      {admin &&
+    {currentUser.uid!=null && (
+
+    <div>
+      <Navbar></Navbar>
+      {allowed==1 &&
         (<AddUpdateForm topic = {setSelection} title = {setTitle} body = {setBody} update = {update}>
 
         </AddUpdateForm>)
@@ -205,7 +256,8 @@ const NewsUpdates = (props) => {
       })}
       
     </div>
-
+    )}
+    </div>
   )
 
 }

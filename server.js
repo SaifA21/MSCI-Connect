@@ -35,23 +35,31 @@ app.post('/api/addChat', (req,res) => {
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
-app.post('/api/addUpdate', (req,res) => {
+app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
-	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	let filter;
+	if(req.body.mainPagefilter!=""){
+		filter=" where class = '"+req.body.mainPagefilter+"'";
+	}else{
+		filter=""
+	}
 
+	
+	let sql = `select  updateID, title, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.NewsUpdates.author) as username from s5sayed.NewsUpdates ${filter} order by updateID desc;`
+	console.log(sql);
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
 		}
 
+		console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
 	});
-
 	connection.end();
-
-
 });
 
 
@@ -77,6 +85,8 @@ app.post('/api/addMailingList', (req,res) => {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
+//THIS IS WHAT I AM LOOKING
+
 app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
@@ -96,6 +106,7 @@ app.post('/api/loadUpdates', (req,res) => {
 	});
 	connection.end();
 });
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////

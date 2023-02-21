@@ -96,7 +96,12 @@ const Sort = () => {
   )
 }
 
+
+
+
+//////////////////////////////////////////////////////////////////////////
 const Filter = (props) => {
+  
 
   return(
   <FormControl variant="filled" style={{minWidth: 300}}>
@@ -107,8 +112,11 @@ const Filter = (props) => {
           //value={age}
           onChange={(event)=>{
                   
-            props.filterSelection(event.target.value)
+            props.mainPagefilter(event.target.value)
             console.log(event.target.value)
+       
+
+            
 
           }}
         >
@@ -125,11 +133,14 @@ const Filter = (props) => {
   )
 }
 
+/////////////////////////////////////////////////
+
 const NewsUpdates = (props) => {
   const{currentUser} = useAuth()
   const[admin, setAdmin]=useState(true)
 
   const [filter, setFilter] = React.useState('');
+
 
   const [title, setTitle] = React.useState('');
   const [titleError, setTitleError] = React.useState('');
@@ -157,7 +168,7 @@ const NewsUpdates = (props) => {
 
   React.useEffect(() =>{
     loadUpdates();
-  },[])
+  },[""])
 
   React.useEffect(() =>{
     console.log(updates)
@@ -165,22 +176,31 @@ const NewsUpdates = (props) => {
 
 
   const loadUpdates = () => {
-    callApiLoadUpdates()
+    
+    callApiLoadUpdates(mainPagefilter)
     .then(res => {
         var parsed = JSON.parse(res.express);
-        console.log(parsed)
-        changeUpdates(parsed);
       }
-    ).then(console.log(updates))
+    ).then(console.log(mainPagefilter))
   }
-  
-  const callApiLoadUpdates = async () => {
+
+  const callApiLoadUpdates = async (props) => {
+    
     const url = serverURL + "/api/loadUpdates";
-    const response = await fetch(url, {method: "POST"});
+    const response = await fetch(url, {method: "POST", headers: {
+      "Content-Type": "application/json",
+    },body: JSON.stringify({mainPagefilter: mainPagefilter})});
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   }
+
+  const [mainPagefilter, setmainPageFilter] = React.useState('');
+  
+  React.useEffect(()=>{
+    loadUpdates()
+    console.log(mainPagefilter)
+  },[mainPagefilter])
 
 
   return(
@@ -188,6 +208,7 @@ const NewsUpdates = (props) => {
     
     <div>
       <ButtonMailingList update ={update} />
+      <Filter  mainPagefilter = {setmainPageFilter}></Filter> 
       {admin &&
         (<AddUpdateForm topic = {setSelection} title = {setTitle} body = {setBody} update = {update}>
 
@@ -211,7 +232,11 @@ const NewsUpdates = (props) => {
   )
 
 }
-////////////
+
+
+
+
+///////////////////////////////////////////////////////////////////////
 const ButtonMailingList= (props) => {
 
   const addMailingList =  () => {

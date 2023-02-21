@@ -180,6 +180,7 @@ const NewsUpdates = (props) => {
     callApiLoadUpdates(mainPagefilter)
     .then(res => {
         var parsed = JSON.parse(res.express);
+        changeUpdates(parsed)
       }
     ).then(console.log(mainPagefilter))
   }

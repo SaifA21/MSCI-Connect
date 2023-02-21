@@ -84,12 +84,22 @@ app.post('/api/addUpdate', (req,res) => {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
+//THIS IS WHAT I AM LOOKING
+
 app.post('/api/loadUpdates', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select  updateID, title, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.NewsUpdates.author) as username from t2nirmal.NewsUpdates order by updateID desc;
-	`
 
+	let filter;
+	if(req.body.mainPagefilter!=""){
+		filter=" where class = '"+req.body.mainPagefilter+"'";
+	}else{
+		filter=""
+	}
+
+	
+	let sql = `select  updateID, title, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.NewsUpdates.author) as username from s5sayed.NewsUpdates ${filter} order by updateID desc;`
+	console.log(sql);
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -103,7 +113,6 @@ app.post('/api/loadUpdates', (req,res) => {
 	});
 	connection.end();
 });
-
 
 /////////////////////////////////////////////////////////////////////////////////////
 

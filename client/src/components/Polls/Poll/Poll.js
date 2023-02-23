@@ -62,7 +62,7 @@ const  Poll = (props) => {
             <FormHelperText>Placeholder</FormHelperText>
             </FormControl>
 
-          <ButtonSubmitVote vote = {vote} />
+          <ButtonSubmitVote pollID = {props.pollID} vote = {vote} />
         </CardActions>
       </Card>
     );

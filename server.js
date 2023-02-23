@@ -292,5 +292,27 @@ app.post('/api/loadEmails', (req,res) => {
 	connection.end();
 });
 
+/////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/addTimelineItem', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO TimelineItems (itemName, itemType, class, date) VALUES
+	 ("${req.body.itemName}","${req.body.type}", "${req.body.topic}",'${req.body.date}');`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

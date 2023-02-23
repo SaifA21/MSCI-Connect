@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -19,6 +18,16 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navigation/Navbar.js'
 
+import TextField from '@material-ui/core/TextField';
+import { useState } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import {Grid, AppBar, Box, Button, Select, MenuItem, FormControl, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText} from "@material-ui/core/";
+
 const serverURL = '';
 console.warn = () => {};
 
@@ -26,12 +35,76 @@ console.warn = () => {};
 export default function Timeline() {
   
   const{currentUser} = useAuth()
+  const[allowed,setAllowed]=useState(0)
+  const[permitted,setPermitted]=useState({admin:0})
+  const[admin, setAdmin]=useState([{admin:0}])
+  const [itemName, setItemName] = React.useState('');
+  const [type, setType] = React.useState('');
+  const [topic, setTopic] = React.useState('');
+  const [date, setDate] = React.useState('');
+
+  var item = {
+    firebaseID: currentUser.uid,
+    itemName: itemName,
+    type: type,
+    topic: topic,
+    date: date
+  }
+
+  React.useEffect(() =>{
+    console.log(currentUser)
+    checkAdmin();
+    console.log(admin)
+  },[])
+
+  
+  React.useEffect(() =>{
+    setPermitted(admin[0]);
+  },[admin])
+  
+  React.useEffect(() =>{
+    setAllowed(permitted.admin);
+    console.log(permitted)
+  },[permitted])
+
+  const checkAdmin = () => {
+    callApiCheckAdmin()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        setAdmin(parsed)
+      }
+    ).then(console.log(admin))
+  }
+  
+  const callApiCheckAdmin = async (props) => {
+    console.log('running')
+    const url = serverURL + "/api/checkAdmin";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({firebaseID: currentUser.uid})
+  
+    });
+    
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    
+    return body;
+  }
+
   return (
     <div>
     {currentUser.uid!=null && (
 
     <div>
     <Navbar></Navbar>
+    {allowed==1 &&
+      (<AddTimelineItem item={item} topic = {setTopic} name = {setItemName} type = {setType} date = {setDate}>
+      </AddTimelineItem>)
+    }
     <TimelineTable></TimelineTable>
     </div>)}
     </div>
@@ -307,3 +380,177 @@ const TimelineTable = () => {
     );
 
   }
+
+const AddTimelineItem = (props) => {
+
+    const addTimeline =  () => {
+      callApiAddTimelineItem()
+        .then(res => {
+          var parsed = JSON.parse(res.express);
+        })
+    } 
+    
+    const callApiAddTimelineItem = async () => {
+  
+      const url = serverURL + "/api/addTimelineItem"
+    
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(props.item)
+    
+      });
+      const body = await response.json();
+      if (response.status != 200) throw Error(body.item);
+      return body;
+    
+    }
+  
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      
+      setOpen(false);
+    };
+  
+    const handlePost = () => {
+      addTimeline()
+      setOpen(false);
+    };
+  
+  
+    return(
+        <div>
+          <IconButton color = 'primary' aria-label="add" onClick={handleClickOpen}>
+            <AddCircleOutlineIcon style={{ fontSize: 40 }}/>
+          </IconButton>
+          
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>New Timeline Item</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please enter details for the timeline item.
+              </DialogContentText>
+             
+              <TextField
+              autoFocus
+              margin="dense"
+              label="Name"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.name(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+              
+            <Selection topic={props.topic}>
+            </Selection>
+
+            <ItemType type={props.type}>
+            </ItemType>  
+    
+            <SelectDate date={props.date}></SelectDate>
+
+            </DialogContent>
+
+            
+
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handlePost} color="primary">
+                Post
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      );
+  
+  }
+
+  const Selection = (props) => {
+
+    return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+          <InputLabel id="sort">Filter by:</InputLabel>
+          <Select
+            labelId="sortBySelector"
+            id="sortBySelector"
+            onChange={(event)=>{        
+              props.topic(event.target.value)
+              console.log(event.target.value)
+  
+            }}
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+            <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+            <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+            <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+            <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+            <MenuItem value={'Co-op'}>Co-op</MenuItem>
+            <MenuItem value={'General'}>General</MenuItem>
+          </Select>
+        </FormControl>
+    )
+  }
+
+const ItemType = (props) => {
+
+  return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+    <InputLabel id="sort">Filter by:</InputLabel>
+    <Select
+      labelId="sortBySelector"
+      id="sortBySelector"
+      onChange={(event)=>{        
+        props.type(event.target.value)
+        console.log(event.target.value)
+  
+      }}
+    >
+      <MenuItem value=""><em>None</em></MenuItem>
+      <MenuItem value={'Quiz'}>Quiz</MenuItem>
+      <MenuItem value={'Exam'}>Exam</MenuItem>
+      <MenuItem value={'Assignment'}>Assignment</MenuItem>
+      <MenuItem value={'Lecture'}>Lecture</MenuItem>
+      <MenuItem value={'Lab'}>Lab</MenuItem>
+      <MenuItem value={'Tutorial'}>Tutorial</MenuItem>
+      <MenuItem value={'General'}>General</MenuItem>
+    </Select>
+  </FormControl>
+  )
+}
+
+const SelectDate = (props) => {
+
+  return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+    
+    <TextField
+        id="date"
+        label="Due Date"
+        type="date"
+        
+        sx={{ width: 220 }}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={(event)=>{        
+          props.date(event.target.value)
+          console.log(event.target.value)
+
+        }}
+      />
+  </FormControl>
+  )
+}

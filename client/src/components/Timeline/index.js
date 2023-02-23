@@ -19,6 +19,16 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navigation/Navbar.js'
 
+import TextField from '@material-ui/core/TextField';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import {Grid, AppBar, Box, Button, Select, MenuItem, FormControl, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText} from "@material-ui/core/";
+
 const serverURL = '';
 console.warn = () => {};
 
@@ -306,4 +316,154 @@ const TimelineTable = () => {
       </div>
     );
 
+  }
+
+  const AddTimelineItem = (props) => {
+
+    const addTimeline =  () => {
+      callApiAddTimelineItem()
+        .then(res => {
+          var parsed = JSON.parse(res.express);
+        })
+    
+    } 
+    
+    const callApiAddTimelineItem = async () => {
+  
+      const url = serverURL + "/api/addTimelineItem"
+    
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(props.update)
+    
+      });
+      const body = await response.json();
+      if (response.status != 200) throw Error(body.update);
+      return body;
+    
+    }
+  
+  
+    
+    
+  
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      
+      setOpen(false);
+    };
+  
+    const handlePost = () => {
+      addTimeline()
+      setOpen(false);
+    };
+  
+  
+    return(
+        <div>
+          <IconButton color = 'primary' aria-label="add" onClick={handleClickOpen}>
+            <AddCircleOutlineIcon style={{ fontSize: 40 }}/>
+          </IconButton>
+          
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>New Timeline Item</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please enter details for the timeline item.
+              </DialogContentText>
+             
+              
+              
+            <Selection topic={props.topic}>
+            </Selection>
+
+            <ItemType type={props.type}>
+            </ItemType>  
+    
+            <TextField
+                id="date"
+                label="Due Date"
+                type="date"
+                defaultValue="2017-05-24"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+
+            </DialogContent>
+
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handlePost} color="primary">
+                Post
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      );
+  
+  }
+
+  const Selection = (props) => {
+
+    return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+          <InputLabel id="sort">Filter by:</InputLabel>
+          <Select
+            labelId="sortBySelector"
+            id="sortBySelector"
+            onChange={(event)=>{        
+              props.topic(event.target.value)
+              console.log(event.target.value)
+  
+            }}
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+            <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+            <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+            <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+            <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+            <MenuItem value={'Co-op'}>Co-op</MenuItem>
+            <MenuItem value={'General'}>General</MenuItem>
+          </Select>
+        </FormControl>
+    )
+  }
+
+  const ItemType= (props) => {
+
+    return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+          <InputLabel id="sort">Filter by:</InputLabel>
+          <Select
+            labelId="sortBySelector"
+            id="sortBySelector"
+            onChange={(event)=>{        
+              props.topic(event.target.value)
+              console.log(event.target.value)
+  
+            }}
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            <MenuItem value={'MSCI 446'}>Quiz</MenuItem>
+            <MenuItem value={'MSCI 431'}>Exam</MenuItem>
+            <MenuItem value={'MSCI 342'}>Assignment</MenuItem>
+            <MenuItem value={'MSCI 334'}>Lecture</MenuItem>
+            <MenuItem value={'MSCI 311'}>Lab</MenuItem>
+            <MenuItem value={'Co-op'}>Tutorial</MenuItem>
+            <MenuItem value={'General'}>General</MenuItem>
+          </Select>
+        </FormControl>
+    )
   }

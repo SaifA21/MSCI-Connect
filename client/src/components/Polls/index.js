@@ -262,7 +262,7 @@ const AddPollForm = (props) => {
               }}
             />
             <TextField
-              autoFocus
+              
               margin="dense"
               label="Option 1"
               type="text"
@@ -274,7 +274,7 @@ const AddPollForm = (props) => {
               }}
             />
             <TextField
-              autoFocus
+              
               margin="dense"
               label="Option 2"
               type="text"
@@ -286,7 +286,7 @@ const AddPollForm = (props) => {
               }}
             />
             <TextField
-              autoFocus
+              
               margin="dense"
               label="Option 3"
               type="text"
@@ -298,7 +298,7 @@ const AddPollForm = (props) => {
               }}
             />
             <TextField
-              autoFocus
+              
               margin="dense"
               label="Option 4"
               type="text"

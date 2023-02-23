@@ -133,19 +133,17 @@ export default function Chat() {
                 </Grid>
 
                 <Grid item >
-                  <div>wewe</div>
+                  
                 </Grid>
 
             </Grid>
-            <div>we</div>
-            <div>we23</div>
-            
+
           </Grid>
           {messages.map((item)=>{
             return(
               <div>
                 <br></br>
-                <MessageItem author={item.author} title={item.title} content={item.content}></MessageItem>
+                <MessageItem author={item.username} topic={item.class} content={item.content}></MessageItem>
                 <br></br>
               </div>
             )

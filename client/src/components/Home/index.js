@@ -183,7 +183,7 @@ const NewsUpdates = (props) => {
 
   React.useEffect(() =>{
     loadUpdates();
-  },[""])
+  },[])
 
   React.useEffect(() =>{
     console.log(currentUser)

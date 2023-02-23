@@ -8,18 +8,17 @@ const  MessageItem = (props) => {
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             From: {props.author}
           </Typography>
-          <Typography variant="h5" component="div">
-            Topic: {props.class}
+          <Typography variant="h9" component="div">
+            Topic: {props.topic}
           </Typography>
+          <br></br>
           <Typography variant="body2">
             Content: {props.content}
             <br />
           </Typography>
 
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
+        
       </Card>
     );
   }

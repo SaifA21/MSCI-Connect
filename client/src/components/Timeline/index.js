@@ -270,6 +270,7 @@ const TimelineTable = () => {
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
+                        id={row.itemID}
                         key={row.itemName}
                         selected={isItemSelected}
                       >

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -20,7 +19,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navigation/Navbar.js'
 
 import TextField from '@material-ui/core/TextField';
-
+import { useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -36,12 +35,76 @@ console.warn = () => {};
 export default function Timeline() {
   
   const{currentUser} = useAuth()
+  const[allowed,setAllowed]=useState(0)
+  const[permitted,setPermitted]=useState({admin:0})
+  const[admin, setAdmin]=useState([{admin:0}])
+  const [itemName, setItemName] = React.useState('');
+  const [type, setType] = React.useState('');
+  const [topic, setTopic] = React.useState('');
+  const [date, setDate] = React.useState('');
+
+  var item = {
+    firebaseID: currentUser.uid,
+    itemName: itemName,
+    type: type,
+    topic: topic,
+    date: date
+  }
+
+  React.useEffect(() =>{
+    console.log(currentUser)
+    checkAdmin();
+    console.log(admin)
+  },[])
+
+  
+  React.useEffect(() =>{
+    setPermitted(admin[0]);
+  },[admin])
+  
+  React.useEffect(() =>{
+    setAllowed(permitted.admin);
+    console.log(permitted)
+  },[permitted])
+
+  const checkAdmin = () => {
+    callApiCheckAdmin()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        setAdmin(parsed)
+      }
+    ).then(console.log(admin))
+  }
+  
+  const callApiCheckAdmin = async (props) => {
+    console.log('running')
+    const url = serverURL + "/api/checkAdmin";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({firebaseID: currentUser.uid})
+  
+    });
+    
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    
+    return body;
+  }
+
   return (
     <div>
     {currentUser.uid!=null && (
 
     <div>
     <Navbar></Navbar>
+    {allowed==1 &&
+      (<AddTimelineItem item={item} topic = {setTopic} name = {setItemName} type = {setType} date = {setDate}>
+      </AddTimelineItem>)
+    }
     <TimelineTable></TimelineTable>
     </div>)}
     </div>
@@ -318,14 +381,13 @@ const TimelineTable = () => {
 
   }
 
-  const AddTimelineItem = (props) => {
+const AddTimelineItem = (props) => {
 
     const addTimeline =  () => {
       callApiAddTimelineItem()
         .then(res => {
           var parsed = JSON.parse(res.express);
         })
-    
     } 
     
     const callApiAddTimelineItem = async () => {
@@ -337,18 +399,14 @@ const TimelineTable = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(props.update)
+        body: JSON.stringify(props.item)
     
       });
       const body = await response.json();
-      if (response.status != 200) throw Error(body.update);
+      if (response.status != 200) throw Error(body.item);
       return body;
     
     }
-  
-  
-    
-    
   
     const [open, setOpen] = React.useState(false);
   
@@ -380,7 +438,18 @@ const TimelineTable = () => {
                 Please enter details for the timeline item.
               </DialogContentText>
              
-              
+              <TextField
+              autoFocus
+              margin="dense"
+              label="Name"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.name(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
               
             <Selection topic={props.topic}>
             </Selection>
@@ -388,17 +457,11 @@ const TimelineTable = () => {
             <ItemType type={props.type}>
             </ItemType>  
     
-            <TextField
-                id="date"
-                label="Due Date"
-                type="date"
-                defaultValue="2017-05-24"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+            <SelectDate date={props.date}></SelectDate>
 
             </DialogContent>
+
+            
 
             <DialogActions>
               <Button onClick={handleClose} color="primary">
@@ -441,29 +504,53 @@ const TimelineTable = () => {
     )
   }
 
-  const ItemType= (props) => {
+const ItemType = (props) => {
 
-    return(
+  return(
     <FormControl variant="filled" style={{minWidth: 300}}>
-          <InputLabel id="sort">Filter by:</InputLabel>
-          <Select
-            labelId="sortBySelector"
-            id="sortBySelector"
-            onChange={(event)=>{        
-              props.topic(event.target.value)
-              console.log(event.target.value)
+    <InputLabel id="sort">Filter by:</InputLabel>
+    <Select
+      labelId="sortBySelector"
+      id="sortBySelector"
+      onChange={(event)=>{        
+        props.type(event.target.value)
+        console.log(event.target.value)
   
-            }}
-          >
-            <MenuItem value=""><em>None</em></MenuItem>
-            <MenuItem value={'MSCI 446'}>Quiz</MenuItem>
-            <MenuItem value={'MSCI 431'}>Exam</MenuItem>
-            <MenuItem value={'MSCI 342'}>Assignment</MenuItem>
-            <MenuItem value={'MSCI 334'}>Lecture</MenuItem>
-            <MenuItem value={'MSCI 311'}>Lab</MenuItem>
-            <MenuItem value={'Co-op'}>Tutorial</MenuItem>
-            <MenuItem value={'General'}>General</MenuItem>
-          </Select>
-        </FormControl>
-    )
-  }
+      }}
+    >
+      <MenuItem value=""><em>None</em></MenuItem>
+      <MenuItem value={'Quiz'}>Quiz</MenuItem>
+      <MenuItem value={'Exam'}>Exam</MenuItem>
+      <MenuItem value={'Assignment'}>Assignment</MenuItem>
+      <MenuItem value={'Lecture'}>Lecture</MenuItem>
+      <MenuItem value={'Lab'}>Lab</MenuItem>
+      <MenuItem value={'Tutorial'}>Tutorial</MenuItem>
+      <MenuItem value={'General'}>General</MenuItem>
+    </Select>
+  </FormControl>
+  )
+}
+
+const SelectDate = (props) => {
+
+  return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+    
+    <TextField
+        id="date"
+        label="Due Date"
+        type="date"
+        
+        sx={{ width: 220 }}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={(event)=>{        
+          props.date(event.target.value)
+          console.log(event.target.value)
+
+        }}
+      />
+  </FormControl>
+  )
+}

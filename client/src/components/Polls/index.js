@@ -34,6 +34,12 @@ export default function Polls() {
 
   const [filter, setFilter] = React.useState('');
   const [polls, setPolls] = React.useState([]);
+  const [vote, setVote] = React.useState('');
+
+  React.useEffect(()=>{
+   
+    console.log(vote)
+  },[vote])
 
   const [description, setDescription] = React.useState('');
 
@@ -95,6 +101,7 @@ export default function Polls() {
         console.log(mappedDict);
         changeMovieDict(mappedDict);
         */
+      
       }
     ).then(console.log(polls))
   }
@@ -142,7 +149,7 @@ export default function Polls() {
     <div>
       {currentUser.uid!=null && (
 
-      <div>
+      <div>setFilter
       <Navbar></Navbar>
       {allowed==1 &&
 
@@ -180,8 +187,8 @@ export default function Polls() {
         return(
           <div>
             <br></br>
-            <Poll description={item.description} option1={item.option1} option2={item.option2} option3={item.option3} option4={item.option4} votes1={item.votes1} votes2={item.votes2} votes3={item.votes3} votes4={item.votes4}></Poll>
-            <br></br>
+            <Poll pollID={item.pollID} description={item.description} option1={item.option1} option2={item.option2} option3={item.option3} option4={item.option4} votes1={item.votes1} votes2={item.votes2} votes3={item.votes3} votes4={item.votes4}></Poll>
+            <br></br> 
           </div>
         )
       })}
@@ -356,3 +363,12 @@ const Filter = (props) => {
       </FormControl>
   )
 }
+
+
+
+
+//<ButtonMailingList update ={update} />
+
+
+
+

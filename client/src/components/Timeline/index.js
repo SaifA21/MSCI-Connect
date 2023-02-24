@@ -34,6 +34,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {Grid, AppBar, Box, Button, Select, MenuItem, FormControl, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText} from "@material-ui/core/";
 
 const serverURL = '';
+var rowsPerPage = 5;
 
 console.warn = () => {};
 
@@ -369,6 +370,7 @@ const TimelineTable = () => {
         .then(res => {
           var parsed = JSON.parse(res.express);
           setRows(parsed)
+          rowsPerPage = parsed.length
           
         })
     
@@ -544,7 +546,7 @@ const TimelineTable = () => {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    
     const [VoteType, setVoteType] = React.useState('');
     const [itemID, setItemID] = React.useState('');
 

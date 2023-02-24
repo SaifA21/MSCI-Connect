@@ -364,5 +364,28 @@ app.post('/api/addTimelineItem', (req,res) => {
 
 });
 
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/getMailingList', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+
+	let sql =` select username, email from sselvaka.Users where sselvaka.Users.mailingList = 1;`
+
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+});
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

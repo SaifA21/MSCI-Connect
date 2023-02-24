@@ -413,6 +413,7 @@ const TimelineTable = () => {
   }
   
   const headCells = [
+    { id: 'vote', numeric: false, disablePadding: false, label: 'Vote'},
     { id: 'description', numeric: false, disablePadding: true, label: 'Description' },
     { id: 'subject', numeric: true, disablePadding: false, label: 'Subject' },
     { id: 'type', numeric: true, disablePadding: false, label: 'Type' },
@@ -617,39 +618,30 @@ const TimelineTable = () => {
                           
                         
                         </TableCell>
-
-                        <TableCell padding="checkbox">
+                        <TableCell>
+                        {(row.itemType=='Exam'|| row.itemType=='Quiz'|| row.itemType=='Assignment'|| row.itemType=='General'|| row.itemType=='Midterm'|| row.itemType=='None') &&
+                          ( <div>
+                          <HappyButton itemID = {row.itemID} mood = 'Happy'></HappyButton>
+                          <OKButton itemID = {row.itemID} mood = 'Ok'></OKButton>
+                          <SadButton itemID = {row.itemID} mood = 'Sad'></SadButton>
+  
+                          </div>)
+                        }
+                        {(row.itemType=='Lecture'|| row.itemType=='Lab'|| row.itemType=='Tutorial') &&
+                          ( 
+                            <div>
                       
 
-                        <HappyButton itemID = {row.itemID} mood = 'Happy'></HappyButton>
-                        <OKButton itemID = {row.itemID} mood = 'Ok'></OKButton>
-                        <SadButton itemID = {row.itemID} mood = 'Sad'></SadButton>
-
+                          <AttendButton itemID = {row.itemID} mood = 'Attend'></AttendButton>
+                          <NotAttendButton itemID = {row.itemID} mood = 'NotAttend'></NotAttendButton>
+             
+                          </div>
+                          )
                         
                         
-
-                          
-
-                        
+                        }
                         </TableCell>
-
-                      
-                    
-                      <TableCell padding="checkbox">
-                      
-
-                      <AttendButton itemID = {row.itemID} mood = 'Attend'></AttendButton>
-                        <NotAttendButton itemID = {row.itemID} mood = 'NotAttend'></NotAttendButton>
-         
-                    </TableCell> 
-
-                        
-
-                      
-
-                      
-                                        
-                       
+                                              
                         <TableCell component="th" scope="row" padding="none">
                           {row.itemName}
                         </TableCell>

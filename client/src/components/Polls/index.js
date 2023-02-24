@@ -149,7 +149,7 @@ export default function Polls() {
     <div>
       {currentUser.uid!=null && (
 
-      <div>setFilter
+      <div>
       <Navbar></Navbar>
       {allowed==1 &&
 

@@ -12,6 +12,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import {auth} from '../Firebase/firebase'
+import Email from './EmailField';
 
 
 const serverURL = '';
@@ -19,7 +20,6 @@ const serverURL = '';
 
 export default function SignUp() {
 
-  const {signUp} = useAuth() 
   const {signIn} = useAuth() 
 
   const history = useHistory()
@@ -203,11 +203,10 @@ export default function SignUp() {
         </Grid>)
 }
 
-const Name = (props) => {
-
+ export function Name (props) {
   return(
     <TextField 
-      id="outlined-basic" 
+      id="name" 
       label="Full Name" 
       variant="filled" 
       error={props.error === '' ? false : true} 
@@ -220,21 +219,6 @@ const Name = (props) => {
 }
 
 
-const Email = (props) => {
-
-  return(
-    <TextField 
-      id="outlined-basic" 
-      label="Email" 
-      variant="filled" 
-      error={props.error === '' ? false : true} 
-      onChange={(event) => {props.handle(event.target.value)}} 
-      style={{minWidth: 300}} 
-      helperText = {props.error}
-    />
-  )
-
-}
 
 
 const Password = (props) => {

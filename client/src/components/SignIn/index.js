@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import Email from './EmailField';
 
 
 
@@ -112,22 +113,6 @@ export default function SignIn() {
 
 
         </Grid>)
-}
-
-const Email = (props) => {
-
-  return(
-    <TextField 
-      id="outlined-basic" 
-      label="Email" 
-      variant="filled" 
-      error={props.error === '' ? false : true} 
-      onChange={(event) => {props.handle(event.target.value)}} 
-      style={{minWidth: 300}} 
-      helperText = {props.error}
-    />
-  )
-
 }
 
 

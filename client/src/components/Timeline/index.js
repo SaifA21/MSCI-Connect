@@ -617,39 +617,30 @@ const TimelineTable = () => {
                           
                         
                         </TableCell>
+                        {5>2 &&
 
-                        <TableCell padding="checkbox">
+
+                          ( <TableCell padding="checkbox">
                       
 
-                        <HappyButton itemID = {row.itemID} mood = 'Happy'></HappyButton>
-                        <OKButton itemID = {row.itemID} mood = 'Ok'></OKButton>
-                        <SadButton itemID = {row.itemID} mood = 'Sad'></SadButton>
+                          <HappyButton itemID = {row.itemID} mood = 'Happy'></HappyButton>
+                          <OKButton itemID = {row.itemID} mood = 'Ok'></OKButton>
+                          <SadButton itemID = {row.itemID} mood = 'Sad'></SadButton>
+  
+                          </TableCell>)
+                        }
 
-                        
-                        
+                        {2>5 &&
 
-                          
-
-                        
-                        </TableCell>
-
-                      
-                    
-                      <TableCell padding="checkbox">
+                        (<TableCell padding="checkbox">
                       
 
-                      <AttendButton itemID = {row.itemID} mood = 'Attend'></AttendButton>
+                        <AttendButton itemID = {row.itemID} mood = 'Attend'></AttendButton>
                         <NotAttendButton itemID = {row.itemID} mood = 'NotAttend'></NotAttendButton>
-         
-                    </TableCell> 
-
-                        
-
-                      
-
-                      
-                                        
-                       
+           
+                        </TableCell>)
+                        }
+                                              
                         <TableCell component="th" scope="row" padding="none">
                           {row.itemName}
                         </TableCell>

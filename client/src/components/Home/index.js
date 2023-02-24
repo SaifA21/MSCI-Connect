@@ -271,6 +271,11 @@ const NewsUpdates = (props) => {
 
         </AddUpdateForm>)
       }
+      {allowed==1 &&
+
+
+        (<GetMailingList></GetMailingList>)
+      }
       {updates.map((item)=>{
         return(
           <div>
@@ -470,6 +475,81 @@ const Selection = (props) => {
   )
 }
 
+
+
+/////////////////////////////////////////////////////////////
+
+const GetMailingList = (props) => {
+  const[MLemails,changeMLEmails]=useState([
+    {
+      "username":"Sajeen",
+      "email":"sselvaka@uwaterloo.ca"
+    }
+  ]);
+  
+  React.useEffect(() =>{
+    loadMLEmails();
+  },[])
+  
+  const loadMLEmails = () => {    
+    callApiLoadMLEmails()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        changeMLEmails(parsed)
+      }
+    ).then(console.log(MLemails))
+  }
+  
+  const callApiLoadMLEmails = async (props) => {
+      
+    const url = serverURL + "/api/getMailingList";
+    const response = await fetch(url, {method: "POST"});
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  const handleGetMailingList = () => {
+    loadMLEmails();
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleClickOpen}>View Mailing List</Button>
+
+      <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Mailing List</DialogTitle>
+          <DialogContent>
+          {MLemails.map((item)=>{ 
+           return(
+            <DialogContentText >
+            {item.username} : {item.email}
+          </DialogContentText>) 
+         })}
+
+           
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+    </div>
+  )
+}
 
 
 /////////////////////////////////////////////////////////////

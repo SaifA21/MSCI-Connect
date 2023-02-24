@@ -17,6 +17,11 @@ import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navigation/Navbar.js'
+import Happy from '@material-ui/icons/InsertEmoticon';
+import Ok from '@material-ui/icons/SentimentSatisfied';
+import Sad from '@material-ui/icons/SentimentVeryDissatisfied';
+import Home from '@material-ui/icons/Home';
+import Attend from '@material-ui/icons/School';
 
 import TextField from '@material-ui/core/TextField';
 import { useState } from 'react';
@@ -197,7 +202,10 @@ const TimelineTable = () => {
               align={headCell.numeric ? 'right' : 'left'}
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
+              
             >
+              
+              
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
@@ -300,6 +308,10 @@ const TimelineTable = () => {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [VoteType, setVoteType] = React.useState('');
+    const [itemID, setItemID] = React.useState('');
+
+    var voteType= "";
   
     const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc';
@@ -311,6 +323,76 @@ const TimelineTable = () => {
     const isSelected = (name) => selected.indexOf(name) !== -1;
   
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+    const happyButton = (props) => {
+   
+
+  
+      return(
+        <div> 
+          
+          <IconButton color = 'primary' aria-label="add" onClick={handleHappy} itemID={rows.itemID}>
+            <Happy></Happy>
+            </IconButton>
+        </div>
+      )
+      }
+
+/////////////////////
+const settingHappy = () => {
+  voteType = 'happy';
+  console.log(itemID)
+  
+  addTimeLineVote();
+  
+}
+const settingMedium = () => {
+  voteType = 'medium';
+  addTimeLineVote();
+}
+const settingSad = () => {
+  voteType = 'sad';
+  addTimeLineVote();
+}
+    const addTimeLineVote = async(props) => {
+      console.log(props.mood) 
+      callAddTimeLineVote(props.mood)
+      .then(res => {
+          var parsed = JSON.parse(res.express);
+         
+        }
+      ).then(console.log(props.mood))
+    }
+  
+    const callAddTimeLineVote = async (props) => {
+      
+      const url = serverURL + "/api/addTimeLineVote";
+      console.log(voteType)
+      const response = await fetch(url, {method: "POST", headers: {
+        "Content-Type": "application/json",
+      },body: JSON.stringify({voteTimeline: voteType})});
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      return body;
+    }
+
+//////////////////////////////
+    const handleHappy = () => {
+      settingHappy();
+      
+    
+     
+    };
+
+    const handleMedium = () => {
+      settingMedium();
+     
+    };
+
+    const handleSad = () => {
+      settingSad();
+   
+    };
   
     return (
       <div className={classes.root}>
@@ -353,7 +435,48 @@ const TimelineTable = () => {
                           <IconButton color = 'primary' aria-label="add">
                             <StarBorderIcon></StarBorderIcon>
                           </IconButton>
+
+                          
+                        
                         </TableCell>
+
+                        <TableCell padding="checkbox">
+                      
+
+                          <IconButton color = 'primary' aria-label="add" onClick={addTimeLineVote ( { mood:'happy'})}    >
+                        
+                            <Happy></Happy> 
+                          </IconButton> "Vote"
+                          <IconButton color = 'primary' aria-label="add" onClick={handleMedium} itemID={rows.itemID}>
+                         
+                            <Ok></Ok>
+                          </IconButton>
+                          <IconButton color = 'primary' aria-label="add" onClick={handleSad} itemID={rows.itemID}>
+                            <Sad></Sad>
+                          </IconButton>
+
+                        
+                        </TableCell>
+
+                      
+                    
+                      <TableCell padding="checkbox">
+                      
+
+                      <IconButton color = 'primary' aria-label="add">
+                        <Attend></Attend>
+                      </IconButton>
+                      <IconButton color = 'primary' aria-label="add">
+                        <Home></Home>
+                      </IconButton>
+         
+                    </TableCell> 
+
+                        
+
+                      
+
+                      
                                         
                        
                         <TableCell component="th" scope="row" padding="none">
@@ -554,3 +677,5 @@ const SelectDate = (props) => {
   </FormControl>
   )
 }
+
+

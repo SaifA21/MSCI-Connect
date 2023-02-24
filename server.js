@@ -20,7 +20,7 @@ app.post('/api/addChat', (req,res) => {
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
 
-	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.messagebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 
@@ -68,7 +68,7 @@ app.post('/api/addUpdate', (req,res) => {
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
 
-	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -125,7 +125,7 @@ app.post('/api/loadUpdates', (req,res) => {
 
 	
 
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} order by updateID desc;`
+	let sql = `select  updateID, title, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.NewsUpdates.author) as username from s5sayed.NewsUpdates ${filter} order by updateID desc;`
 
 	console.log(sql);
 
@@ -216,7 +216,7 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
-	let sql = `select  chatID, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
+	let sql = `select  chatID, content, class, pinned, (select username from s5sayed.Users where s5sayed.Users.userID=s5sayed.Chats.author) as username from s5sayed.Chats ${filter} ${sort}`
 
 	//console.log(sql)
 	
@@ -243,7 +243,7 @@ app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = `select * from sabuosba.TimelineItems order by date asc`
+	let sql = `select * from s5sayed.TimelineItems order by date asc`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -317,7 +317,29 @@ app.post('/api/addPollVote', (req,res) => {
 
 });
 
+////////////////////////////////////////
 
+app.post('/api/addTimeLineVote', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+
+	let sql = `UPDATE Polls SET ${req.body.voteTimeline} = ${req.body.voteTimeline} + 1 WHERE pollID = ${req.body.voteTimeline};`
+
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
 /////////////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/loadEmails', (req,res) => {
@@ -326,7 +348,7 @@ app.post('/api/loadEmails', (req,res) => {
 
 
 
-	let sql =` select username, email from sabuosba.Users;`
+	let sql =` select username, email from s5sayed.Users;`
 
 
 

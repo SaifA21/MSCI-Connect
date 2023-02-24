@@ -4,11 +4,16 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import IconButton from '@material-ui/core/IconButton';
 
-const  Poll = (props) => {
 
+const serverURL = '';
+
+const  Poll = (props) => {
     const onclick = () =>{
       console.log('clicked')
     }
+
+    const [vote, setVote] = React.useState('');
+
 
     return (
       <Card sx={{ minWidth: 275 }}>
@@ -35,7 +40,12 @@ const  Poll = (props) => {
             <FormControl>
             <Select
             
-            //onChange={}
+            onChange={(event)=>{        
+              setVote(event.target.value)
+              console.log(event.target.value)
+             
+  
+            }}
             displayEmpty
             
             inputProps={{ 'aria-label': 'Without label' }}
@@ -52,11 +62,101 @@ const  Poll = (props) => {
             <FormHelperText>Placeholder</FormHelperText>
             </FormControl>
 
-          <Button size="small">Submit</Button>
+          <ButtonSubmitVote pollID = {props.pollID} vote = {vote} />
         </CardActions>
       </Card>
     );
   }
 
+  const ButtonSubmitVote= (props) => {
+   
+    
+    const addPollVote = () => {
+      console.log(props.pollID)
+      callAddPollVote(props)
+      .then(res => {
+          var parsed = JSON.parse(res.express);
+         
+        }
+      ).then(console.log(props.vote))
+    }
+  
+    const callAddPollVote = async (props) => {
+      
+      const url = serverURL + "/api/addPollVote";
+      console.log(props.vote)
+      const response = await fetch(url, {method: "POST", headers: {
+        "Content-Type": "application/json",
+      },body: JSON.stringify({vote: props.vote, pollID : props.pollID})});
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      return body;
+    }
+  
+
+  
+    
+    
+    const handleSubmitVote = () => {
+      addPollVote();
+      console.log(props.vote);
+    };
+    
+  return(
+    <div> 
+      
+      <Button onClick={handleSubmitVote}>Submit</Button>
+    </div>
+  )
+}
+ 
+
   
   export default (Poll);
+  
+
+
+  //<ButtonMailingList update ={update} />
+
+  /*
+const ButtonMailingList= (props) => {
+
+  const addMailingList =  () => {
+    callApiAddMailingList()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+      })
+  
+  } 
+  
+  const callApiAddMailingList = async () => {
+
+    const url = serverURL + "/api/addMailingList"
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props.update)
+  
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.update);
+    return body;
+  }
+
+  const handleMailingList = () => {
+    addMailingList();
+  };
+
+  return(
+    <div> 
+      <Button onClick={handleMailingList}>Subscribe to Mailing List</Button>
+    </div>
+  )
+}
+
+
+
+*/

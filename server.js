@@ -264,6 +264,7 @@ app.post('/api/addMailingList', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql = `UPDATE Users SET mailingList = 1 where firebaseID = '${req.body.firebaseID}';`
+	console.log(sql)
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -323,7 +324,8 @@ app.post('/api/addTimeLineVote', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = `UPDATE Polls SET ${req.body.voteTimeline} = ${req.body.voteTimeline} + 1 WHERE pollID = ${req.body.voteTimeline};`
+	let sql = `INSERT INTO TimelineVotes (userID, itemID, value) VALUES 
+	((SELECT userID FROM s5sayed.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
 
 	console.log(sql)
 

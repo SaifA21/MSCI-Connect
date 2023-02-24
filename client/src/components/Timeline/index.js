@@ -20,7 +20,7 @@ import Navbar from '../Navigation/Navbar.js'
 import Happy from '@material-ui/icons/InsertEmoticon';
 import Ok from '@material-ui/icons/SentimentSatisfied';
 import Sad from '@material-ui/icons/SentimentVeryDissatisfied';
-import Home from '@material-ui/icons/Home';
+import NotAttend from '@material-ui/icons/Home';
 import Attend from '@material-ui/icons/School';
 
 import TextField from '@material-ui/core/TextField';
@@ -34,7 +34,241 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {Grid, AppBar, Box, Button, Select, MenuItem, FormControl, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText} from "@material-ui/core/";
 
 const serverURL = '';
+
 console.warn = () => {};
+
+const HappyButton = (props) => {
+  const{currentUser} = useAuth()
+
+
+
+  const addTimeLineVote = async(props) => {
+    console.log(props.mood) 
+    callAddTimeLineVote(props)
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+       
+      }
+    ).then(console.log(props.mood))
+  }
+
+  const callAddTimeLineVote = async (props) => {
+    
+    const url = serverURL + "/api/addTimeLineVote";
+    console.log(props.mood)
+    const response = await fetch(url, {method: "POST", headers: {
+      "Content-Type": "application/json",
+    },body: JSON.stringify({voteTimeline: props.mood, itemID: props.itemID, firebaseID: currentUser.uid})});
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  
+  const handleTimelineVote = () => {
+    addTimeLineVote(props);
+    console.log(props.itemID);
+  };
+   
+
+  
+  return(
+    <div> 
+      
+      <IconButton  onClick={handleTimelineVote} color = 'primary' aria-label="add" >
+        <Happy></Happy>
+        </IconButton>
+    </div>
+  )
+  }
+
+
+  const OKButton = (props) => {
+    const{currentUser} = useAuth()
+
+
+
+
+    const addTimeLineVote = async(props) => {
+      console.log(props.mood) 
+      callAddTimeLineVote(props)
+      .then(res => {
+          var parsed = JSON.parse(res.express);
+         
+        }
+      ).then(console.log(props.mood))
+    }
+  
+    const callAddTimeLineVote = async (props) => {
+      
+      const url = serverURL + "/api/addTimeLineVote";
+      console.log(props.mood)
+      const response = await fetch(url, {method: "POST", headers: {
+        "Content-Type": "application/json",
+      },body: JSON.stringify({voteTimeline: props.mood, itemID: props.itemID, firebaseID: currentUser.uid})});
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      return body;
+    }
+  
+    
+    const handleTimelineVote = () => {
+      addTimeLineVote(props);
+      console.log(props.itemID);
+    };
+     
+  
+    
+    return(
+      <div> 
+        
+        <IconButton  onClick={handleTimelineVote} color = 'primary' aria-label="add" >
+          <Ok></Ok>
+          </IconButton>
+      </div>
+    )
+    }
+
+
+    const SadButton = (props) => {
+      const{currentUser} = useAuth()
+
+
+
+
+      const addTimeLineVote = async(props) => {
+        console.log(props.mood) 
+        callAddTimeLineVote(props)
+        .then(res => {
+            var parsed = JSON.parse(res.express);
+           
+          }
+        ).then(console.log(props.mood))
+      }
+    
+      const callAddTimeLineVote = async (props) => {
+        
+        const url = serverURL + "/api/addTimeLineVote";
+        console.log(props.mood)
+        const response = await fetch(url, {method: "POST", headers: {
+          "Content-Type": "application/json",
+        },body: JSON.stringify({voteTimeline: props.mood, itemID: props.itemID, firebaseID: currentUser.uid})});
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+      }
+    
+      
+      const handleTimelineVote = () => {
+        addTimeLineVote(props);
+        console.log(props.itemID);
+      };
+       
+    
+      
+      return(
+        <div> 
+          
+          <IconButton  onClick={handleTimelineVote} color = 'primary' aria-label="add" >
+            <Sad></Sad>
+            </IconButton>
+        </div>
+      )
+      }
+
+
+      const AttendButton = (props) => {
+        const{currentUser} = useAuth()
+  
+  
+  
+  
+        const addTimeLineVote = async(props) => {
+          console.log(props.mood) 
+          callAddTimeLineVote(props)
+          .then(res => {
+              var parsed = JSON.parse(res.express);
+             
+            }
+          ).then(console.log(props.mood))
+        }
+      
+        const callAddTimeLineVote = async (props) => {
+          
+          const url = serverURL + "/api/addTimeLineVote";
+          console.log(props.mood)
+          const response = await fetch(url, {method: "POST", headers: {
+            "Content-Type": "application/json",
+          },body: JSON.stringify({voteTimeline: props.mood, itemID: props.itemID, firebaseID: currentUser.uid})});
+          const body = await response.json();
+          if (response.status !== 200) throw Error(body.message);
+          return body;
+        }
+      
+        
+        const handleTimelineVote = () => {
+          addTimeLineVote(props);
+          console.log(props.itemID);
+        };
+         
+      
+        
+        return(
+          <div> 
+            
+            <IconButton  onClick={handleTimelineVote} color = 'primary' aria-label="add" >
+              <Attend></Attend>
+              </IconButton>
+          </div>
+        )
+        }
+
+
+        const NotAttendButton = (props) => {
+          const{currentUser} = useAuth()
+    
+    
+    
+    
+          const addTimeLineVote = async(props) => {
+            console.log(props.mood) 
+            callAddTimeLineVote(props)
+            .then(res => {
+                var parsed = JSON.parse(res.express);
+               
+              }
+            ).then(console.log(props.mood))
+          }
+        
+          const callAddTimeLineVote = async (props) => {
+            
+            const url = serverURL + "/api/addTimeLineVote";
+            console.log(props.mood)
+            const response = await fetch(url, {method: "POST", headers: {
+              "Content-Type": "application/json",
+            },body: JSON.stringify({voteTimeline: props.mood, itemID: props.itemID, firebaseID: currentUser.uid})});
+            const body = await response.json();
+            if (response.status !== 200) throw Error(body.message);
+            return body;
+          }
+        
+          
+          const handleTimelineVote = () => {
+            addTimeLineVote(props);
+            console.log(props.itemID);
+          };
+           
+        
+          
+          return(
+            <div> 
+              
+              <IconButton  onClick={handleTimelineVote} color = 'primary' aria-label="add" >
+                <NotAttend></NotAttend>
+                </IconButton>
+            </div>
+          )
+          }
 
 
 export default function Timeline() {
@@ -119,6 +353,8 @@ export default function Timeline() {
 
     
 const TimelineTable = () => {
+
+ 
 
   const{currentUser} = useAuth()
   
@@ -324,76 +560,15 @@ const TimelineTable = () => {
   
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-    const happyButton = (props) => {
    
-
-  
-      return(
-        <div> 
-          
-          <IconButton color = 'primary' aria-label="add" onClick={handleHappy} itemID={rows.itemID}>
-            <Happy></Happy>
-            </IconButton>
-        </div>
-      )
-      }
 
 /////////////////////
-const settingHappy = () => {
-  voteType = 'happy';
-  console.log(itemID)
-  
-  addTimeLineVote();
-  
-}
-const settingMedium = () => {
-  voteType = 'medium';
-  addTimeLineVote();
-}
-const settingSad = () => {
-  voteType = 'sad';
-  addTimeLineVote();
-}
-    const addTimeLineVote = async(props) => {
-      console.log(props.mood) 
-      callAddTimeLineVote(props.mood)
-      .then(res => {
-          var parsed = JSON.parse(res.express);
-         
-        }
-      ).then(console.log(props.mood))
-    }
-  
-    const callAddTimeLineVote = async (props) => {
-      
-      const url = serverURL + "/api/addTimeLineVote";
-      console.log(voteType)
-      const response = await fetch(url, {method: "POST", headers: {
-        "Content-Type": "application/json",
-      },body: JSON.stringify({voteTimeline: voteType})});
-      const body = await response.json();
-      if (response.status !== 200) throw Error(body.message);
-      return body;
-    }
 
-//////////////////////////////
-    const handleHappy = () => {
-      settingHappy();
-      
     
-     
-    };
 
-    const handleMedium = () => {
-      settingMedium();
-     
-    };
+    
 
-    const handleSad = () => {
-      settingSad();
-   
-    };
-  
+
     return (
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -418,8 +593,11 @@ const settingSad = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     const isItemSelected = isSelected(row.itemName);
+                   
   
                     return (
+
+                      
                       <TableRow
                         hover
                         role="checkbox"
@@ -443,17 +621,14 @@ const settingSad = () => {
                         <TableCell padding="checkbox">
                       
 
-                          <IconButton color = 'primary' aria-label="add" onClick={addTimeLineVote ( { mood:'happy'})}    >
+                        <HappyButton itemID = {row.itemID} mood = 'Happy'></HappyButton>
+                        <OKButton itemID = {row.itemID} mood = 'Ok'></OKButton>
+                        <SadButton itemID = {row.itemID} mood = 'Sad'></SadButton>
+
                         
-                            <Happy></Happy> 
-                          </IconButton> "Vote"
-                          <IconButton color = 'primary' aria-label="add" onClick={handleMedium} itemID={rows.itemID}>
-                         
-                            <Ok></Ok>
-                          </IconButton>
-                          <IconButton color = 'primary' aria-label="add" onClick={handleSad} itemID={rows.itemID}>
-                            <Sad></Sad>
-                          </IconButton>
+                        
+
+                          
 
                         
                         </TableCell>
@@ -463,12 +638,8 @@ const settingSad = () => {
                       <TableCell padding="checkbox">
                       
 
-                      <IconButton color = 'primary' aria-label="add">
-                        <Attend></Attend>
-                      </IconButton>
-                      <IconButton color = 'primary' aria-label="add">
-                        <Home></Home>
-                      </IconButton>
+                      <AttendButton itemID = {row.itemID} mood = 'Attend'></AttendButton>
+                        <NotAttendButton itemID = {row.itemID} mood = 'NotAttend'></NotAttendButton>
          
                     </TableCell> 
 

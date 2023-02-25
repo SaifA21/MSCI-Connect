@@ -184,7 +184,7 @@ app.post('/api/addUser', (req,res) => {
 	connection.query(sql,(error, results, fields) => {
 		if (error){
 			return console.error(error.message);
-		}addMailingList
+		}
 
 	});
 
@@ -262,7 +262,7 @@ app.post('/api/getTimeline', (req,res) => {
 app.post('/api/addMailingList', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `UPDATE Users SET mailingList = 1 where firebaseID = '${req.body.firebaseID}';`
+	let sql = `UPDATE sabuosba.Users SET mailingList = 1 where firebaseID = '${req.body.firebaseID}';`
 	console.log(sql)
 
 	connection.query(sql,(error, results, fields) => {

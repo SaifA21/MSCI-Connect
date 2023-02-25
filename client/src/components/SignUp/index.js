@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import {auth} from '../Firebase/firebase'
 import Email from './EmailField';
+import Password from './PasswordField';
 
 
 const serverURL = '';
@@ -219,25 +220,6 @@ export default function SignUp() {
 }
 
 
-
-
-const Password = (props) => {
-
-  return(
-    <TextField 
-      id="outlined-basic" 
-      label="Password" 
-      variant="filled" 
-      type='password'
-      error={props.error === '' ? false : true} 
-      onChange={(event) => {props.handle(event.target.value)}} 
-      style={{minWidth: 300}} 
-      helperText = {props.error}
-    />
-  )
-
-}
-
 const Terms = (props) => {
 
   const [open, setOpen] = React.useState(false);
@@ -284,12 +266,3 @@ const Terms = (props) => {
 
 }
 
-
-const Login  = (props) => {
-
-  return(
-    <Button variant="contained">Sign Up</Button>
-
-  )
-
-}

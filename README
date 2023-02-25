@@ -14,45 +14,45 @@ Installation Instructions:
 2. Begin by cloning the repository to your local machine.
 2. In a terminal run the following command in the root directory of the project folder:
 
-```
+
 npm install --legacy-peer-deps
-```
+
 3. After installation is complete navigate to the client folder of the project by enter the command below:
-```
+
 cd client 
-```
+
 4. Run the command below: 
-```
+
 npm install --legacy-peer-deps
-```
+
 5. Now open a new terminal and in the root folder of the project enter following command:
-```
+
 node server.js
- ```
+
 6. Open another terminal and navigate to the client folder
-```
+
 cd client 
-```
+
 7. Start the client:
-```
+
 npm start
-```   
+
     
 Testing instructions:
  
 1. Ensure app is deployed in dev mode following the instructions above 
 2. Using a bash or command prompt terminal, navigate to client folder using: 
- ```
- cd client 
- ```
- 3. Run the command below to run Jest unit tests:
- ```
- yarn test 
- ```
- 4 OR run the command below to run Cypress e2e tests making sure to select the smokke.cy file in the browser:
- ```
- yarn cypress
- ```
+
+cd client 
+
+3. Run the command below to run Jest unit tests:
+
+yarn test 
+
+  OR run the command below to run Cypress e2e tests making sure to select the smokke.cy file in the browser:
+
+yarn cypress
+
 
  
     

@@ -1,2 +1,57 @@
-Hello World!
+App Description: 
 
+MSCI Connect is a web app designed for Management Engineering students to manage their academic information and interact with other members of their class. Students can sign up for an account, view a newsfeed, use interactive features to indicate their attendance or completion time, and sign up for a mailing list providing them with regular updates.
+
+Firebase Auth is used to authenticate users’ credentials and come up with a unique user id. 
+All user generated data is stored in a MySQL database.
+Material UI V4 is the component library used in this web app. 
+Jest and Cypress are used for unit and e2e tests respectively.
+
+
+Installation Instructions:
+
+1. Ensure you have node version 16.15.0 installed with a PATH variable added. 
+2. Begin by cloning the repository to your local machine.
+2. In a terminal run the following command in the root directory of the project folder:
+```sh
+  npm install --legacy-peer-deps
+  ```
+ 3. After installation is complete navigate to the client folder of the project by enter the command below:
+ ```sh
+    cd client 
+    ```
+ 4. Run the command below: 
+ ```sh
+    npm install --legacy-peer-deps
+    ```
+  5. Now open a new terminal and in the root folder of the project enter following command:
+   ```sh
+    node server.js
+    ```
+5. Open another terminal and navigate to the client folder
+   ```sh
+    cd client 
+    ```
+6. Start the client:
+   ```sh
+    npm start
+    ```   
+    
+ Testing instructions:
+ 
+1. Ensure app is deployed in dev mode following the instructions above 
+2. Using a bash or command prompt terminal, navigate to client folder using: 
+ ```sh
+    cd client 
+    ```
+ 3. Run the command below to run Jest unit tests:
+ ```sh
+    yarn test 
+    ```
+ 4 OR run the command below to run Cypress e2e tests making sure to select the smokke.cy file in the browser:
+ ```sh
+    yarn cypress
+    ```
+
+ 
+    

@@ -1,11 +1,9 @@
-import {render, screen} from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import Email from './EmailField.js';
+import Password from './PasswordField.js';
 
 
-import Name from './index.js';
-
-
+// Unit Test: Saif Abuosba 
 describe('Sign Up Component', () => {
 
     it('renders correctly', () => {
@@ -16,8 +14,12 @@ describe('Sign Up Component', () => {
       });
 
 
-
-
+    it('renders correctly', () => {
+        const tree = renderer
+          .create(<Password></Password>)
+          .toJSON();
+        expect(tree).toMatchSnapshot();
+      });
 
 
 

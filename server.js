@@ -21,7 +21,7 @@ app.post('/api/addChat', (req,res) => {
 	let sql = `INSERT INTO Chats (content, author, class) VALUES
 
 
-	 ("${req.body.messagebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.messagebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -68,7 +68,7 @@ app.post('/api/addUpdate', (req,res) => {
 	let connection = mysql.createConnection(config);
 	let sql = `INSERT INTO NewsUpdates (title, content, author, class) VALUES
 
-	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
+	 ("${req.body.updatetitle}","${req.body.updatebody}", (SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'), '${req.body.filter}');`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -123,7 +123,7 @@ app.post('/api/loadUpdates', (req,res) => {
 	}
 
 	
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} order by updateID desc;`
+	let sql = `select  updateID, title, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.NewsUpdates.author) as username from t2nirmal.NewsUpdates ${filter} order by updateID desc;`
 
 
 	console.log(sql);
@@ -215,7 +215,7 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
-	let sql = `select  chatID, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
+	let sql = `select  chatID, content, class, pinned, (select username from t2nirmal.Users where t2nirmal.Users.userID=t2nirmal.Chats.author) as username from t2nirmal.Chats ${filter} ${sort}`
 
 	//console.log(sql)
 	
@@ -242,7 +242,7 @@ app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = `select * from sabuosba.TimelineItems order by date asc`
+	let sql = `select * from t2nirmal.TimelineItems order by date asc`
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -325,7 +325,7 @@ app.post('/api/addTimeLineVote', (req,res) => {
 
 	let sql = `INSERT INTO TimelineVotes (userID, itemID, value) VALUES 
 
-	((SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
+	((SELECT userID FROM t2nirmal.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
 
 
 	console.log(sql)
@@ -353,7 +353,7 @@ app.post('/api/loadEmails', (req,res) => {
 
 
 
-	let sql =` select username, email from sabuosba.Users;`
+	let sql =` select username, email from t2nirmal.Users;`
 
 
 
@@ -400,7 +400,7 @@ app.post('/api/getMailingList', (req,res) => {
 	let connection = mysql.createConnection(config);
 
 
-	let sql =` select username, email from sabuosba.Users where sabuosba.Users.mailingList = 1;`
+	let sql =` select username, email from t2nirmal.Users where t2nirmal.Users.mailingList = 1;`
 
 
 

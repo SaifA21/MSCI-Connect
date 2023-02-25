@@ -14,7 +14,6 @@ Installation Instructions:
 2. Begin by cloning the repository to your local machine.
 2. In a terminal run the following command in the root directory of the project folder:
 
-
 npm install --legacy-peer-deps
 
 3. After installation is complete navigate to the client folder of the project by enter the command below:

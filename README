@@ -49,7 +49,7 @@ cd client
 
 yarn test 
 
-  OR run the command below to run Cypress e2e tests making sure to select the smokke.cy file in the browser:
+  OR run the command below to run Cypress e2e tests making sure to select the smoke.cy file in the browser:
 
 yarn cypress
 

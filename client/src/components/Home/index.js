@@ -18,6 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Navbar from '../Navigation/Navbar.js'
+import Filter from './Filter.js'
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -100,38 +101,7 @@ const Sort = () => {
 
 
 //////////////////////////////////////////////////////////////////////////
-const Filter = (props) => {
-  
 
-  return(
-  <FormControl variant="filled" style={{minWidth: 300}}>
-        <InputLabel id="sort">Filter by:</InputLabel>
-        <Select
-          labelId="sortBySelector"
-          id="sortBySelector"
-          //value={age}
-          onChange={(event)=>{
-                  
-            props.mainPagefilter(event.target.value)
-            console.log(event.target.value)
-       
-
-            
-
-          }}
-        >
-          <MenuItem value=""><em>None</em></MenuItem>
-          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
-          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
-          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
-          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
-          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
-          <MenuItem value={'Co-op'}>Co-op</MenuItem>
-          <MenuItem value={'General'}>General</MenuItem>
-        </Select>
-      </FormControl>
-  )
-}
 
 /////////////////////////////////////////////////
 

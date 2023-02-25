@@ -3,9 +3,11 @@
 
 
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.7":
+
   "integrity" "sha512-gt3PKXs0DBoL9xCvOIIZ2NEqAGZqHjAnmVbfQtB620V0uReIQutpel14KcneZuer7UioY8ALKZ7iocavvzTNFA=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.20.13.tgz"
   "version" "7.20.13"
+
   dependencies:
     "regenerator-runtime" "^0.13.11"
 
@@ -319,9 +321,11 @@
     "yargs" "^16.2.0"
 
 "@grpc/proto-loader@^0.7.0":
+
   "integrity" "sha512-mfcTuMbFowq1wh/Rn5KQl6qb95M21Prej3bewD9dUQMurYGVckGO/Pbe2Ocwto6sD05b/mxZLspvqwx60xO2Rg=="
   "resolved" "https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.7.5.tgz"
   "version" "0.7.5"
+
   dependencies:
     "@types/long" "^4.0.1"
     "lodash.camelcase" "^4.3.0"
@@ -651,9 +655,11 @@
   "version" "2.0.0"
 
 "async-each@^1.0.1":
+
   "integrity" "sha512-5QzqtU3BlagehwmdoqwaS2FBQF2P5eL6vFqXwNsb5jwoEsmtfAXg1ocFvW7I6/gGLFhBMKwcMwZuy7uv/Bo9jA=="
   "resolved" "https://registry.npmjs.org/async-each/-/async-each-1.0.5.tgz"
   "version" "1.0.5"
+
 
 "async@^3.2.0":
   "integrity" "sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ=="
@@ -1083,9 +1089,11 @@
     "safe-buffer" "5.2.1"
 
 "content-type@~1.0.4":
+
   "integrity" "sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA=="
   "resolved" "https://registry.npmjs.org/content-type/-/content-type-1.0.5.tgz"
   "version" "1.0.5"
+
 
 "cookie-signature@1.0.6":
   "integrity" "sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ=="
@@ -1771,9 +1779,11 @@
   "version" "2.0.5"
 
 "get-intrinsic@^1.0.2":
+
   "integrity" "sha512-L049y6nFOuom5wGyRc3/gdTLO94dySVKRACj1RmJZBQXlbTMhtNIgkWkUHq+jYmZvKf14EW1EoJnnjbmoHij0Q=="
   "resolved" "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.2.0.tgz"
   "version" "1.2.0"
+
   dependencies:
     "function-bind" "^1.1.1"
     "has" "^1.0.3"
@@ -2767,9 +2777,11 @@
     "is-stream" "^1.0.1"
 
 "node-fetch@^2.6.1":
+
   "integrity" "sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg=="
   "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.9.tgz"
   "version" "2.6.9"
+
   dependencies:
     "whatwg-url" "^5.0.0"
 
@@ -3924,6 +3936,7 @@
     "mime-types" "~2.1.24"
 
 "ua-parser-js@^0.7.30":
+
   "integrity" "sha512-s8ax/CeZdK9R/56Sui0WM6y9OFREJarMRHqLB2EwkovemBxNQ+Bqu8GAsUnVcXKgphb++ghr/B2BZx4mahujPw=="
   "resolved" "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.33.tgz"
   "version" "0.7.33"

@@ -33,7 +33,7 @@ const serverURL = ""; //enable for dev mode
 const fetch = require("node-fetch");
 
 const opacityValue = 0.9;
-
+/*
 const theme = createTheme({
   palette: {
     type: 'dark',
@@ -78,7 +78,7 @@ const styles = theme => ({
   },
 
 });
-
+*/
 const Sort = () => {
 
   return(
@@ -611,7 +611,7 @@ class Home extends Component {
 
 
     return (
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider>
         <div className={classes.root}>
           <CssBaseline />
           <NewsUpdates/>
@@ -626,4 +626,4 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Home);
+export default withStyles()(Home);

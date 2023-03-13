@@ -63,9 +63,11 @@ const  UpdateItem = (props) => {
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
+
           <IconButton color = 'primary' aria-label="add" onClick={onclickUp}>
               <ThumbUpAltIcon style={{ fontSize: 20 }}/>
            </IconButton>
+
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             From: {props.author}
           </Typography>
@@ -83,8 +85,16 @@ const  UpdateItem = (props) => {
 
         </CardContent>
         <CardActions>
+
             
+
            <IconButton color = 'primary' aria-label="add" onClick={onclickDown}>
+
+              <ThumbUpAltIcon style={{ fontSize: 20 }}/>
+           </IconButton>
+           <IconButton color = 'primary' aria-label="add" onClick={onclick}>
+
+
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>
           <Button size="small">Learn More</Button>

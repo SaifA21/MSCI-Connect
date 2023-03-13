@@ -253,7 +253,7 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
-	let sql = `select  chatID, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
+	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
 
 	//console.log(sql)
 	
@@ -301,6 +301,29 @@ app.post('/api/addMailingList', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql = `UPDATE sabuosba.Users SET mailingList = 1 where firebaseID = '${req.body.firebaseID}';`
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/reportMessage', (req,res) => {
+	console.log ('report')
+	let connection = mysql.createConnection(config);
+	let sql = `UPDATE sabuosba.Chats SET reported = 1 where chatID = '${req.body.chatID}';`
+	
 	console.log(sql)
 
 	connection.query(sql,(error, results, fields) => {

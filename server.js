@@ -155,35 +155,44 @@ app.post('/api/loadUpdates', (req,res) => {
 
 	let filter;
 	if(req.body.mainPagefilter!=""){
-		filter=" where class = '"+req.body.mainPagefilter+"'";
+		filter="class = '"+req.body.mainPagefilter+"'";
 	}else{
 		filter=""
 	}
 	
 	let tagFilter;
 	if(req.body.tag=="10"){
-		tagFilter=" where pinned = '1'";
+		tagFilter="pinned = '1'";
 	}else{
 		tagFilter=""
 	}
 
-	let combo
+	let any;
+	if(tagFilter!="" || filter!=""){
+		any="WHERE"
+	}else{
+		any=""
+	}
+
+	let combo;
 	if(tagFilter!="" && filter!=""){
-		combo='AND'
+		combo="AND"
 	}else{
 		combo=""
 	}
+	console.log(combo)
 	
 	let sort;
-	if(req.body.sort=="0" || req.body.sort=="10"){
+	if(req.body.sort=="" || req.body.sort=="10"){
 		sort = " order by updateID desc;"
 	}else if(req.body.sort=="20"){
 		sort = " order by updateID asc;"
 	}else if(req.body.sort=="30"){
 		sort = " order by upVoteCount desc;"
 	}
+	console.log(sort)
 	
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} ${combo} ${tagFilter}  ${sort};`
+	let sql = `select  updateID, title, content, class, pinned from sabuosba.NewsUpdates ${any} ${filter} ${combo} ${tagFilter} ${sort}`
 
 
 	console.log(sql);

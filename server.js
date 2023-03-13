@@ -174,7 +174,16 @@ app.post('/api/loadUpdates', (req,res) => {
 		combo=""
 	}
 	
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} ${combo} ${tagFilter} order by updateID desc;`
+	let sort;
+	if(req.body.sort=="0" || req.body.sort=="10"){
+		sort = " order by updateID desc;"
+	}else if(req.body.sort=="20"){
+		sort = " order by updateID asc;"
+	}else if(req.body.sort=="30"){
+		sort = " order by upVoteCount desc;"
+	}
+	
+	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} ${combo} ${tagFilter}  ${sort};`
 
 
 	console.log(sql);

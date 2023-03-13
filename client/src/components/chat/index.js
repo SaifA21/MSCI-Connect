@@ -66,7 +66,7 @@ export default function Chat() {
     }
     
   const loadMessages = () => {
-    console.log('three', filter, sort)
+    
     callApiLoadMessages(filter, sort)
     .then(res => {
         var parsed = JSON.parse(res.express);

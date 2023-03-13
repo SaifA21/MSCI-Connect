@@ -45,7 +45,7 @@ function composeMailList(props) {
   
 }
 
-const Sort = () => {
+const Sort = (props) => {
 
   return(
   <FormControl variant="filled" style={{minWidth: 300}}>
@@ -54,10 +54,15 @@ const Sort = () => {
           labelId="sortBySelector"
           id="sortBySelector"
           //value={age}
-          //onChange={handleChange}
+          onChange={(event)=>{
+            props.sortSelection(event.target.value)
+            console.log(event.target.value)
+          }}
         >
+          <MenuItem value=""><em>None</em></MenuItem>
           <MenuItem value={10}>Newest to Oldest</MenuItem>
           <MenuItem value={20}>Oldest to Newest</MenuItem>
+          <MenuItem value={30}>Most Upvoted</MenuItem>
         </Select>
       </FormControl>
   )
@@ -89,6 +94,7 @@ const TagFilter = (props) => {
 
 
 
+
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -102,7 +108,7 @@ const NewsUpdates = (props) => {
   const[admin, setAdmin]=useState([{admin:0}])
 
   const [filter, setFilter] = React.useState('');
-
+  const [sort, setSort] = React.useState('');
 
   const [title, setTitle] = React.useState('');
   const [titleError, setTitleError] = React.useState('');
@@ -118,8 +124,9 @@ const NewsUpdates = (props) => {
   
   React.useEffect(()=>{
     loadUpdates()
+
     console.log(mainPagefilter)
-  },[mainPagefilter, tag])
+  },[mainPagefilter, tag, sort])
 
 
     const[updates,changeUpdates]=useState([
@@ -167,7 +174,7 @@ const NewsUpdates = (props) => {
 
   const loadUpdates = () => {
     
-    callApiLoadUpdates(mainPagefilter)
+    callApiLoadUpdates(mainPagefilter, sort)
     .then(res => {
         var parsed = JSON.parse(res.express);
         changeUpdates(parsed)
@@ -176,11 +183,13 @@ const NewsUpdates = (props) => {
   }
 
   const callApiLoadUpdates = async (props) => {
-    
+    console.log('now')
     const url = serverURL + "/api/loadUpdates";
     const response = await fetch(url, {method: "POST", headers: {
       "Content-Type": "application/json",
-    },body: JSON.stringify({mainPagefilter: mainPagefilter, tag: tag})});
+
+    },body: JSON.stringify({mainPagefilter: mainPagefilter, sort: sort, tag: tag})});
+
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
@@ -239,6 +248,7 @@ const NewsUpdates = (props) => {
         alignItems = "center"
         justifyContent = "center"
       >
+        <Sort sortSelection = {setSort}></Sort>
        <Filter  mainPagefilter = {setmainPageFilter}></Filter> 
        
        <TagFilter tagSelection = {setTag}></TagFilter>

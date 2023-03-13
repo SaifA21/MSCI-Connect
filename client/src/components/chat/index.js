@@ -72,15 +72,6 @@ export default function Chat() {
         var parsed = JSON.parse(res.express);
         console.log("parsed:"+parsed)
         setMessages(parsed);
-        //console.log(updates);
-        /*
-        var mappedDict=new Object();
-        parsed.map((item) => {
-          mappedDict[item.id]=item.name
-        })
-        console.log(mappedDict);
-        changeMovieDict(mappedDict);
-        */
       }
     ).then(console.log(messages))
   }
@@ -103,8 +94,8 @@ export default function Chat() {
       (<div>
       <Navbar></Navbar>
       <Grid 
-      container spacing ={1}
-      direction = "column"
+      container spacing ={2}
+      direction = "row"
       alignItems = "center"
       justifyContent = "center"
       >
@@ -143,7 +134,7 @@ export default function Chat() {
             return(
               <div>
                 <br></br>
-                <MessageItem author={item.username} topic={item.class} content={item.content}></MessageItem>
+                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported}></MessageItem>
                 <br></br>
               </div>
             )
@@ -243,6 +234,7 @@ const Selection = (props) => {
       </FormControl>
   )
 }
+
 
 const AddMessageForm = (props) => {
 

@@ -68,6 +68,29 @@ const Sort = (props) => {
   )
 }
 
+const TagFilter = (props) => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Special Tags:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          //value={age}
+          onChange={(event)=>{
+            props.tagSelection(event.target.value)
+            console.log(event.target.value)
+          }}
+        >
+          <MenuItem value={0}><em>None</em></MenuItem>
+          <MenuItem value={10}>Pinned</MenuItem>
+         
+        </Select>
+      </FormControl>
+  )
+}
+
+
 
 
 
@@ -97,11 +120,13 @@ const NewsUpdates = (props) => {
   const [selectionError, setSelectionError] = React.useState('');
   
    const [mainPagefilter, setmainPageFilter] = React.useState('');
+   const [tag, setTag] = React.useState('');
   
   React.useEffect(()=>{
     loadUpdates()
-    
-  },[mainPagefilter, sort])
+
+    console.log(mainPagefilter)
+  },[mainPagefilter, tag, sort])
 
 
     const[updates,changeUpdates]=useState([
@@ -162,7 +187,9 @@ const NewsUpdates = (props) => {
     const url = serverURL + "/api/loadUpdates";
     const response = await fetch(url, {method: "POST", headers: {
       "Content-Type": "application/json",
-    },body: JSON.stringify({mainPagefilter: mainPagefilter, sort: sort})});
+
+    },body: JSON.stringify({mainPagefilter: mainPagefilter, sort: sort, tag: tag})});
+
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
@@ -223,6 +250,8 @@ const NewsUpdates = (props) => {
       >
         <Sort sortSelection = {setSort}></Sort>
        <Filter  mainPagefilter = {setmainPageFilter}></Filter> 
+       
+       <TagFilter tagSelection = {setTag}></TagFilter>
       {allowed==1 &&
 
 

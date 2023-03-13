@@ -159,7 +159,21 @@ app.post('/api/loadUpdates', (req,res) => {
 	}else{
 		filter=""
 	}
+	
+	let tagFilter;
+	if(req.body.tag=="10"){
+		tagFilter=" where pinned = '1'";
+	}else{
+		tagFilter=""
+	}
 
+	let combo
+	if(tagFilter!="" && filter!=""){
+		combo='AND'
+	}else{
+		combo=""
+	}
+	
 	let sort;
 	if(req.body.sort=="0" || req.body.sort=="10"){
 		sort = " order by updateID desc;"
@@ -169,7 +183,8 @@ app.post('/api/loadUpdates', (req,res) => {
 		sort = " order by upVoteCount desc;"
 	}
 	
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} ${sort};`
+	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} ${combo} ${tagFilter}  ${sort};`
+
 
 	console.log(sql);
 

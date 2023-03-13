@@ -159,9 +159,22 @@ app.post('/api/loadUpdates', (req,res) => {
 	}else{
 		filter=""
 	}
-
 	
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} order by updateID desc;`
+	let tagFilter;
+	if(req.body.tag=="10"){
+		tagFilter=" where pinned = '1'";
+	}else{
+		tagFilter=""
+	}
+
+	let combo
+	if(tagFilter!="" && filter!=""){
+		combo='AND'
+	}else{
+		combo=""
+	}
+	
+	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${filter} ${combo} ${tagFilter} order by updateID desc;`
 
 
 	console.log(sql);

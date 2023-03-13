@@ -34,6 +34,32 @@ const  UpdateItem = (props) => {
       return body;
     }
 
+    const onclickDown = () =>{
+      console.log('clicked')
+      callApiDownvoteUpdate()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+      })
+  
+    }
+
+    const callApiDownvoteUpdate = async () => {
+
+      const url = serverURL + "/api/downvoteUpdate"
+    
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({updateID: props.updateID})
+    
+      });
+      const body = await response.json();
+      if (response.status != 200) throw Error(body.update);
+      return body;
+    }
+
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
@@ -61,11 +87,13 @@ const  UpdateItem = (props) => {
         <CardActions>
 
             
-           <IconButton color = 'primary' aria-label="add" onClick={onclickUp}>
+
+           <IconButton color = 'primary' aria-label="add" onClick={onclickDown}>
 
               <ThumbUpAltIcon style={{ fontSize: 20 }}/>
            </IconButton>
            <IconButton color = 'primary' aria-label="add" onClick={onclick}>
+
 
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>

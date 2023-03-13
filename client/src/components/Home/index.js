@@ -33,52 +33,18 @@ const serverURL = ""; //enable for dev mode
 const fetch = require("node-fetch");
 
 const opacityValue = 0.9;
-/*
-const theme = createTheme({
-  palette: {
-    type: 'dark',
-    background: {
-      default: "#000000"
-    },
-    primary: {
-      main: "#52f1ff",
-    },
-    secondary: {
-      main: "#b552f7",
-    },
-  },
-});
+var mailList = ''
 
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
 
-  mainMessageContainer: {
-    marginTop: "20vh",
-    marginLeft: theme.spacing(20),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-  paper: {
-    overflow: "hidden",
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
+function composeMailList(props) {
+  mailList = 'mailto:'
+  for (let x in props){
+    mailList = mailList+props[x].email+';'
+  }
+  console.log(mailList)
+  
+}
 
-});
-*/
 const Sort = () => {
 
   return(
@@ -225,33 +191,55 @@ const NewsUpdates = (props) => {
   }
 
   return(
+
+    <Grid
+    container spacing ={1}
+    direction = "column"
+    >
     
+    <Grid item>
     <div>
+
+    
 
     {currentUser.uid!=null && (
 
+    
+
     <div>
       <Navbar></Navbar>
-       <ButtonMailingList update ={update} />
+      
+      <Grid
+        container spacing ={1}
+        direction = "row"
+        alignItems = "center"
+        justifyContent = "center"
+      >
        <Filter  mainPagefilter = {setmainPageFilter}></Filter> 
       {allowed==1 &&
 
 
-        (<AddUpdateForm topic = {setSelection} title = {setTitle} body = {setBody} update = {update}>
+        (<AddUpdateForm 
+          subject = {title} description = {body}
+          topic = {setSelection} title = {setTitle} 
+          body = {setBody} update = {update}>
 
         </AddUpdateForm>)
       }
-      {allowed==1 &&
 
 
+       <ButtonMailingList update ={update} />
+       {allowed==1 &&
         (<GetMailingList></GetMailingList>)
-      }
+      } 
+      
+       
+      </Grid>
       {updates.map((item)=>{
         return(
           <div>
 
             <br></br>
-            
             
             <UpdateItem author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
             <br></br>
@@ -261,7 +249,10 @@ const NewsUpdates = (props) => {
       
     </div>
     )}
+   
     </div>
+    </Grid>
+    </Grid>
   )
 
 }
@@ -339,8 +330,6 @@ const AddUpdateForm = (props) => {
     return body;
   
   }
-
-
   
   
 
@@ -359,6 +348,18 @@ const AddUpdateForm = (props) => {
     addUpdate()
     setOpen(false);
   };
+
+  const sendEmail = ()=>{
+    console.log('hi')
+    var email = mailList + '?subject='+props.subject+'&body='+props.description
+    console.log(email)
+    window.location.href = email;
+
+   
+
+
+
+  }
 
 
   return(
@@ -386,7 +387,6 @@ const AddUpdateForm = (props) => {
               }}
             />
             <TextField
-              autoFocus
               margin="dense"
               label="Content"
               type="text"
@@ -404,10 +404,13 @@ const AddUpdateForm = (props) => {
 
           </DialogContent>
           <DialogActions>
+          <Button onClick={()=>sendEmail()} color="primary">
+              Email Mailing List
+            </Button>
             <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={handlePost} color="primary">
+            <Button variant="contained" onClick={handlePost} color="primary">
               Post
             </Button>
           </DialogActions>
@@ -466,6 +469,7 @@ const GetMailingList = (props) => {
     .then(res => {
         var parsed = JSON.parse(res.express);
         changeMLEmails(parsed)
+        composeMailList(parsed)
       }
     ).then(console.log(MLemails))
   }

@@ -192,7 +192,7 @@ app.post('/api/loadUpdates', (req,res) => {
 	}
 	console.log(sort)
 	
-	let sql = `select  updateID, title, content, class, pinned from sabuosba.NewsUpdates ${any} ${filter} ${combo} ${tagFilter} ${sort}`
+	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${any} ${filter} ${combo} ${tagFilter} ${sort}`
 
 
 	console.log(sql);

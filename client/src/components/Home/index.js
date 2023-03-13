@@ -226,7 +226,7 @@ const NewsUpdates = (props) => {
   return(
 
     <Grid
-    container spacing ={1}
+    container spacing ={0}
     direction = "column"
     >
     
@@ -243,7 +243,7 @@ const NewsUpdates = (props) => {
       <Navbar></Navbar>
       
       <Grid
-        container spacing ={1}
+        container spacing ={0}
         direction = "row"
         alignItems = "center"
         justifyContent = "center"

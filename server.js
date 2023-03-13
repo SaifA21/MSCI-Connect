@@ -83,6 +83,25 @@ app.post('/api/addUpdate', (req,res) => {
 
 
 });
+/////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/upvoteUpdate', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `UPDATE NewsUpdates SET upVoteCount = upVoteCount + 1 WHERE updateID='${req.body.updateID}';`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
 
 /////////////////////////////////////////////////////////////////////////////////////
 app.post('/api/addPoll', (req,res) => {

@@ -247,13 +247,14 @@ const NewsUpdates = (props) => {
         (<GetMailingList></GetMailingList>)
       }
       {updates.map((item)=>{
+        console.log(item)
         return(
           <div>
 
             <br></br>
             
             
-            <UpdateItem author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
+            <UpdateItem updateID={item.updateID} author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
             <br></br>
           </div>
         )

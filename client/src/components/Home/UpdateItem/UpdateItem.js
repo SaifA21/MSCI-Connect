@@ -4,16 +4,40 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import IconButton from '@material-ui/core/IconButton';
 
+const serverURL = ""; //enable for dev mode
+
 const  UpdateItem = (props) => {
 
-    const onclick = () =>{
+    const onclickUp = () =>{
       console.log('clicked')
+      callApiUpvoteUpdate()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+      })
+  
+    }
+
+    const callApiUpvoteUpdate = async () => {
+
+      const url = serverURL + "/api/upvoteUpdate"
+    
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({updateID: props.updateID})
+    
+      });
+      const body = await response.json();
+      if (response.status != 200) throw Error(body.update);
+      return body;
     }
 
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          <IconButton color = 'primary' aria-label="add" onClick={onclick}>
+          <IconButton color = 'primary' aria-label="add" onClick={onclickUp}>
               <ThumbUpAltIcon style={{ fontSize: 20 }}/>
            </IconButton>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -34,7 +58,7 @@ const  UpdateItem = (props) => {
         </CardContent>
         <CardActions>
             
-           <IconButton color = 'primary' aria-label="add" onClick={onclick}>
+           <IconButton color = 'primary' aria-label="add" onClick={onclickUp}>
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>
           <Button size="small">Learn More</Button>

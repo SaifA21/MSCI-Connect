@@ -18,11 +18,16 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useHistory } from 'react-router-dom'
 import MessageItem from './MessageItem/MessageItem.js';
 import Navbar from '../Navigation/Navbar.js'
+import Profanity from './Profanity';
 
 const serverURL = '';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3075";
 
 console.warn = () => {};
+
+let profanities = Profanity.words;
+
+
 
 
 export default function Chat() {
@@ -119,7 +124,7 @@ export default function Chat() {
                 </Grid>
 
                 <Grid item >
-                  <AddMessageForm topic = {setSelection} body = {setBody} message = {message}>
+                  <AddMessageForm bodyError = {bodyError} bodyMessage = {body} topic = {setSelection} setBodyError = {setBodyError} body = {setBody} message = {message}>
                   </AddMessageForm> 
                 </Grid>
 
@@ -276,9 +281,23 @@ const AddMessageForm = (props) => {
     setOpen(false);
   };
 
-  const handlePost = () => {
-    addChat()
-    setOpen(false);
+  const handlePost = async() => {
+    var clean = true
+    props.setBodyError('')
+
+    for (let x in profanities){
+      if (props.bodyMessage.includes(profanities[x])){
+        console.log(profanities[x])
+        props.setBodyError('Please remove any profanity from message!')
+        clean = false
+      }
+    }
+    if (clean){
+      console.log('all good')
+      addChat()
+      setOpen(false);
+    }
+
   };
 
 
@@ -299,6 +318,8 @@ const AddMessageForm = (props) => {
               margin="dense"
               label="Message"
               type="text"
+              error={props.bodyError === '' ? false : true} 
+              helperText = {props.bodyError}
               fullWidth
               onChange={(event)=>{
                 props.body(event.target.value)

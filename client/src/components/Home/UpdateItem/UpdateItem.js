@@ -88,7 +88,7 @@ const  UpdateItem = (props) => {
         .then(res => {
           var parsed = JSON.parse(res.express);
         })
-      //  window.location.reload();
+        window.location.reload();
       };
   
   
@@ -96,7 +96,7 @@ const  UpdateItem = (props) => {
       return (
         <div>
           
-          <Button size = "small" onClick = {handleDelete(props.updateID)}>Delete</Button>
+          <Button size = "small" onClick = {handleDelete}>Delete</Button>
         </div>
       )
     }

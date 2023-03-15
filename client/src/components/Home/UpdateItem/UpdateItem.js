@@ -60,6 +60,90 @@ const  UpdateItem = (props) => {
       return body;
     }
 
+    
+    //////////////////////////////////////////////////////
+    // const DeleteUpdate = (props) => {
+
+    //   const callApiDeleteNewsUpdate = async () => {
+
+    //     const url = serverURL + "/api/deleteNewsUpdate"
+      
+    //     const response = await fetch(url, {
+    //       method: "POST",//DELETE/PATCH
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({updateID: props.updateID})
+      
+    //     });
+    //     const body = await response.json();
+    //     if (response.status != 200) throw Error(body.update);
+    //     return body;
+    //   }
+
+
+    //   const handleDelete = () => {
+    //     console.log('clicked')
+    //     callApiDeleteNewsUpdate()
+    //     .then(res => {
+    //       var parsed = JSON.parse(res.express);
+    //     })
+    //   //  window.location.reload();
+    //   };
+
+
+
+    //   return (
+    //     <div>
+    //       <Button size = "small" onClick = {handleDelete}>Delete</Button>
+    //     </div>
+    //   )
+    // }
+
+
+    /////////////////////////////////////////////////////
+    const DeleteUpdate = () => {
+
+      console.log (props.updateID);
+      const callApiDeleteNewsUpdate = async () => {
+  
+        const url = serverURL + "/api/deleteNewsUpdate"
+      
+        const response = await fetch(url, {
+          method: "POST",//DELETE/PATCH
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({updateID: props.updateID})
+      
+        });
+        const body = await response.json();
+        if (response.status != 200) throw Error(body.update);
+        return body;
+      }
+  
+  
+      const handleDelete = (props) => {
+        console.log('clicked')
+        callApiDeleteNewsUpdate(props.updateID)
+        .then(res => {
+          var parsed = JSON.parse(res.express);
+        })
+      //  window.location.reload();
+      };
+  
+  
+  
+      return (
+        <div>
+          
+          <Button size = "small" onClick = {handleDelete(props.updateID)}>Delete</Button>
+        </div>
+      )
+    }
+
+
+
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
@@ -98,6 +182,7 @@ const  UpdateItem = (props) => {
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>
           <Button size="small">Learn More</Button>
+          <DeleteUpdate />
         </CardActions>
       </Card>
     );

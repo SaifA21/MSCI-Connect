@@ -85,10 +85,10 @@ const  ChatItem = (props) => {
               >
 
 
-                < Grid item style={{minWidth: 600}} >
+                < Grid item style={{minWidth: 1000}} >
 
                   <b><p>
-                    {props.username}
+                    {props.author}
                   </p></b>
                   <Typography variant="h9" component="div">
                     Topic: {props.topic}

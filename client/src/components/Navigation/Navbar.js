@@ -21,6 +21,8 @@ import SignIn from '../SignIn';
 import LookUp from '../LookUp';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import Avatar from '@material-ui/core/Avatar';
+import icon from './icon.png'
 
 
 const serverURL =''
@@ -81,6 +83,7 @@ export default function Navbar() {
             <AppBar position="static">
               { 5>3 && 
               (<Toolbar>
+                <img alt="Icon"  aria-label="icon" src = {icon}/>
                 <Button color="inherit" onClick={() => history.push('/home')}>News Home</Button>
                 <Button color="inherit" onClick={() => history.push('/chat')}>Chat</Button>
                 <Button color="inherit" onClick={() => history.push('/polls')}>Polls</Button>

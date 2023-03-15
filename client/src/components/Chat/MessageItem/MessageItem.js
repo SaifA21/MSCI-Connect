@@ -47,6 +47,8 @@ const Report = (props) => {
   return(
 
     <div>
+
+             
       
       {props.reported == 0 && (
 
@@ -60,12 +62,19 @@ const Report = (props) => {
       {props.review == 1 && (
 
         <div>
+           <Grid
+              container spacing ={2}
+              direction = "column"
+              alignItems="center"
+              justifyContent="center"
+              
+              >
           <VisibilityIcon style={{ fontSize: 40 }}/>
-          <Typography>Under Review</Typography>
+          <Typography>Under Review</Typography></Grid>
         </div>
+       
       
       )}
-
 
     </div>
     
@@ -98,7 +107,7 @@ const  MessageItem = (props) => {
               >
 
 
-                < Grid item style={{minWidth: 600}} >
+                < Grid item style={{minWidth: 1000}} >
 
                   <b><p>
                     {props.author}

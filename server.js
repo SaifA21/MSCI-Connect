@@ -440,15 +440,7 @@ app.post('/api/addTimeLineVote', (req,res) => {
 app.post('/api/loadEmails', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-
-
-
-
-
 	let sql =` select username, email from sabuosba.Users;`
-
-
-
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -484,6 +476,33 @@ app.post('/api/addTimelineItem', (req,res) => {
 
 
 });
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+app.post('/api/getReportedMessages', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `select * from sabuosba.Chats where reported = 1`
+	sl = `select  chatID, author, content, class, pinned, reported, blocked (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported = 1`
+
+	//console.log(sql)
+	
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	
+	connection.end();
+});
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 

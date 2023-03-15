@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   BrowserRouter as Router,Switch,
   Route,
@@ -23,8 +23,56 @@ import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 
-
+const serverURL =''
 export default function Navbar() {
+   
+  const[allowed,setAllowed]=useState(0)
+  const[admin, setAdmin]=useState([{admin:0}])
+  const[permitted,setPermitted]=useState({admin:0})
+  const{currentUser} = useAuth()
+
+
+  const checkAdmin = () => {
+      callApiCheckAdmin()
+      .then(res => {
+          var parsed = JSON.parse(res.express);
+          console.log(parsed)
+          setAdmin(parsed)
+        }
+      ).then(console.log(admin))
+    }
+    
+    const callApiCheckAdmin = async (props) => {
+      console.log('running')
+      const url = serverURL + "/api/checkAdmin";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({firebaseID: currentUser.uid})
+    
+      });
+      
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      
+      return body;
+    }
+
+
+
+    React.useEffect(() =>{
+      setPermitted(admin[0]);
+    },[admin])
+
+  React.useEffect(() =>{
+      checkAdmin();
+    },[])
+
+    React.useEffect(() =>{
+      setAllowed(permitted.admin);
+    },[permitted])
 
 
     return (
@@ -38,7 +86,7 @@ export default function Navbar() {
                 <Button color="inherit" onClick={() => history.push('/polls')}>Polls</Button>
                 <Button color="inherit" onClick={() => history.push('/timeline')}>Timeline</Button>
                 <Button color="inherit" onClick={() => history.push('/lookup')}>Student Lookup</Button>
-                {}
+                {allowed == 1 && (<Button color="inherit" onClick={() => history.push('/reported')}>Reported</Button>)}
                 <Button color="inherit" onClick={() => history.push('/faq')}>FAQ</Button>
                 <Button color="inherit" onClick={() => history.push('/tc')}>Terms and Conditions</Button>
                 <Button color="inherit" onClick={() => history.push('/signout')}>Sign Out</Button>

@@ -243,6 +243,7 @@ const AddMessageForm = (props) => {
       .then(res => {
         var parsed = JSON.parse(res.express);
       })
+
   
   } 
   
@@ -279,6 +280,8 @@ const AddMessageForm = (props) => {
   const handlePost = () => {
     addChat()
     setOpen(false);
+    window.location.reload();
+
   };
 
 

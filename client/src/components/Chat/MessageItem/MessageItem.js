@@ -3,7 +3,7 @@ import {Typography, Card, CardActions, CardContent, Grid, AppBar, Box, Toolbar, 
 import ReportIcon from '@material-ui/icons/Report';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 
 
@@ -51,12 +51,39 @@ const Report = (props) => {
              
       
       {props.reported == 0 && (
+        <div>
+        <Grid
+        container spacing ={2}
+        direction = "column"
+        alignItems="center"
+        justifyContent="center"
+        >
 
         <IconButton aria-label="report" onClick={() => reportMessageApi({chatID: props.chatID}, props.setReported, props.setReview)}>
           <ReportIcon style={{ fontSize: 40 }}/>
         </IconButton>
-    
+        
+        </Grid>
+    </div>
     )}
+
+
+      {props.reported == 2 && (
+       <div> <Grid
+        container spacing ={2}
+        direction = "column"
+        alignItems="center"
+        justifyContent="center"
+        
+        >
+
+     
+      <CheckCircleIcon style={{ fontSize: 40 }}/>
+      <p>Approved by Class Rep</p>
+      </Grid></div>
+
+      )}
+
 
 
       {props.review == 1 && (
@@ -67,8 +94,8 @@ const Report = (props) => {
               direction = "column"
               alignItems="center"
               justifyContent="center"
-              
               >
+
           <VisibilityIcon style={{ fontSize: 40 }}/>
           <Typography>Under Review</Typography></Grid>
         </div>

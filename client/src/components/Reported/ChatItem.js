@@ -10,52 +10,109 @@ import BlockIcon from '@material-ui/icons/Block';
 const serverURL = ''
 
 
+const Actions = (props) => {
 
-const reportMessageApi =  (chatID, setReported, setReview) => {
-  callReportMessageApi(chatID, setReported, setReview)
+
+const approveMessageAPI =  () => {
+  callApproveMessageApi()
     .then(res => {
       var parsed = JSON.parse(res.express);
     })
 
 } 
 
-const callReportMessageApi = async (chatID, setReported, setReview) => {
+const callApproveMessageApi = async () => {
 
-  const url = serverURL + "/api/reportMessage"
+  const url = serverURL + "/api/approveMessage"
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(chatID)
+    
+    body: JSON.stringify({chatID: props.chatID})
 
   });
   const body = await response.json();
   if (response.status != 200) throw Error(body.message);
-  setReported(1)
-  setReview(1)
+  window.location.reload();
   return body;
 
 }
 
+const blockMessage =  () => {
+  callBlockMessageAPI()
+    .then(res => {
+      var parsed = JSON.parse(res.express);
+    })
 
+} 
 
-const Actions = (props) => {
+const callBlockMessageAPI = async () => {
+
+  const url = serverURL + "/api/blockMessage"
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    
+    body: JSON.stringify({chatID: props.chatID})
+
+  });
+  const body = await response.json();
+  if (response.status != 200) throw Error(body.message);
+  window.location.reload();
+  return body;
+
+}
   
 
   return(
-      <div>
-       <IconButton aria-label="Approve" onClick={()=>console.log('Approved')}>
-          <CheckCircleIcon style={{ fontSize: 40 }}/>
-        </IconButton>
-   
-        <IconButton aria-label="Deleted" onClick={()=>console.log('Blocked')}>
-          <BlockIcon style={{ fontSize: 40 }}/>
-        </IconButton>
+    
+    <div>
+        {props.reported == 1 && (
+        <div>
+          <Grid
+        container spacing ={2}
+        direction = "column"
+        alignItems="center"
+        justifyContent="center"
+        >
+
+        <IconButton aria-label="Approve" onClick={()=>approveMessageAPI()}>
+            <CheckCircleIcon style={{ fontSize: 40 }}/>
+          </IconButton>
+    
+          <IconButton aria-label="Deleted" onClick={()=>blockMessage()}>
+            <BlockIcon style={{ fontSize: 40 }}/>
+          </IconButton>
+          </Grid>
+     </div> 
+     )}
+
+
+      {props.reported == 3 && (
+        <div>
+          <Grid
+          container spacing ={2}
+          direction = "column"
+          alignItems="center"
+          justifyContent="center">
+
+            <BlockIcon style={{ fontSize: 40 }}/>
+            <p>Blocked</p>
+            
+          </Grid>
+        </div> 
+      )}
+
+
+     
       
       </div>
-    
   )
 }
 
@@ -103,7 +160,7 @@ const  ChatItem = (props) => {
 
 
                 < Grid item>
-                  <Actions></Actions>
+                  <Actions chatID = {props.chatID} reported = {props.reported}></Actions>
                 </Grid>
 
             </Grid>

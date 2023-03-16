@@ -468,11 +468,14 @@ app.post('/api/addPollVote', (req,res) => {
 app.post('/api/addTimeLineVote', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-
+/*
 	let sql = `INSERT INTO TimelineVotes (userID, itemID, value) VALUES 
 
 	((SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
+*/
+	let sql = `UPDATE TimelineItems SET ${req.body.voteTimeline} = ${req.body.voteTimeline} + 1 WHERE itemID='${req.body.itemID}';`
 
+	
 
 	console.log(sql)
 

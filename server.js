@@ -121,8 +121,57 @@ app.post('/api/downvoteUpdate', (req,res) => {
 
 
 });
-
 /////////////////////////////////////////////////////////////////////////////////////
+// reported = 0 - not reported 
+// reported = 1 - reported 
+// reported = 2 - approved
+// reported = 3 - blocked 
+
+app.post('/api/approveMessage', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `UPDATE sabuosba.Chats SET reported = 2 WHERE chatID='${req.body.chatID}';`
+
+	console.log(sql)
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+/////////////////////////////////////////////////////////////////////////////////////
+// reported = 0 - not reported 
+// reported = 1 - reported 
+// reported = 2 - approved
+// reported = 3 - blocked 
+
+app.post('/api/blockMessage', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `UPDATE sabuosba.Chats SET reported = 3 WHERE chatID='${req.body.chatID}';`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+/////////////////////////////////////////////////////////////////////////////////////
+
 app.post('/api/addPoll', (req,res) => {
 
 	let connection = mysql.createConnection(config);
@@ -269,7 +318,7 @@ app.post('/api/loadMessages', (req,res) => {
 
 	let filter;
 	if(req.body.filter!=""){
-		filter=" where class = '"+req.body.filter+"'";
+		filter=" and class = '"+req.body.filter+"'";
 	}else{
 		filter=""
 	}
@@ -284,7 +333,7 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
-	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats ${filter} ${sort}`
+	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported = 0 or reported = 1 or reported = 2 ${filter} ${sort}`
 
 	//console.log(sql)
 	
@@ -350,6 +399,11 @@ app.post('/api/addMailingList', (req,res) => {
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// reported = 0 - not reported 
+// reported = 1 - reported 
+// reported = 2 - approved
+// reported = 3 - blocked 
+
 app.post('/api/reportMessage', (req,res) => {
 	console.log ('report')
 	let connection = mysql.createConnection(config);
@@ -440,15 +494,7 @@ app.post('/api/addTimeLineVote', (req,res) => {
 app.post('/api/loadEmails', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-
-
-
-
-
 	let sql =` select username, email from sabuosba.Users;`
-
-
-
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -484,6 +530,30 @@ app.post('/api/addTimelineItem', (req,res) => {
 
 
 });
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+app.post('/api/getReportedMessages', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported =1 or reported = 3 order by reported asc`
+
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	
+	connection.end();
+});
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 

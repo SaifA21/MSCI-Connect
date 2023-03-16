@@ -22,7 +22,7 @@ import Ok from '@material-ui/icons/SentimentSatisfied';
 import Sad from '@material-ui/icons/SentimentVeryDissatisfied';
 import NotAttend from '@material-ui/icons/Home';
 import Attend from '@material-ui/icons/School';
-
+import DateCountdown from 'react-date-countdown-timer';
 import TextField from '@material-ui/core/TextField';
 import { useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
@@ -420,6 +420,7 @@ const TimelineTable = () => {
     { id: 'subject', numeric: true, disablePadding: false, label: 'Subject' },
     { id: 'type', numeric: true, disablePadding: false, label: 'Type' },
     { id: 'duedate', numeric: true, disablePadding: false, label: 'Due Date' },
+    { id: 'countdown', numeric: true, disablePadding: false, label: 'Countdown' }
   ];
   
   function EnhancedTableHead(props) {
@@ -650,6 +651,7 @@ const TimelineTable = () => {
                         <TableCell align="right">{row.class}</TableCell>
                         <TableCell align="right">{row.itemType}</TableCell>
                         <TableCell align="right">{format(row.date, 'dddd MMM. DD')}</TableCell>
+                        <TableCell align="right">{<DateCountdown dateTo ={row.date} />}</TableCell>
                        
                       </TableRow>
                     );
@@ -796,7 +798,7 @@ const ItemType = (props) => {
 
   return(
     <FormControl variant="filled" style={{minWidth: 300}}>
-    <InputLabel id="sort">Filter by:</InputLabel>
+    <InputLabel id="sort">Item Type:</InputLabel>
     <Select
       labelId="sortBySelector"
       id="sortBySelector"

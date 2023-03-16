@@ -3,8 +3,10 @@ import { Typography, Card, CardActions, CardContent, Grid, AppBar, Box, Toolbar,
 import ReportIcon from '@material-ui/icons/Report';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useAuth } from '../../../contexts/AuthContext';
+
 
 
 const serverURL = ''
@@ -45,6 +47,17 @@ const Report = (props) => {
   return (
 
     <div>
+      
+      
+      {props.reported == 0 && (
+        <div>
+        <Grid
+        container spacing ={2}
+        direction = "column"
+        alignItems="center"
+        justifyContent="center"
+        >
+
 
       {props.reported != 1 && (
 
@@ -52,17 +65,49 @@ const Report = (props) => {
           <ReportIcon style={{ fontSize: 40 }} />
         </IconButton>
 
+        
+        </Grid>
+    </div>
+    )}
+
+
+
+      {props.reported == 2 && (
+       <div> <Grid
+        container spacing ={2}
+        direction = "column"
+        alignItems="center"
+        justifyContent="center"
+        
+        >
+
+     
+      <CheckCircleIcon style={{ fontSize: 40 }}/>
+      <p>Approved by Class Rep</p>
+      </Grid></div>
+
       )}
+
 
 
       {props.review == 1 && (
 
         <div>
-          <VisibilityIcon style={{ fontSize: 40 }} />
-          <Typography>Under Review</Typography>
-        </div>
 
+           <Grid
+              container spacing ={2}
+              direction = "column"
+              alignItems="center"
+              justifyContent="center"
+              >
+
+          <VisibilityIcon style={{ fontSize: 40 }}/>
+          <Typography>Under Review</Typography></Grid>
+        </div>
+  
       )}
+
+
 
 
     </div>
@@ -163,35 +208,44 @@ const MessageItem = (props) => {
           justifyContent="center"
         >
 
-          <Grid
-            container spacing={2}
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-          >
-            < Grid item style={{ minWidth: 600 }} >
-              <b><p>
-                {props.author}
-              </p></b>
-              <Typography variant="h9" component="div">
-                Topic: {props.topic}
-              </Typography>
-              <br></br>
-              <Typography variant="body2">
-                Content: {props.content}
-                <br />
-              </Typography>
+   
+              <Grid
+              container spacing ={2}
+              direction = "row"
+              alignItems="center"
+              justifyContent="center"
+              >
 
-            </Grid>
-            < Grid item>
-              <Report chatID={props.chatID} reported={reported} setReported={setReported} review={review} setReview={setReview}></Report>
+
+                < Grid item style={{minWidth: 1000}} >
+
+                  <b><p>
+                    {props.author}
+                  </p></b>
+                  <Typography variant="h9" component="div">
+                    Topic: {props.topic}
+                  </Typography>
+                  <br></br>
+                  <Typography variant="body2">
+                    Content: {props.content}
+                    <br />
+                  </Typography>
+                  
+                </Grid>
+
+                < Grid item>
+                  <Report chatID = {props.chatID} reported={reported} setReported = {setReported} review={review} setReview = {setReview}></Report>
+                </Grid>
+                <Grid item>
+                  <DeleteChat></DeleteChat>
+                </Grid>
+
             </Grid>
 
             {props.user_id == userID ? <Grid item>
               <DeleteChat></DeleteChat>
             </Grid> : <></>}
           </Grid>
-        </Grid>
 
       </CardContent>
 

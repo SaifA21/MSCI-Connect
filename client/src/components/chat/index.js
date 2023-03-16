@@ -248,6 +248,7 @@ const AddMessageForm = (props) => {
       .then(res => {
         var parsed = JSON.parse(res.express);
       })
+
   
   } 
   
@@ -281,7 +282,8 @@ const AddMessageForm = (props) => {
     setOpen(false);
   };
 
-  const handlePost = async() => {
+
+  const handlePost = () => {
     var clean = true
     props.setBodyError('')
 
@@ -296,7 +298,9 @@ const AddMessageForm = (props) => {
       console.log('all good')
       addChat()
       setOpen(false);
+      window.location.reload();
     }
+
 
   };
 

@@ -587,6 +587,7 @@ app.post('/api/deleteNewsUpdate', (req,res) => {
 	let connection = mysql.createConnection(config);
 	console.log("api reached");
 	let sql = `delete from sabuosba.NewsUpdates where updateID = ${req.body.updateID};`
+	
 	console.log(req.body.updateID);
 
 	connection.query(sql,(error, results, fields) => {
@@ -601,7 +602,25 @@ app.post('/api/deleteNewsUpdate', (req,res) => {
 	});
 	connection.end();
 })
+/////////////////////////////////////////////////////////////////////////////////
+app.post('/api/pinNewsUpdate', (req,res) => {
+	let connection = mysql.createConnection(config);
+	console.log("api reached");
+	let sql = `UPDATE NewsUpdates SET pinned = 1 WHERE updateID=${req.body.updateID};`
+	console.log(req.body.updateID);
 
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+})
 //////////////////////////////////////////////////////////////////
 app.post('/api/deleteChat', (req,res) => {
 	let connection = mysql.createConnection(config);

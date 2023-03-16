@@ -101,6 +101,47 @@ const  UpdateItem = (props) => {
       )
     }
 
+    const PinUpdate = () => {
+
+      console.log (props.updateID);
+      const callApiPinNewsUpdate = async () => {
+  
+        const url = serverURL + "/api/pinNewsUpdate"
+      
+        const response = await fetch(url, {
+          method: "POST",//DELETE/PATCH
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({updateID: props.updateID})
+      
+        });
+        const body = await response.json();
+        if (response.status != 200) throw Error(body.update);
+        return body;
+      }
+  
+  
+      const handlePin = (props) => {
+        console.log('clicked')
+        callApiPinNewsUpdate(props.updateID)
+        .then(res => {
+          var parsed = JSON.parse(res.express);
+        })
+        window.location.reload();
+      };
+  
+  
+  
+      return (
+        <div>
+          
+          <Button size = "small" onClick = {handlePin}>Pin Update</Button>
+        </div>
+      )
+    }
+
+
 
 
     return (
@@ -136,7 +177,9 @@ const  UpdateItem = (props) => {
 
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>
-          <Button size="small">Learn More</Button>
+           {props.allowed==1 &&
+              (<PinUpdate></PinUpdate>)
+            } 
           <DeleteUpdate />
         </CardActions>
       </Card>

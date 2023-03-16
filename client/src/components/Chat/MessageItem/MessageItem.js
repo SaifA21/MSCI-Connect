@@ -4,6 +4,8 @@ import ReportIcon from '@material-ui/icons/Report';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 
 
@@ -42,8 +44,6 @@ const callReportMessageApi = async (chatID, setReported, setReview) => {
 
 
 const Report = (props) => {
-  
-
   return(
 
     <div>
@@ -117,6 +117,47 @@ const  MessageItem = (props) => {
     const [reported, setReported] = React.useState(props.reported)
     const [review, setReview] = React.useState(reported)
 
+    const DeleteChat = () => {
+      
+      const callApiDeleteChat = async () => {
+  
+        const url = serverURL + "/api/deleteChat"
+      
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({chatID: props.chatID})
+      
+        });
+        const body = await response.json();
+        if (response.status != 200) throw Error(body.update);
+        return body;
+      }
+
+      const handleDeleteChat = (props) => {
+        console.log('clicked')
+        callApiDeleteChat(props.chatID)
+        .then(res => {
+          var parsed = JSON.parse(res.express);
+        })
+        //window.location.reload(); //Page does not refresh properly
+      };
+  
+
+      return (
+        <div>
+          <IconButton onClick = {handleDeleteChat}>
+            <DeleteIcon style={{ fontSize: 40 }}/>
+          </IconButton>
+        </div>
+      )
+    }
+
+
+
+
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
@@ -133,7 +174,6 @@ const  MessageItem = (props) => {
               direction = "row"
               alignItems="center"
               justifyContent="center"
-              
               >
 
 
@@ -153,11 +193,12 @@ const  MessageItem = (props) => {
                   
                 </Grid>
 
-
                 < Grid item>
                   <Report chatID = {props.chatID} reported={reported} setReported = {setReported} review={review} setReview = {setReview}></Report>
                 </Grid>
-
+                <Grid item>
+                  <DeleteChat></DeleteChat>
+                </Grid>
             </Grid>
           </Grid>
 

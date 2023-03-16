@@ -416,6 +416,7 @@ const TimelineTable = () => {
   
   const headCells = [
     { id: 'vote', numeric: false, disablePadding: false, label: 'Vote'},
+    { id: 'votecounts', numeric: false, disablePadding: true, label: 'Vote Counts' },
     { id: 'description', numeric: false, disablePadding: true, label: 'Description' },
     { id: 'subject', numeric: true, disablePadding: false, label: 'Subject' },
     { id: 'type', numeric: true, disablePadding: false, label: 'Type' },
@@ -564,14 +565,7 @@ const TimelineTable = () => {
   
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-   
-
 /////////////////////
-
-    
-
-    
-
 
     return (
       <div className={classes.root}>
@@ -637,6 +631,30 @@ const TimelineTable = () => {
 
                           <AttendButton itemID = {row.itemID} mood = 'Attend'></AttendButton>
                           <NotAttendButton itemID = {row.itemID} mood = 'NotAttend'></NotAttendButton>
+             
+                          </div>
+                          )
+                        
+                        
+                        }
+                        </TableCell>
+                        <TableCell>
+                        {(row.itemType=='Exam'|| row.itemType=='Quiz'|| row.itemType=='Assignment'|| row.itemType=='General'|| row.itemType=='Midterm'|| row.itemType=='None') &&
+                          ( <div>
+                          <Typography>{row.Happy}</Typography>
+                          <br></br>
+                          <Typography>{row.OK}</Typography>
+                          <br></br>
+                          <Typography>{row.Sad}</Typography>
+                          </div>)
+                        }
+                        {(row.itemType=='Lecture'|| row.itemType=='Lab'|| row.itemType=='Tutorial') &&
+                          ( 
+                            <div>
+                      
+                          <Typography>{row.Attend}</Typography>
+                          <br></br>
+                          <Typography>{row.NotAttend}</Typography>
              
                           </div>
                           )

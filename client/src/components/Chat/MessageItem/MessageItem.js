@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Typography, Card, CardActions, CardContent, Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText, TableRow} from "@material-ui/core/";
+import { Typography, Card, CardActions, CardContent, Grid, AppBar, Box, Toolbar, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormControlLabel, RadioGroup, FormLabel, FormHelperText, helperText, TableRow } from "@material-ui/core/";
 import ReportIcon from '@material-ui/icons/Report';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import { useAuth } from '../../../contexts/AuthContext';
 
 
 
@@ -13,13 +13,13 @@ const serverURL = ''
 
 
 
-const reportMessageApi =  (chatID, setReported, setReview) => {
+const reportMessageApi = (chatID, setReported, setReview) => {
   callReportMessageApi(chatID, setReported, setReview)
     .then(res => {
       var parsed = JSON.parse(res.express);
     })
 
-} 
+}
 
 const callReportMessageApi = async (chatID, setReported, setReview) => {
 
@@ -44,11 +44,10 @@ const callReportMessageApi = async (chatID, setReported, setReview) => {
 
 
 const Report = (props) => {
-  return(
+  return (
 
     <div>
-
-             
+      
       
       {props.reported == 0 && (
         <div>
@@ -59,13 +58,18 @@ const Report = (props) => {
         justifyContent="center"
         >
 
-        <IconButton aria-label="report" onClick={() => reportMessageApi({chatID: props.chatID}, props.setReported, props.setReview)}>
-          <ReportIcon style={{ fontSize: 40 }}/>
+
+      {props.reported != 1 && (
+
+        <IconButton aria-label="report" onClick={() => reportMessageApi({ chatID: props.chatID }, props.setReported, props.setReview)}>
+          <ReportIcon style={{ fontSize: 40 }} />
         </IconButton>
+
         
         </Grid>
     </div>
     )}
+
 
 
       {props.reported == 2 && (
@@ -89,6 +93,7 @@ const Report = (props) => {
       {props.review == 1 && (
 
         <div>
+
            <Grid
               container spacing ={2}
               direction = "column"
@@ -99,76 +104,111 @@ const Report = (props) => {
           <VisibilityIcon style={{ fontSize: 40 }}/>
           <Typography>Under Review</Typography></Grid>
         </div>
-       
-      
+  
       )}
 
 
 
 
     </div>
-    
+
   )
 }
 
 
-const  MessageItem = (props) => {
+const MessageItem = (props) => {
+  const { currentUser } = useAuth()
+  const [reported, setReported] = React.useState(props.reported)
+  const [review, setReview] = React.useState(reported)
+  const [userID, setUserID] = React.useState(0)
 
-    const [reported, setReported] = React.useState(props.reported)
-    const [review, setReview] = React.useState(reported)
+  const callApiGetUserId = async () => {
 
-    const DeleteChat = () => {
-      
-      const callApiDeleteChat = async () => {
-  
-        const url = serverURL + "/api/deleteChat"
-      
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({chatID: props.chatID})
-      
-        });
-        const body = await response.json();
-        if (response.status != 200) throw Error(body.update);
-        return body;
+    const url = serverURL + "/api/checkUserID"
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ firebaseID: currentUser.uid })
+
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.update);
+    return body;
+  }
+
+  const getUserID = () => {
+    callApiGetUserId()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(typeof parsed[0].userID)
+        setUserID(parsed[0].userID)
       }
+      ).then(console.log(userID))
+  }
 
-      const handleDeleteChat = (props) => {
-        console.log('clicked')
-        callApiDeleteChat(props.chatID)
+  React.useEffect(() => {
+    getUserID();
+  }, [])
+
+
+
+  const callApiDeleteChat = async () => {
+
+    const url = serverURL + "/api/deleteChat"
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ chatID: props.chatID })
+
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.update);
+    return body;
+  }
+
+
+  const DeleteChat = () => {
+
+    const handleDeleteChat = (props) => {
+      console.log('clicked')
+      callApiDeleteChat(props.chatID)
         .then(res => {
           var parsed = JSON.parse(res.express);
         })
-        //window.location.reload(); //Page does not refresh properly
-      };
-  
-
-      return (
-        <div>
-          <IconButton onClick = {handleDeleteChat}>
-            <DeleteIcon style={{ fontSize: 40 }}/>
-          </IconButton>
-        </div>
-      )
-    }
-
-
+      window.location.reload(); //Page does not refresh properly
+    };
 
 
     return (
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          
-          <Grid
-            container spacing ={2}
-            direction = "column" 
-            alignItems="center"
-            justifyContent="center"
-            >
+      <div>
+        <IconButton onClick={handleDeleteChat}>
+          <DeleteIcon style={{ fontSize: 40 }} />
+        </IconButton>
+      </div>
+    )
+  }
 
+
+
+
+  return (
+    <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+
+        <Grid
+          container spacing={2}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+
+   
               <Grid
               container spacing ={2}
               direction = "row"
@@ -199,14 +239,19 @@ const  MessageItem = (props) => {
                 <Grid item>
                   <DeleteChat></DeleteChat>
                 </Grid>
+
             </Grid>
+
+            {props.user_id == userID ? <Grid item>
+              <DeleteChat></DeleteChat>
+            </Grid> : <></>}
           </Grid>
 
-        </CardContent>
-        
-      </Card>
-    );
-  }
+      </CardContent>
 
-  
-  export default (MessageItem);
+    </Card>
+  );
+}
+
+
+export default (MessageItem);

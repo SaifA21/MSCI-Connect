@@ -53,6 +53,7 @@ export default function Chat() {
 
   React.useEffect(()=>{
     loadMessages()
+    console.log( "messages: " + messages)
   },[])
 
   React.useEffect(() =>{
@@ -75,10 +76,10 @@ export default function Chat() {
     callApiLoadMessages(filter, sort)
     .then(res => {
         var parsed = JSON.parse(res.express);
-        console.log("parsed:"+parsed)
+        console.log("parsed:"+ JSON.stringify(parsed))
         setMessages(parsed);
       }
-    ).then(console.log(messages))
+    ).then(console.log( "messages: " + messages))
   }
 
   const callApiLoadMessages = async (props) => {
@@ -139,7 +140,7 @@ export default function Chat() {
             return(
               <div>
                 <br></br>
-                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported}></MessageItem>
+                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}></MessageItem>
                 <br></br>
               </div>
             )

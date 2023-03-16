@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navigation/Navbar.js'
 import { useState } from 'react';
 import { Typography } from '@material-ui/core';
+import LookupItem from './LookupItem';
 
 const serverURL = ""; //enable for dev mode
 
@@ -11,8 +12,6 @@ export default function LookUp() {
 
   const[emails,changeEmails]=useState([
     {
-      "username":"Thev",
-      "email":"t2nirmal@uwaterloo.ca"
     }
   ]);
 
@@ -45,15 +44,11 @@ export default function LookUp() {
 
     <div>
         <Navbar></Navbar>
-        <h3>Student LookUp</h3>
+        <h3>Student Lookup</h3>
         {emails.map((item)=>{
         return(
           <div>
-
-            <br></br>
-      
-            
-            <Typography>{item.username} : {item.email}</Typography>
+            <LookupItem userID = {item.userID} username = {item.username} email= {item.email} reported={item.reported}></LookupItem>
             <br></br>
           </div>
         )

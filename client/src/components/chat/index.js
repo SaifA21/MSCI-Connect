@@ -138,7 +138,6 @@ export default function Chat() {
           {messages.map((item)=>{
             return(
               <div>
-                <br></br>
                 <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported}></MessageItem>
                 <br></br>
               </div>

@@ -103,6 +103,25 @@ app.post('/api/upvoteUpdate', (req,res) => {
 
 });
 /////////////////////////////////////////////////////////////////////////////////////
+app.post('/api/reportUser', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql = `UPDATE sabuosba.Users SET reported = 1 WHERE userID='${req.body.userID}';`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+/////////////////////////////////////////////////////////////////////////////////////
 app.post('/api/downvoteUpdate', (req,res) => {
 
 	let connection = mysql.createConnection(config);
@@ -494,7 +513,7 @@ app.post('/api/addTimeLineVote', (req,res) => {
 app.post('/api/loadEmails', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql =` select username, email from sabuosba.Users;`
+	let sql =` select userID, username, email, reported from sabuosba.Users order by username asc;`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){

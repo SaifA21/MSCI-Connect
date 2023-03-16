@@ -529,6 +529,28 @@ app.post('/api/deleteNewsUpdate', (req,res) => {
 	connection.end();
 })
 
+//////////////////////////////////////////////////////////////////
+app.post('/api/deleteChat', (req,res) => {
+	let connection = mysql.createConnection(config);
+	console.log("api reached");
+	let sql = `delete from sabuosba.Chats where chatID = ${req.body.chatID};`
+	console.log(req.body.updateID);
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+})
+
+
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

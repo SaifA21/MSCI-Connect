@@ -333,7 +333,7 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
-	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported = 0 or reported = 2 ${filter} ${sort}`
+	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported = 0 or reported = 1 or reported = 2 ${filter} ${sort}`
 
 	//console.log(sql)
 	
@@ -537,7 +537,7 @@ app.post('/api/addTimelineItem', (req,res) => {
 app.post('/api/getReportedMessages', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported =1 or reported = 3`
+	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where reported =1 or reported = 3 order by reported asc`
 
 
 	connection.query(sql,(error, results, fields) => {

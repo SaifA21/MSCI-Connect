@@ -335,12 +335,20 @@ app.post('/api/addUser', (req,res) => {
 app.post('/api/loadMessages', (req,res) => {
 
 	let connection = mysql.createConnection(config);
+	console.log(typeof (req.body.userFilter));
 
 	let filter;
 	if(req.body.filter!=""){
 		filter="and class = '"+req.body.filter+"'";
 	}else{
 		filter=""
+	}
+
+	let userFilter;
+	if(req.body.userFilter !=""){
+		userFilter=" and author = " + req.body.userFilter;
+	}else{
+		userFilter="";
 	}
 
 	let sort;
@@ -353,7 +361,9 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
-	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where (reported = 0 or reported = 1 or reported = 2) ${filter} ${sort}`
+
+	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where (reported = 0 or reported = 1 or reported = 2) ${filter} ${userFilter} ${sort} `
+
 
 	//console.log(sql)
 	
@@ -740,6 +750,26 @@ app.post('/api/checkUserID', (req,res) => {
 	connection.end();
 });
 
+app.post('/api/getUsers', (req,res) => {
+	console.log("welwkere"+req.body.firebaseID)
+	let connection = mysql.createConnection(config);
+	let sql = `select username, userID from Users;`
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		console.log(results)
+		if (error){
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results)
+		//console.log(string)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

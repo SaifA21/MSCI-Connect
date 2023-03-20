@@ -380,7 +380,7 @@ app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = `select * from sabuosba.TimelineItems order by date asc`
+	let sql = `select * from sabuosba.TimelineItems where date > CURRENT_TIMESTAMP order by date asc`
 
 
 	connection.query(sql,(error, results, fields) => {

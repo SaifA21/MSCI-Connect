@@ -339,7 +339,7 @@ app.post('/api/loadMessages', (req,res) => {
 
 	let filter;
 	if(req.body.filter!=""){
-		filter=" and class = '"+req.body.filter+"'";
+		filter="and class = '"+req.body.filter+"'";
 	}else{
 		filter=""
 	}
@@ -361,7 +361,9 @@ app.post('/api/loadMessages', (req,res) => {
 	}
 
 
+
 	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where (reported = 0 or reported = 1 or reported = 2) ${filter} ${userFilter} ${sort} `
+
 
 	//console.log(sql)
 	

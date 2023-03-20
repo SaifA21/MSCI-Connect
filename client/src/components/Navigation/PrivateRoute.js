@@ -14,6 +14,7 @@ import history from './history';
 import { useAuth } from "../../contexts/AuthContext";
 import Reset from "../Reset";
 import Reported from "../Reported";
+import About from "../About";
 
 export default function PrivateRoute({
   
@@ -31,6 +32,7 @@ export default function PrivateRoute({
   var studentLookUpPage;
   var tcPage;
   var reportedPage;
+  var aboutPage;
 
 
   if(currentUser == null){
@@ -43,6 +45,7 @@ export default function PrivateRoute({
     studentLookUpPage = SignIn
     tcPage = SignIn
     reportedPage = SignIn
+    aboutPage = SignIn
 
 
   }
@@ -58,6 +61,7 @@ export default function PrivateRoute({
     studentLookUpPage = LookUp
     tcPage = TC
     reportedPage = Reported
+    aboutPage = About
   }
 
 
@@ -76,6 +80,7 @@ export default function PrivateRoute({
       <Route path="/faq" exact component={faqPage} />
       <Route path="/tc" exact component={tcPage} />
       <Route path="/timeline" exact component={timelinePage} />
+      <Route path="/about" exact component={aboutPage} />
       <Route path="/reset" exact component={Reset} />
       <Route path="/signout" exact component={SignOut} />
       <Route exact path='/' component={defaultPage} />

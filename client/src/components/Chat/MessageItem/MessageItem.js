@@ -6,6 +6,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useAuth } from '../../../contexts/AuthContext';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 
 
 
@@ -113,6 +115,104 @@ const Report = (props) => {
   )
 }
 
+const ThumbsUp = (props) => {
+  console.log(props.chatID);
+
+  const chatVote = "upvote";
+  const{currentUser} = useAuth()
+
+
+
+  const addChatVote = async(props) => {
+    console.log(chatVote) 
+    callAddChatVote(props)
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+       
+      }
+    ).then(console.log())
+  }
+
+  const callAddChatVote = async (props) => {
+    
+    const url = serverURL + "/api/addChatVote";
+    console.log(chatVote)
+    const response = await fetch(url, {method: "POST", headers: {
+      "Content-Type": "application/json",
+    },body: JSON.stringify({voteChat: chatVote, chatID: props.chatID, firebaseID: currentUser.uid})});
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  }
+
+  
+  
+  const handleChatVote = () => {
+    console.log(props.chatID);
+    addChatVote(props);
+  };
+   
+
+  
+  return(
+    <div> 
+      
+      <IconButton  onClick={handleChatVote} color = 'primary' aria-label="add" >
+        <ThumbUpIcon></ThumbUpIcon>
+        </IconButton>
+    </div>
+  )
+  }
+
+  const ThumbsDown = (props) => {
+    console.log(props.chatID);
+  
+    const chatVote = "downvote";
+    const{currentUser} = useAuth()
+  
+  
+  
+    const addChatVote = async(props) => {
+      console.log(chatVote) 
+      callAddChatVote(props)
+      .then(res => {
+          var parsed = JSON.parse(res.express);
+         
+        }
+      ).then(console.log())
+    }
+  
+    const callAddChatVote = async (props) => {
+      
+      const url = serverURL + "/api/addChatVote";
+      console.log(chatVote)
+      const response = await fetch(url, {method: "POST", headers: {
+        "Content-Type": "application/json",
+      },body: JSON.stringify({voteChat: chatVote, chatID: props.chatID, firebaseID: currentUser.uid})});
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      return body;
+    }
+  
+    
+    
+    const handleChatVote = () => {
+      console.log(props.chatID);
+      addChatVote(props);
+    };
+     
+  
+    
+    return(
+      <div> 
+        
+        <IconButton  onClick={handleChatVote} color = 'primary' aria-label="add" >
+          <ThumbDownIcon></ThumbDownIcon>
+          </IconButton>
+      </div>
+    )
+    }
+
 
 const MessageItem = (props) => {
   const { currentUser } = useAuth()
@@ -214,6 +314,7 @@ const MessageItem = (props) => {
 
 
             < Grid item style={{ minWidth: 1000 }} >
+            
 
               <b><p>
                 {props.author}
@@ -226,6 +327,10 @@ const MessageItem = (props) => {
                 Content: {props.content}
                 <br />
               </Typography>
+              
+              <ThumbsUp chatID = {props.chatID}></ThumbsUp>
+                
+                <ThumbsDown chatID = {props.chatID}></ThumbsDown>
 
             </Grid>
 

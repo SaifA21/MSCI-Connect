@@ -550,6 +550,26 @@ app.post('/api/loadEmails', (req,res) => {
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/loadReportedEmails', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql =` select username, email from sabuosba.Users where reported = 1;`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
 app.post('/api/addTimelineItem', (req,res) => {
 
 	let connection = mysql.createConnection(config);

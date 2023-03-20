@@ -96,7 +96,6 @@ export default function Chat() {
     return body;
   }
   
-  
     return (
       <div>
       {currentUser.uid!=null && 
@@ -135,7 +134,6 @@ export default function Chat() {
 
                 <Grid item >
                   
-                  
                 </Grid>
 
             </Grid>
@@ -146,35 +144,10 @@ export default function Chat() {
               <div>
                 
                 <br></br>
-              
-
-               
                 
-                
-                <div>
-          <Grid
-          container spacing ={2}
-          direction = "row"
-          alignItems="left"
-  
-         
-          
-          justifyContent="center">
-
-<MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}>
+                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}>
                
-               </MessageItem>
-
-              
-          </Grid>
-        </div> 
-               
-
-                
-             
-                  
-               
-                
+                </MessageItem>
                 
                 <br></br>
               </div>

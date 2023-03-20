@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/Typography";
 import FormControl from '@material-ui/core/FormControl';
@@ -25,7 +25,7 @@ import Profanity from './Profanity';
 const serverURL = '';
 //const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3075";
 
-console.warn = () => {};
+console.warn = () => { };
 
 let profanities = Profanity.words;
 
@@ -33,254 +33,314 @@ let profanities = Profanity.words;
 
 
 export default function Chat() {
-  
-  const{currentUser} = useAuth()
+
+  const { currentUser } = useAuth()
   const history = useHistory()
-  
+
   const [filter, setFilter] = React.useState('');
   const [sort, setSort] = React.useState('');
- 
+
   const [body, setBody] = React.useState('');
   const [bodyError, setBodyError] = React.useState('');
 
   const [selection, setSelection] = React.useState('');
   const [selectionError, setSelectionError] = React.useState('');
 
-  const[messages, setMessages]=useState([])
+  const [messages, setMessages] = useState([])
 
-  React.useEffect(()=>{
+  const [userFilter, setUserFilter] = React.useState('');
+  const [users, setUsers] = React.useState([]);
+
+
+  React.useEffect(() => {
     loadMessages()
-    console.log(filter)
-  },[filter,sort])
+    console.log(filter + " user filter: " + userFilter)
+  }, [filter, sort, userFilter])
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     loadMessages()
-    console.log( "messages: " + messages)
-  },[])
+    console.log("messages: " + messages)
+  }, [])
 
-  React.useEffect(() =>{
+  React.useEffect(() => {
     console.log(messages)
-  },[messages])
+  }, [messages])
+
+  React.useEffect(() => {
+    loadUsernames(setUsers)
+  }, [])
 
   var message = {
-      firebaseID: currentUser.uid,
-      messagebody: body,
-      filter: selection
-    }
+    firebaseID: currentUser.uid,
+    messagebody: body,
+    filter: selection
+  }
 
-  var loadProperties={
-      filter: filter,
-      sort: sort
-    }
-    
+  var loadProperties = {
+    filter: filter,
+    sort: sort
+  }
+
   const loadMessages = () => {
-    
-    callApiLoadMessages(filter, sort)
-    .then(res => {
+
+    callApiLoadMessages(filter, sort, userFilter)
+      .then(res => {
         var parsed = JSON.parse(res.express);
-        console.log("parsed:"+ JSON.stringify(parsed))
+        console.log("parsed:" + JSON.stringify(parsed))
         setMessages(parsed);
       }
-    ).then(console.log( "messages: " + messages))
+      ).then(console.log("messages: " + messages))
   }
 
   const callApiLoadMessages = async (props) => {
-    
+
     const url = serverURL + "/api/loadMessages";
     console.log(loadProperties)
-    const response = await fetch(url, {method: "POST", headers: {
-      "Content-Type": "application/json",
-    },body: JSON.stringify({filter: filter, sort: sort})});
+    const response = await fetch(url, {
+      method: "POST", headers: {
+        "Content-Type": "application/json",
+      }, body: JSON.stringify({ filter: filter, sort: sort, userFilter: userFilter})
+    });
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   }
-  
-    return (
-      <div>
-      {currentUser.uid!=null && 
-      (<div>
-      <Navbar></Navbar>
-      <Grid 
-      container spacing ={2}
-      direction = "row"
-      alignItems = "center"
-      justifyContent = "center"
-      >
-        <Grid item > 
-          <div></div>
-        </Grid> 
 
-        <Grid 
-            container spacing ={2}
-            direction = "row"
-            alignItems = "center"
-            justifyContent = "center"
+  return (
+    <div>
+      {currentUser.uid != null &&
+        (<div>
+          <Navbar></Navbar>
+          <Grid
+            container spacing={2}
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item >
+              <div></div>
+            </Grid>
+
+            <Grid
+              container spacing={2}
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
             >
-              
-            
-                <Grid item > 
-                  <Sort sortSelection = {setSort}></Sort>
-                </Grid>
 
-                <Grid item >
-                  <Filter filterSelection = {setFilter}></Filter> 
-                </Grid>
 
-                <Grid item >
-                  <AddMessageForm bodyError = {bodyError} bodyMessage = {body} topic = {setSelection} setBodyError = {setBodyError} body = {setBody} message = {message}>
-                  </AddMessageForm> 
-                </Grid>
+              <Grid item >
+                <Sort sortSelection={setSort}></Sort>
+              </Grid>
 
-                <Grid item >
-                  
-                </Grid>
+              <Grid item >
+                <Filter filterSelection={setFilter}></Filter>
+              </Grid>
+
+              <Grid item >
+                <UserFilter users={users} userFilterSelection={setUserFilter}></UserFilter>
+              </Grid>
+
+              <Grid item >
+                <AddMessageForm bodyError={bodyError} bodyMessage={body} topic={setSelection} setBodyError={setBodyError} body={setBody} message={message}>
+                </AddMessageForm>
+              </Grid>
+
+              <Grid item >
+
+              </Grid>
 
             </Grid>
 
           </Grid>
-          {messages.map((item)=>{
-            return(
+          {messages.map((item) => {
+            return (
               <div>
 
-                
+
                 <br></br>
-                
-                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}>
-               
+
+                <MessageItem chatID={item.chatID} author={item.username} topic={item.class} content={item.content} reported={item.reported} user_id={item.author}>
+
                 </MessageItem>
-                
+
 
                 <br></br>
               </div>
             )
           })}
-          </div>)}
-          </div>
-          
-      )
+        </div>)}
+    </div>
+
+  )
 
 
 
 
-////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
 
 
- }
-  
+}
+
 
 
 const Sort = (props) => {
 
-  return(
-  <FormControl variant="filled" style={{minWidth: 300}}>
-        <InputLabel id="sort">Sort by:</InputLabel>
-        <Select
-          labelId="sortBySelector"
-          id="sortBySelector"
-          //value={age}
-          onChange={(event)=>{
-            props.sortSelection(event.target.value)
-            console.log(event.target.value)
-          }}
-        >
-          <MenuItem value=""><em>None</em></MenuItem>
-          <MenuItem value={10}>Newest to Oldest</MenuItem>
-          <MenuItem value={20}>Oldest to Newest</MenuItem>
-          <MenuItem value={30}>Most Upvoted</MenuItem>
-        </Select>
-      </FormControl>
+  return (
+    <FormControl variant="filled" style={{ minWidth: 300 }}>
+      <InputLabel id="sort">Sort by:</InputLabel>
+      <Select
+        labelId="sortBySelector"
+        id="sortBySelector"
+        //value={age}
+        onChange={(event) => {
+          props.sortSelection(event.target.value)
+          console.log(event.target.value)
+        }}
+      >
+        <MenuItem value=""><em>None</em></MenuItem>
+        <MenuItem value={10}>Newest to Oldest</MenuItem>
+        <MenuItem value={20}>Oldest to Newest</MenuItem>
+        <MenuItem value={30}>Most Upvoted</MenuItem>
+      </Select>
+    </FormControl>
   )
 }
 
 const Filter = (props) => {
 
-  return(
-  <FormControl variant="filled" style={{minWidth: 300}}>
-        <InputLabel id="sort">Filter by:</InputLabel>
-        <Select
-          labelId="sortBySelector"
-          id="sortBySelector"
-          //value={age}
-          onChange={(event)=>{
-                  
-            props.filterSelection(event.target.value)
-            console.log(event.target.value)
+  return (
+    <FormControl variant="filled" style={{ minWidth: 300 }}>
+      <InputLabel id="sort">Filter by:</InputLabel>
+      <Select
+        labelId="sortBySelector"
+        id="sortBySelector"
+        //value={age}
+        onChange={(event) => {
 
-          }}
-        >
-          <MenuItem value=""><em>None</em></MenuItem>
-          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
-          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
-          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
-          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
-          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
-          <MenuItem value={'Co-op'}>Co-op</MenuItem>
-          <MenuItem value={'General'}>General</MenuItem>
-        </Select>
-      </FormControl>
+          props.filterSelection(event.target.value)
+          console.log(event.target.value)
+
+        }}
+      >
+        <MenuItem value=""><em>None</em></MenuItem>
+        <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+        <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+        <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+        <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+        <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+        <MenuItem value={'Co-op'}>Co-op</MenuItem>
+        <MenuItem value={'General'}>General</MenuItem>
+      </Select>
+    </FormControl>
   )
+}
+
+const loadUsernames = (setUsers) => {
+
+  callApiLoadUsernames()
+    .then(res => {
+      var parsed = JSON.parse(res.express);
+      console.log("parsed:" + JSON.stringify(parsed))
+      setUsers(parsed);
+    }
+    )
+}
+
+const callApiLoadUsernames = async (props) => {
+
+  const url = serverURL + "/api/getUsers";
+
+  const response = await fetch(url, {
+    method: "POST", headers: {
+      "Content-Type": "application/json",
+    }, body: JSON.stringify()
+  });
+  const body = await response.json();
+  if (response.status !== 200) throw Error(body.message);
+  return body;
 }
 
 
 
+const UserFilter = (props) => {
+
+  return (
+    <FormControl variant="filled" style={{ minWidth: 300 }}>
+      <InputLabel id="sort">Filter by user:</InputLabel>
+      <Select
+        onChange={(event) => {
+          props.userFilterSelection(event.target.value)
+          console.log(event.target.value)
+
+        }}>
+        <MenuItem value=""><em>None</em></MenuItem>
+        {props.users.map((item) => {
+          return (
+            <MenuItem value={item.userID}>{item.username}</MenuItem>)
+        })}
+      </Select>
+    </FormControl>
+  )
+}
+
 const Selection = (props) => {
 
-  return(
-  <FormControl variant="filled" style={{minWidth: 300}}>
-        <InputLabel id="sort">Filter by:</InputLabel>
-        <Select
-          labelId="sortBySelector"
-          id="sortBySelector"
-          onChange={(event)=>{        
-            props.topic(event.target.value)
-            console.log(event.target.value)
+  return (
+    <FormControl variant="filled" style={{ minWidth: 300 }}>
+      <InputLabel id="sort">Filter by:</InputLabel>
+      <Select
+        labelId="sortBySelector"
+        id="sortBySelector"
+        onChange={(event) => {
+          props.topic(event.target.value)
+          console.log(event.target.value)
 
-          }}
-        >
-          <MenuItem value=""><em>None</em></MenuItem>
-          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
-          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
-          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
-          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
-          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
-          <MenuItem value={'Co-op'}>Co-op</MenuItem>
-          <MenuItem value={'General'}>General</MenuItem>
-        </Select>
-      </FormControl>
+        }}
+      >
+        <MenuItem value=""><em>None</em></MenuItem>
+        <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+        <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+        <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+        <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+        <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+        <MenuItem value={'Co-op'}>Co-op</MenuItem>
+        <MenuItem value={'General'}>General</MenuItem>
+      </Select>
+    </FormControl>
   )
 }
 
 
 const AddMessageForm = (props) => {
 
-  const addChat =  () => {
+  const addChat = () => {
     callApiAddChat()
       .then(res => {
         var parsed = JSON.parse(res.express);
       })
 
-  
-  } 
-  
+
+  }
+
   const callApiAddChat = async () => {
 
     const url = serverURL + "/api/addChat"
-  
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(props.message)
-  
+
     });
     const body = await response.json();
     if (response.status != 200) throw Error(body.message);
     return body;
-  
+
   }
-  
+
 
   const [open, setOpen] = React.useState(false);
 
@@ -289,7 +349,7 @@ const AddMessageForm = (props) => {
   };
 
   const handleClose = () => {
-    
+
     setOpen(false);
   };
 
@@ -298,14 +358,14 @@ const AddMessageForm = (props) => {
     var clean = true
     props.setBodyError('')
 
-    for (let x in profanities){
-      if (props.bodyMessage.includes(profanities[x])){
+    for (let x in profanities) {
+      if (props.bodyMessage.includes(profanities[x])) {
         console.log(profanities[x])
         props.setBodyError('Please remove any profanity from message!')
         clean = false
       }
     }
-    if (clean){
+    if (clean) {
       console.log('all good')
       addChat()
       setOpen(false);
@@ -316,48 +376,48 @@ const AddMessageForm = (props) => {
   };
 
 
-  return(
-      <div>
-        <IconButton color = 'primary' aria-label="add" onClick={handleClickOpen}>
-          <AddCircleOutlineIcon style={{ fontSize: 40 }}/>
-        </IconButton>
-        
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>New Message</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please enter your message below and select the subject it is closest related to.
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Message"
-              type="text"
-              error={props.bodyError === '' ? false : true} 
-              helperText = {props.bodyError}
-              fullWidth
-              onChange={(event)=>{
-                props.body(event.target.value)
-                console.log(event.target.value)
-    
-              }}
-            />
-            
+  return (
+    <div>
+      <IconButton color='primary' aria-label="add" onClick={handleClickOpen}>
+        <AddCircleOutlineIcon style={{ fontSize: 40 }} />
+      </IconButton>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>New Message</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter your message below and select the subject it is closest related to.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Message"
+            type="text"
+            error={props.bodyError === '' ? false : true}
+            helperText={props.bodyError}
+            fullWidth
+            onChange={(event) => {
+              props.body(event.target.value)
+              console.log(event.target.value)
+
+            }}
+          />
+
           <Selection topic={props.topic}>
           </Selection>
 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handlePost} color="primary">
-              Post
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handlePost} color="primary">
+            Post
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 
 }
 

@@ -142,6 +142,7 @@ export default function Chat() {
           {messages.map((item)=>{
             return(
               <div>
+
                 
                 <br></br>
                 
@@ -149,6 +150,7 @@ export default function Chat() {
                
                 </MessageItem>
                 
+
                 <br></br>
               </div>
             )

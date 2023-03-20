@@ -1703,6 +1703,7 @@
   "integrity" "sha512-bPYfw8V65v17m2Od1cv44FH+SiKW7w2Xu7trhcdTLUmSv85rfKsP+qXSjO4KGJr4dtPSzl/gvslZBXctf1qGEA=="
   "resolved" "https://registry.npmjs.org/@jest/types/-/types-29.4.3.tgz"
   "version" "29.4.3"
+
   dependencies:
     "@jest/schemas" "^29.4.3"
     "@types/istanbul-lib-coverage" "^2.0.0"
@@ -2174,9 +2175,9 @@
   "version" "18.13.0"
 
 "@types/node@^14.14.31":
-  "integrity" "sha512-FXKWbsJ6a1hIrRxv+FoukuHnGTgEzKYGi7kilfMae96AL9UNkPFNWJEEYWzdRI9ooIkbr4AKldyuSTLql06vLQ=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.18.36.tgz"
-  "version" "14.18.36"
+  "integrity" "sha512-zMRIidN2Huikv/+/U7gRPFYsXDR/7IGqFZzTLnCEj5+gkrQjsowfamaxEnyvArct5hxGA3bTxMXlYhH78V6Cew=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.18.38.tgz"
+  "version" "14.18.38"
 
 "@types/parse-json@^4.0.0":
   "integrity" "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA=="
@@ -2218,9 +2219,20 @@
     "@types/react" "*"
 
 "@types/react@*":
+
   "integrity" "sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.27.tgz"
   "version" "18.0.27"
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    "csstype" "^3.0.2"
+
+"@types/react@^17":
+  "integrity" "sha512-1yIpQR2zdYu1Z/dc1OxC+MA6GR240u3gcnP4l6mvj/PJiVaqHsQPmWttsvHsfnhfPbU2FuGmo0wSITPygjBmsw=="
+  "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.53.tgz"
+  "version" "17.0.53"
+
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3318,7 +3330,9 @@
   dependencies:
     "pako" "~1.0.5"
 
+
 "browserslist@^4.0.0", "browserslist@^4.12.0", "browserslist@^4.21.3", "browserslist@^4.21.4", "browserslist@^4.6.2", "browserslist@^4.6.4", "browserslist@^4.9.1":
+
   "integrity" "sha512-tUkiguQGW7S3IhB7N+c2MV/HZPSCPAAiYBZXLsBhFB/PCy6ZKKsZrmBayHV9fdGV/ARIfJ14NkxKzRDjvp7L6w=="
   "resolved" "https://registry.npmjs.org/browserslist/-/browserslist-4.21.5.tgz"
   "version" "4.21.5"
@@ -7597,11 +7611,11 @@
     "source-map" "^0.6.0"
 
 "jest-util@^29.0.0":
-  "integrity" "sha512-ToSGORAz4SSSoqxDSylWX8JzkOQR7zoBtNRsA7e+1WUX5F8jrOwaNpuh1YfJHJKDHXLHmObv5eOjejUd+/Ws+Q=="
-  "resolved" "https://registry.npmjs.org/jest-util/-/jest-util-29.4.3.tgz"
-  "version" "29.4.3"
+  "integrity" "sha512-RYMgG/MTadOr5t8KdhejfvUU82MxsCu5MF6KuDUHl+NuwzUt+Sm6jJWxTJVrDR1j5M/gJVCPKQEpWXY+yIQ6lQ=="
+  "resolved" "https://registry.npmjs.org/jest-util/-/jest-util-29.5.0.tgz"
+  "version" "29.5.0"
   dependencies:
-    "@jest/types" "^29.4.3"
+    "@jest/types" "^29.5.0"
     "@types/node" "*"
     "chalk" "^4.0.0"
     "ci-info" "^3.2.0"
@@ -8271,9 +8285,9 @@
     "yallist" "^4.0.0"
 
 "lz-string@^1.4.4":
-  "integrity" "sha512-0ckx7ZHRPqb0oUm8zNr+90mtf9DQB60H1wMCjBtfi62Kl3a7JbHob6gA2bC+xRvZoOL+1hzUK8jeuEIQE8svEQ=="
-  "resolved" "https://registry.npmjs.org/lz-string/-/lz-string-1.4.4.tgz"
-  "version" "1.4.4"
+  "integrity" "sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ=="
+  "resolved" "https://registry.npmjs.org/lz-string/-/lz-string-1.5.0.tgz"
+  "version" "1.5.0"
 
 "make-dir@^2.0.0", "make-dir@^2.1.0":
   "integrity" "sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA=="

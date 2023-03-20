@@ -273,6 +273,7 @@ app.post('/api/loadPolls', (req,res) => {
 	}
 
 	let sql = `select  * from Polls order by pollID desc;`
+	console.log(sql)
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -493,6 +494,42 @@ app.post('/api/addTimeLineVote', (req,res) => {
 
 });
 /////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/addChatVote', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+/*
+	let sql = `INSERT INTO TimelineVotes (userID, itemID, value) VALUES 
+
+	((SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
+*/
+	let sql = `UPDATE Chats SET ${req.body.voteChat} = ${req.body.voteChat} + 1 WHERE chatID='${req.body.chatID}';`
+
+	
+
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 
 app.post('/api/loadEmails', (req,res) => {
 

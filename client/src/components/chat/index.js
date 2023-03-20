@@ -13,6 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useAuth } from '../../contexts/AuthContext';
 import { useHistory } from 'react-router-dom'
@@ -115,6 +117,7 @@ export default function Chat() {
             alignItems = "center"
             justifyContent = "center"
             >
+              
             
                 <Grid item > 
                   <Sort sortSelection = {setSort}></Sort>
@@ -139,8 +142,13 @@ export default function Chat() {
           {messages.map((item)=>{
             return(
               <div>
+                
                 <br></br>
-                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}></MessageItem>
+                
+                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}>
+               
+                </MessageItem>
+                
                 <br></br>
               </div>
             )

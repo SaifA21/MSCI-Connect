@@ -292,6 +292,7 @@ app.post('/api/loadPolls', (req,res) => {
 	}
 
 	let sql = `select  * from Polls order by pollID desc;`
+	console.log(sql)
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -487,11 +488,14 @@ app.post('/api/addPollVote', (req,res) => {
 app.post('/api/addTimeLineVote', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-
+/*
 	let sql = `INSERT INTO TimelineVotes (userID, itemID, value) VALUES 
 
 	((SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
+*/
+	let sql = `UPDATE TimelineItems SET ${req.body.voteTimeline} = ${req.body.voteTimeline} + 1 WHERE itemID='${req.body.itemID}';`
 
+	
 
 	console.log(sql)
 
@@ -510,10 +514,66 @@ app.post('/api/addTimeLineVote', (req,res) => {
 });
 /////////////////////////////////////////////////////////////////////////////////////
 
+app.post('/api/addChatVote', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+/*
+	let sql = `INSERT INTO TimelineVotes (userID, itemID, value) VALUES 
+
+	((SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
+*/
+	let sql = `UPDATE Chats SET ${req.body.voteChat} = ${req.body.voteChat} + 1 WHERE chatID='${req.body.chatID}';`
+
+	
+
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
 app.post('/api/loadEmails', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 	let sql =` select userID, username, email, reported from sabuosba.Users order by username asc;`
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/loadReportedEmails', (req,res) => {
+
+	let connection = mysql.createConnection(config);
+	let sql =` select username, email from sabuosba.Users where reported = 1;`
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){
@@ -603,6 +663,7 @@ app.post('/api/deleteNewsUpdate', (req,res) => {
 	let connection = mysql.createConnection(config);
 	console.log("api reached");
 	let sql = `delete from sabuosba.NewsUpdates where updateID = ${req.body.updateID};`
+	
 	console.log(req.body.updateID);
 
 	connection.query(sql,(error, results, fields) => {
@@ -617,7 +678,25 @@ app.post('/api/deleteNewsUpdate', (req,res) => {
 	});
 	connection.end();
 })
+/////////////////////////////////////////////////////////////////////////////////
+app.post('/api/pinNewsUpdate', (req,res) => {
+	let connection = mysql.createConnection(config);
+	console.log("api reached");
+	let sql = `UPDATE NewsUpdates SET pinned = 1 WHERE updateID=${req.body.updateID};`
+	console.log(req.body.updateID);
 
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+})
 //////////////////////////////////////////////////////////////////
 app.post('/api/deleteChat', (req,res) => {
 	let connection = mysql.createConnection(config);
@@ -638,7 +717,28 @@ app.post('/api/deleteChat', (req,res) => {
 	connection.end();
 })
 
+////////////////////////////////////////////////////////////////////////////
 
+app.post('/api/checkUserID', (req,res) => {
+	console.log("welwkere"+req.body.firebaseID)
+	let connection = mysql.createConnection(config);
+	let sql = `select userID from Users where firebaseID = '${req.body.firebaseID}';`
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		console.log(results)
+		if (error){
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results)
+		//console.log(string)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+});
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

@@ -91,10 +91,6 @@ const TagFilter = (props) => {
 }
 
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -279,7 +275,7 @@ const NewsUpdates = (props) => {
             <br></br>
             
 
-            <UpdateItem updateID={item.updateID} author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
+            <UpdateItem allowed={allowed} updateID={item.updateID} author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
 
             <br></br>
           </div>

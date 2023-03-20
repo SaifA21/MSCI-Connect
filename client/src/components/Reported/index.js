@@ -2,6 +2,7 @@ import React, {useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navigation/Navbar.js'
 import ChatItem from './ChatItem';
+import { Typography } from '@material-ui/core';
 
 
 const serverURL = ''
@@ -15,6 +16,36 @@ export default function Reported() {
     const{currentUser} = useAuth()
 
     const[messages, setMessages]=useState([])
+
+    const[emails,changeEmails]=useState([
+      {
+        "username":"Thev",
+        "email":"t2nirmal@uwaterloo.ca"
+      }
+    ]);
+  
+    React.useEffect(() =>{
+      loadEmails();
+    },[])
+
+    const loadEmails = () => {
+    
+      callApiLoadEmails()
+      .then(res => {
+          var parsed = JSON.parse(res.express);
+          changeEmails(parsed)
+        }
+      ).then(console.log(emails))
+    }
+  
+    const callApiLoadEmails = async (props) => {
+      
+      const url = serverURL + "/api/loadReportedEmails";
+      const response = await fetch(url, {method: "POST"});
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      return body;
+    }
 
 
 
@@ -98,6 +129,20 @@ export default function Reported() {
 
             <div>
                 <Navbar></Navbar>
+                <h3>Reported Students</h3>
+                {emails.map((item)=>{
+        return(
+          <div>
+
+            <br></br>
+      
+            
+            <Typography>{item.username} : {item.email}</Typography>
+            <br></br>
+          </div>
+        )
+      })}
+      <h3>Chat Log</h3>
                 {messages.map((item)=>{
                   return(
                     <div>
@@ -106,12 +151,32 @@ export default function Reported() {
                       reported ={item.reported}></ChatItem>
                       <br></br>
                     </div>
+
+
+
+                    
                   )
-                })}
+                }
+                
+                
+                
+                
+                )}
+                
            </div>
+
+
+
+
+
+           
         )}
 
       </div>
+      
+
+
+
 
 
 

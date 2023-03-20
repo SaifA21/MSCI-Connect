@@ -3,10 +3,16 @@ import {Typography, Card, CardActions, CardContent, Grid, AppBar, Box, Toolbar, 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { useState } from 'react';
+import { useAuth } from '../../../contexts/AuthContext';
+import { clearConfigCache } from 'prettier';
 
 const serverURL = ""; //enable for dev mode
 
 const  UpdateItem = (props) => {
+
+
 
     const onclickUp = () =>{
       console.log('clicked')
@@ -62,6 +68,43 @@ const  UpdateItem = (props) => {
 
     /////////////////////////////////////////////////////
     const DeleteUpdate = () => {
+      const{currentUser} = useAuth()
+      const[admin, setAdmin]=useState([{admin:0}])
+
+      const checkAdmin = () => {
+        callApiCheckAdmin()
+        .then(res => {
+            var parsed = JSON.parse(res.express);
+            console.log(parsed)
+            setAdmin(parsed)
+          }
+        ).then(console.log(admin))
+      }
+      
+      const callApiCheckAdmin = async (props) => {
+        console.log('running')
+        const url = serverURL + "/api/checkAdmin";
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({firebaseID: currentUser.uid})
+      
+        });
+
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        
+        return body;
+      }
+
+      React.useEffect(() =>{
+        checkAdmin();
+        console.log(admin)
+      },[])
+
+      
 
       console.log (props.updateID);
       const callApiDeleteNewsUpdate = async () => {
@@ -91,15 +134,57 @@ const  UpdateItem = (props) => {
         window.location.reload();
       };
   
+      console.log(admin);
+  
+      return (
+        <div>
+          {admin[0].admin === 0 ? <div> </div> : <IconButton onClick = {handleDelete}>
+            <DeleteIcon style={{ fontSize: 40 }}/>
+          </IconButton>}
+        </div>
+      )
+    }
+
+    const PinUpdate = () => {
+
+      console.log (props.updateID);
+      const callApiPinNewsUpdate = async () => {
+  
+        const url = serverURL + "/api/pinNewsUpdate"
+      
+        const response = await fetch(url, {
+          method: "POST",//DELETE/PATCH
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({updateID: props.updateID})
+      
+        });
+        const body = await response.json();
+        if (response.status != 200) throw Error(body.update);
+        return body;
+      }
+  
+  
+      const handlePin = (props) => {
+        console.log('clicked')
+        callApiPinNewsUpdate(props.updateID)
+        .then(res => {
+          var parsed = JSON.parse(res.express);
+        })
+        window.location.reload();
+      };
+  
   
   
       return (
         <div>
           
-          <Button size = "small" onClick = {handleDelete}>Delete</Button>
+          <Button size = "small" onClick = {handlePin}>Pin Update</Button>
         </div>
       )
     }
+
 
 
 
@@ -136,7 +221,9 @@ const  UpdateItem = (props) => {
 
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>
-          <Button size="small">Learn More</Button>
+           {props.allowed==1 &&
+              (<PinUpdate></PinUpdate>)
+            } 
           <DeleteUpdate />
         </CardActions>
       </Card>

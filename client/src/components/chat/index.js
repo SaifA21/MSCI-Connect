@@ -13,6 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useAuth } from '../../contexts/AuthContext';
 import { useHistory } from 'react-router-dom'
@@ -53,6 +55,7 @@ export default function Chat() {
 
   React.useEffect(()=>{
     loadMessages()
+    console.log( "messages: " + messages)
   },[])
 
   React.useEffect(() =>{
@@ -75,10 +78,10 @@ export default function Chat() {
     callApiLoadMessages(filter, sort)
     .then(res => {
         var parsed = JSON.parse(res.express);
-        console.log("parsed:"+parsed)
+        console.log("parsed:"+ JSON.stringify(parsed))
         setMessages(parsed);
       }
-    ).then(console.log(messages))
+    ).then(console.log( "messages: " + messages))
   }
 
   const callApiLoadMessages = async (props) => {
@@ -114,6 +117,7 @@ export default function Chat() {
             alignItems = "center"
             justifyContent = "center"
             >
+              
             
                 <Grid item > 
                   <Sort sortSelection = {setSort}></Sort>
@@ -138,7 +142,15 @@ export default function Chat() {
           {messages.map((item)=>{
             return(
               <div>
-                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported}></MessageItem>
+
+                
+                <br></br>
+                
+                <MessageItem chatID = {item.chatID} author={item.username} topic={item.class} content={item.content} reported ={item.reported} user_id = {item.author}>
+               
+                </MessageItem>
+                
+
                 <br></br>
               </div>
             )

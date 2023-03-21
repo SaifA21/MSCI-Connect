@@ -283,7 +283,7 @@ app.post('/api/loadUpdates', (req,res) => {
 app.post('/api/loadPolls', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-
+	console.log("API REACHED PIN FILTER VALUE: " + req.body.tag);
 	let filter;
 	if(req.body.filter!=""){
 		filter=" where class = '"+req.body.filter+"'";
@@ -291,7 +291,14 @@ app.post('/api/loadPolls', (req,res) => {
 		filter=""
 	}
 
-	let sql = `select  * from Polls order by pollID desc;`
+	let tagFilter;
+	if(req.body.tag=="10"){
+		tagFilter="WHERE pinned = '1'";
+	}else{
+		tagFilter=""
+	}
+
+	let sql = `select  * from Polls ${tagFilter} order by pollID desc;`
 	console.log(sql)
 
 

@@ -708,6 +708,26 @@ app.post('/api/pinNewsUpdate', (req,res) => {
 	connection.end();
 })
 //////////////////////////////////////////////////////////////////
+	app.post('/api/pinPoll', (req,res) => {
+		let connection = mysql.createConnection(config);
+		console.log("api reached");
+		let sql = `UPDATE Polls SET pinned = 1 WHERE pollID=${req.body.pollID};`
+		console.log(req.body.pollID);
+	
+		connection.query(sql,(error, results, fields) => {
+			if (error){
+				return console.error(error.message);
+			}
+	
+			//console.log(results);
+			let string = JSON.stringify(results)
+			res.send({express: string})
+	
+		});
+		connection.end();
+	})
+//////////////////////////////////////////////////////////////////
+
 app.post('/api/deleteChat', (req,res) => {
 	let connection = mysql.createConnection(config);
 	console.log("api reached");

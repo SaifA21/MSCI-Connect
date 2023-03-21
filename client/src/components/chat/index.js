@@ -51,6 +51,10 @@ export default function Chat() {
   const [userFilter, setUserFilter] = React.useState('');
   const [users, setUsers] = React.useState([]);
 
+  const[allowed,setAllowed]=useState(0)
+  const[reported, setAdmin]=useState([{reported:0}])
+  const[permitted,setPermitted]=useState({reported:0})
+
 
   React.useEffect(() => {
     loadMessages()
@@ -61,6 +65,21 @@ export default function Chat() {
     loadMessages()
     console.log("messages: " + messages)
   }, [])
+
+  React.useEffect(() =>{
+    checkAdmin();
+    console.log(reported)
+  
+  },[])
+
+  React.useEffect(() =>{
+    setPermitted(reported[0]);
+  },[reported])
+
+  
+  React.useEffect(() =>{
+    console.log(permitted.reported)
+  },[permitted])
 
   React.useEffect(() => {
     console.log(messages)
@@ -79,6 +98,35 @@ export default function Chat() {
   var loadProperties = {
     filter: filter,
     sort: sort
+  }
+
+  const checkAdmin = () => {
+    callApiCheckAdmin()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        console.log("te")
+        setAdmin(parsed)
+      }
+    ).then(console.log(reported))
+  }
+
+  const callApiCheckAdmin = async (props) => {
+    console.log('running')
+    const url = serverURL + "/api/checkReport";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({firebaseID: currentUser.uid})
+
+    });
+
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+
+    return body;
   }
 
   const loadMessages = () => {
@@ -142,8 +190,9 @@ export default function Chat() {
               </Grid>
 
               <Grid item >
-                <AddMessageForm bodyError={bodyError} bodyMessage={body} topic={setSelection} setBodyError={setBodyError} body={setBody} message={message}>
-                </AddMessageForm>
+              {permitted.reported==0 &&(
+                  <AddMessageForm bodyError = {bodyError} bodyMessage = {body} topic = {setSelection} setBodyError = {setBodyError} body = {setBody} message = {message}>
+                  </AddMessageForm>)}
               </Grid>
 
               <Grid item >

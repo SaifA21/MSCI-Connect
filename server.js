@@ -284,6 +284,7 @@ app.post('/api/loadUpdates', (req,res) => {
 app.post('/api/loadPolls', (req,res) => {
 
 	let connection = mysql.createConnection(config);
+	console.log(req.body.filter)
 
 	let filter;
 	if(req.body.filter!=""){
@@ -292,7 +293,7 @@ app.post('/api/loadPolls', (req,res) => {
 		filter=""
 	}
 
-	let sql = `select * from Polls order by pollID desc;`
+	let sql = `select * from Polls ${filter} order by pollID desc;`
 	console.log(sql)
 
 

@@ -62,6 +62,31 @@ app.post('/api/checkAdmin', (req,res) => {
 
 });
 
+
+////////////////////////////////////////////////////////////////////////////////
+
+app.post('/api/checkReport', (req,res) => {
+	console.log("welwkere"+req.body.firebaseID)
+	let connection = mysql.createConnection(config);
+	let sql = `select reported from Users where firebaseID = '${req.body.firebaseID}';`
+	console.log(sql)
+
+	connection.query(sql,(error, results, fields) => {
+		console.log(results)
+		if (error){
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results)
+		//console.log(string)
+		res.send({express: string})
+
+	});
+
+	connection.end();
+
+
+});
 /////////////////////////////////////////////////////////////////////////////////////
 app.post('/api/addUpdate', (req,res) => {
 
@@ -83,6 +108,8 @@ app.post('/api/addUpdate', (req,res) => {
 
 
 });
+
+
 /////////////////////////////////////////////////////////////////////////////////////
 app.post('/api/upvoteUpdate', (req,res) => {
 

@@ -18,6 +18,7 @@ const Poll = (props) => {
 
   const PinPoll = () => {
     console.log("pole id: " + props.pollID);
+   
 
     const callApiPinPoll = async () => {
 
@@ -39,6 +40,7 @@ const Poll = (props) => {
     const handlePin = (props) => {
       console.log('clicked')
       console.log(props.pollID)
+      console.log(props.topic)
       callApiPinPoll(props.pollID)
       .then(res => {
         var parsed = JSON.parse(res.express);
@@ -58,6 +60,9 @@ const Poll = (props) => {
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Description: {props.description}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Topic: {props.topic}
         </Typography>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Option 1: {props.option1}, with {props.votes1} votes so far

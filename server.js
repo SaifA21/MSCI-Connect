@@ -194,8 +194,9 @@ app.post('/api/blockMessage', (req,res) => {
 app.post('/api/addPoll', (req,res) => {
 
 	let connection = mysql.createConnection(config);
-	let sql = `INSERT INTO Polls (description, option1, option2, option3, option4) VALUES
-	 ("${req.body.description}","${req.body.option1}","${req.body.option2}","${req.body.option3}","${req.body.option4}");`
+	let sql = `INSERT INTO Polls (description, class, option1, option2, option3, option4) VALUES
+	 ("${req.body.description}", "${req.body.topic}", "${req.body.option1}","${req.body.option2}","${req.body.option3}","${req.body.option4}");`
+	console.log(sql)
 
 
 
@@ -291,7 +292,7 @@ app.post('/api/loadPolls', (req,res) => {
 		filter=""
 	}
 
-	let sql = `select  * from Polls order by pollID desc;`
+	let sql = `select * from Polls order by pollID desc;`
 	console.log(sql)
 
 

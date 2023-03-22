@@ -35,7 +35,7 @@ export default function Polls() {
   const [filter, setFilter] = React.useState('');
   const [polls, setPolls] = React.useState([]);
   const [vote, setVote] = React.useState('');
-
+  const [topic, setSelection] = React.useState('');
   React.useEffect(()=>{
    
     console.log(vote)
@@ -52,6 +52,7 @@ export default function Polls() {
   var poll = {
     firebaseID: currentUser.uid,
     description: description,
+    topic: topic,
     option1: option1,
     option2: option2,
     option3: option3,
@@ -91,6 +92,7 @@ export default function Polls() {
     callApiLoadPolls(filter)
     .then(res => {
         var parsed = JSON.parse(res.express);
+        console.log(parsed)
         setPolls(parsed);
         //console.log(updates);
         /*
@@ -154,7 +156,7 @@ export default function Polls() {
       {allowed==1 &&
 
 
-      (<AddPollForm description = {setDescription} option1 = {setOption1} option2 = {setOption2} option3 = {setOption3} option4 = {setOption4}  poll = {poll}>
+      (<AddPollForm description = {setDescription} topic = {setSelection} option1 = {setOption1} option2 = {setOption2} option3 = {setOption3} option4 = {setOption4}  poll = {poll}>
 
       </AddPollForm>)
       }
@@ -187,7 +189,7 @@ export default function Polls() {
         return(
           <div>
             <br></br>
-            <Poll pollID={item.pollID} description={item.description} option1={item.option1} option2={item.option2} option3={item.option3} option4={item.option4} votes1={item.votes1} votes2={item.votes2} votes3={item.votes3} votes4={item.votes4}></Poll>
+            <Poll pollID={item.pollID} topic = {item.class} description={item.description} option1={item.option1} option2={item.option2} option3={item.option3} option4={item.option4} votes1={item.votes1} votes2={item.votes2} votes3={item.votes3} votes4={item.votes4}></Poll>
             <br></br> 
           </div>
         )
@@ -316,6 +318,8 @@ const AddPollForm = (props) => {
     
               }}
             />
+
+            <Selection topic={props.topic}></Selection>
           
 
           </DialogContent>
@@ -331,6 +335,33 @@ const AddPollForm = (props) => {
       </div>
     );
 
+}
+
+const Selection = (props) => {
+
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Filter by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          onChange={(event)=>{        
+            props.topic(event.target.value)
+            console.log(event.target.value)
+
+          }}
+        >
+          <MenuItem value=""><em>None</em></MenuItem>
+          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+          <MenuItem value={'Co-op'}>Co-op</MenuItem>
+          <MenuItem value={'General'}>General</MenuItem>
+        </Select>
+      </FormControl>
+  )
 }
 
 

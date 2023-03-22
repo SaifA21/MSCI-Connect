@@ -407,7 +407,7 @@ const AddUpdateForm = (props) => {
           <DialogTitle>New Update</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Please enter your update below and select the subject it is closest related to.
+               Please enter your update below and select the subject it is closest related to.
             </DialogContentText>
             <TextField
               autoFocus

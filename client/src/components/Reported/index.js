@@ -14,6 +14,7 @@ export default function Reported() {
     const[admin, setAdmin]=useState([{admin:0}])
     const[permitted,setPermitted]=useState({admin:0})
     const{currentUser} = useAuth()
+    const [selection, setSelection] = React.useState('');
 
     const[messages, setMessages]=useState([])
 

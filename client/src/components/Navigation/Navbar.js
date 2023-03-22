@@ -90,7 +90,6 @@ export default function Navbar() {
                 <Button color="inherit" onClick={() => history.push('/timeline')}>Timeline</Button>
                 <Button color="inherit" onClick={() => history.push('/lookup')}>Student Lookup</Button>
                 {allowed == 1 && (<Button color="inherit" onClick={() => history.push('/reported')}>Reported</Button>)}
-                <Button color="inherit" onClick={() => history.push('/faq')}>FAQ</Button>
                 <Button color="inherit" onClick={() => history.push('/tc')}>Terms and Conditions</Button>
                 <Button color="inherit" onClick={() => history.push('/about')}>About</Button>
                 <Button color="inherit" onClick={() => history.push('/signout')}>Sign Out</Button>

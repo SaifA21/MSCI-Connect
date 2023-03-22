@@ -19,29 +19,27 @@ import { useHistory } from 'react-router-dom'
 import Poll from './Poll/Poll.js'
 import Navbar from '../Navigation/Navbar.js'
 import { useState } from 'react';
-import { Input } from '@material-ui/core';
 
 const serverURL = '';
 
-console.warn = () => { };
+console.warn = () => {};
 
 export default function Polls() {
 
-  const { currentUser } = useAuth()
+  const{currentUser} = useAuth()
 
-  const [allowed, setAllowed] = useState(0)
-  const [permitted, setPermitted] = useState({ admin: 0 })
-  const [admin, setAdmin] = useState([{ admin: 0 }])
+  const[allowed,setAllowed]=useState(0)
+  const[permitted,setPermitted]=useState({admin:0})
+  const[admin, setAdmin]=useState([{admin:0}])
 
   const [filter, setFilter] = React.useState('');
   const [polls, setPolls] = React.useState([]);
   const [vote, setVote] = React.useState('');
-  const [tag, setTag] = React.useState('');
-
-  React.useEffect(() => {
-
+  const [topic, setSelection] = React.useState('');
+  React.useEffect(()=>{
+   
     console.log(vote)
-  }, [vote])
+  },[vote])
 
   const [description, setDescription] = React.useState('');
 
@@ -54,6 +52,7 @@ export default function Polls() {
   var poll = {
     firebaseID: currentUser.uid,
     description: description,
+    topic: topic,
     option1: option1,
     option2: option2,
     option3: option3,
@@ -61,38 +60,39 @@ export default function Polls() {
   }
 
 
-  React.useEffect(() => {
+  React.useEffect(()=>{
     loadPolls()
-    console.log(filter, tag)
-  }, [filter, tag])
+    console.log(filter)
+  },[filter])
 
-  React.useEffect(() => {
+  React.useEffect(()=>{
     loadPolls()
-  }, [])
+  },[])
 
-  React.useEffect(() => {
+  React.useEffect(() =>{
     console.log(polls)
-  }, [polls])
+  },[polls])
 
-  React.useEffect(() => {
+  React.useEffect(() =>{
     console.log(currentUser)
     checkAdmin();
     console.log(admin)
-  }, [])
+  },[])
 
-  React.useEffect(() => {
+  React.useEffect(() =>{
     setPermitted(admin[0]);
-  }, [admin])
-
-  React.useEffect(() => {
+  },[admin])
+  
+  React.useEffect(() =>{
     setAllowed(permitted.admin);
-  }, [permitted])
+  },[permitted])
 
   const loadPolls = () => {
-
+    
     callApiLoadPolls(filter)
-      .then(res => {
+    .then(res => {
         var parsed = JSON.parse(res.express);
+        console.log(parsed)
         setPolls(parsed);
         //console.log(updates);
         /*
@@ -103,19 +103,17 @@ export default function Polls() {
         console.log(mappedDict);
         changeMovieDict(mappedDict);
         */
-
+      
       }
-      ).then(console.log(polls))
+    ).then(console.log(polls))
   }
 
   const callApiLoadPolls = async (props) => {
-
+    
     const url = serverURL + "/api/loadPolls";
-    const response = await fetch(url, {
-      method: "POST", headers: {
-        "Content-Type": "application/json",
-      }, body: JSON.stringify({ filter: filter, tag: tag})
-    });
+    const response = await fetch(url, {method: "POST", headers: {
+      "Content-Type": "application/json",
+    },body: JSON.stringify({filter: filter})});
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
@@ -123,14 +121,14 @@ export default function Polls() {
 
   const checkAdmin = () => {
     callApiCheckAdmin()
-      .then(res => {
+    .then(res => {
         var parsed = JSON.parse(res.express);
         console.log(parsed)
         setAdmin(parsed)
       }
-      ).then(console.log(admin))
+    ).then(console.log(admin))
   }
-
+  
   const callApiCheckAdmin = async (props) => {
     console.log('running')
     const url = serverURL + "/api/checkAdmin";
@@ -139,69 +137,66 @@ export default function Polls() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ firebaseID: currentUser.uid })
-
+      body: JSON.stringify({firebaseID: currentUser.uid})
+  
     });
-
+    
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-
+    
     return body;
   }
 
   return (
     <div>
-      {currentUser.uid != null && (
+      {currentUser.uid!=null && (
 
-        <div>
-          <Navbar></Navbar>
-          {allowed == 1 &&
+      <div>
+      <Navbar></Navbar>
+      {allowed==1 &&
 
 
-            (<AddPollForm description={setDescription} option1={setOption1} option2={setOption2} option3={setOption3} option4={setOption4} poll={poll}>
+      (<AddPollForm description = {setDescription} topic = {setSelection} option1 = {setOption1} option2 = {setOption2} option3 = {setOption3} option4 = {setOption4}  poll = {poll}>
 
-            </AddPollForm>)
-          }
-          <Grid
-            container spacing={1}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Grid item >
-              <div></div>
-            </Grid>
+      </AddPollForm>)
+      }
+      <Grid 
+      container spacing ={1}
+      direction = "column"
+      alignItems = "center"
+      justifyContent = "center"
+      >
+        <Grid item > 
+          <div></div>
+        </Grid> 
 
-            <Grid
-              container spacing={2}
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
+        <Grid 
+            container spacing ={2}
+            direction = "row"
+            alignItems = "center"
+            justifyContent = "center"
             >
 
-              <Grid item >
-                <Filter filterSelection={setFilter}></Filter>
-              </Grid>
+                <Grid item >
+                  <Filter filterSelection = {setFilter}></Filter> 
+                </Grid>
 
-              <Grid item >
-                <PinFilter tagSelection = {setTag}></PinFilter>
-              </Grid>
             </Grid>
 
-
-          </Grid>
-          {polls.map((item) => {
-            return (
-              <div>
-                <br></br>
-                <Poll pollID={item.pollID} description={item.description} option1={item.option1} option2={item.option2} option3={item.option3} option4={item.option4} votes1={item.votes1} votes2={item.votes2} votes3={item.votes3} votes4={item.votes4}></Poll>
-                <br></br>
-              </div>
-            )
-          })}
-        </div>
+            
+      </Grid>
+      {polls.map((item)=>{
+        return(
+          <div>
+            <br></br>
+            <Poll pollID={item.pollID} topic = {item.class} description={item.description} option1={item.option1} option2={item.option2} option3={item.option3} option4={item.option4} votes1={item.votes1} votes2={item.votes2} votes3={item.votes3} votes4={item.votes4}></Poll>
+            <br></br> 
+          </div>
+        )
+      })}
+      </div>
       )}
-    </div>
+      </div>
   )
 }
 
@@ -209,30 +204,30 @@ export default function Polls() {
 
 const AddPollForm = (props) => {
 
-  const addPoll = () => {
+  const addPoll =  () => {
     callApiAddPoll()
       .then(res => {
         var parsed = JSON.parse(res.express);
       })
-
-  }
-
+  
+  } 
+  
   const callApiAddPoll = async () => {
 
     const url = serverURL + "/api/addPoll"
-
+  
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(props.poll)
-
+  
     });
     const body = await response.json();
     if (response.status != 200) throw Error(body.poll);
     return body;
-
+  
   }
 
   const [open, setOpen] = React.useState(false);
@@ -251,138 +246,152 @@ const AddPollForm = (props) => {
   };
 
 
-  return (
-    <div>
-      <IconButton color='primary' aria-label="add" onClick={handleClickOpen}>
-        <AddCircleOutlineIcon style={{ fontSize: 40 }} />
-      </IconButton>
+  return(
+      <div>
+        <IconButton color = 'primary' aria-label="add" onClick={handleClickOpen}>
+          <AddCircleOutlineIcon style={{ fontSize: 40 }}/>
+        </IconButton>
+        
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>New Poll</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please enter your poll details below
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Title"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.description(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+            <TextField
+              
+              margin="dense"
+              label="Option 1"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.option1(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+            <TextField
+              
+              margin="dense"
+              label="Option 2"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.option2(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+            <TextField
+              
+              margin="dense"
+              label="Option 3"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.option3(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
+            <TextField
+              
+              margin="dense"
+              label="Option 4"
+              type="text"
+              fullWidth
+              onChange={(event)=>{
+                props.option4(event.target.value)
+                console.log(event.target.value)
+    
+              }}
+            />
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Poll</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please enter your poll details below
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Title"
-            type="text"
-            fullWidth
-            onChange={(event) => {
-              props.description(event.target.value)
-              console.log(event.target.value)
+            <Selection topic={props.topic}></Selection>
+          
 
-            }}
-          />
-          <TextField
-
-            margin="dense"
-            label="Option 1"
-            type="text"
-            fullWidth
-            onChange={(event) => {
-              props.option1(event.target.value)
-              console.log(event.target.value)
-
-            }}
-          />
-          <TextField
-
-            margin="dense"
-            label="Option 2"
-            type="text"
-            fullWidth
-            onChange={(event) => {
-              props.option2(event.target.value)
-              console.log(event.target.value)
-
-            }}
-          />
-          <TextField
-
-            margin="dense"
-            label="Option 3"
-            type="text"
-            fullWidth
-            onChange={(event) => {
-              props.option3(event.target.value)
-              console.log(event.target.value)
-
-            }}
-          />
-          <TextField
-
-            margin="dense"
-            label="Option 4"
-            type="text"
-            fullWidth
-            onChange={(event) => {
-              props.option4(event.target.value)
-              console.log(event.target.value)
-
-            }}
-          />
-
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handlePost} color="primary">
-            Post
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handlePost} color="primary">
+              Post
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
 
 }
 
-const PinFilter = (props) => {
+const Selection = (props) => {
 
-  return (
-    <FormControl variant="filled" style={{ minWidth: 300 }}>
-      <InputLabel id="pin">Tags</InputLabel>
-      <Select
-        onChange={(event) => {
-          props.tagSelection(event.target.value)
-          console.log(event.target.value)
-        }}>
-        <MenuItem value={0}><em>None</em></MenuItem>
-        <MenuItem value={10}>Pinned</MenuItem>
-      </Select>
-    </FormControl>
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Filter by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          onChange={(event)=>{        
+            props.topic(event.target.value)
+            console.log(event.target.value)
+
+          }}
+        >
+          <MenuItem value=""><em>None</em></MenuItem>
+          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+          <MenuItem value={'Co-op'}>Co-op</MenuItem>
+          <MenuItem value={'General'}>General</MenuItem>
+        </Select>
+      </FormControl>
   )
 }
 
+
+
 const Filter = (props) => {
 
-  return (
-    <FormControl variant="filled" style={{ minWidth: 300 }}>
-      <InputLabel id="sort">Filter by:</InputLabel>
-      <Select
-        labelId="sortBySelector"
-        id="sortBySelector"
-        //value={age}
-        onChange={(event) => {
+  return(
+  <FormControl variant="filled" style={{minWidth: 300}}>
+        <InputLabel id="sort">Filter by:</InputLabel>
+        <Select
+          labelId="sortBySelector"
+          id="sortBySelector"
+          //value={age}
+          onChange={(event)=>{
+                  
+            props.filterSelection(event.target.value)
+            console.log(event.target.value)
 
-          props.filterSelection(event.target.value)
-          console.log(event.target.value)
-
-        }}
-      >
-        <MenuItem value=""><em>None</em></MenuItem>
-        <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
-        <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
-        <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
-        <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
-        <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
-        <MenuItem value={'Co-op'}>Co-op</MenuItem>
-        <MenuItem value={'General'}>General</MenuItem>
-      </Select>
-    </FormControl>
+          }}
+        >
+          <MenuItem value=""><em>None</em></MenuItem>
+          <MenuItem value={'MSCI 446'}>MSCI 446</MenuItem>
+          <MenuItem value={'MSCI 431'}>MSCI 431</MenuItem>
+          <MenuItem value={'MSCI 342'}>MSCI 342</MenuItem>
+          <MenuItem value={'MSCI 334'}>MSCI 334</MenuItem>
+          <MenuItem value={'MSCI 311'}>MSCI 311</MenuItem>
+          <MenuItem value={'Co-op'}>Co-op</MenuItem>
+          <MenuItem value={'General'}>General</MenuItem>
+        </Select>
+      </FormControl>
   )
 }
 
@@ -390,7 +399,3 @@ const Filter = (props) => {
 
 
 //<ButtonMailingList update ={update} />
-
-
-
-

@@ -20,9 +20,10 @@ export default function About() {
           <p>This page is for students to post discussion items where their classmates can help clear their doubts. Viewers can choose to report chat messages if they feel that the content is inappropriate in any way leaving the class reps to review the content and then take it down if necessary. Users can either upvote or downvote the posts depending on how helpful they find the information. The chats can be sorted by occurrence or number of upvotes and can also be filtered according to the related class or publisher of the post. Flagged users will not be able to submit discussion posts.</p>
           <h2><strong>Polls</strong></h2>
           <p>On this page, class reps can create polls for students to vote on. This is helpful to gather the opinion of the cohort and come to decisions as a group. Class reps can also pin certain polls that they consider to be more important. All users can filter the polls to show the pinned ones and unless a user has been flagged by the reps, all users can vote.</p>
+          <h2><strong>Timeline</strong></h2>
+          <p>This page contains all of the upcoming events for the cohort in the semester. These can be types of assessments, instructional periods, or general events. Class reps will have the authority to add items to the timeline for the cohort to view. Users can vote on the difficulty of each assessment or about whether they will be attending the instructional periods or events. The countdowns present the amount of time left until each event is done. The display can be in order of closest or farthest due date. Admins will be able to pin the important elements of the timeline to emphasize important events coming up and users will be able to filter by these important events.</p>
           <h2><strong>Student Lookup</strong></h2>
           <p>This page provides the users with a list of every user and their email in case they need to be contacted. Students can also report their classmates if they feel the need to do so.</p>
-          
       </div>
       )}
       </div>

@@ -14,11 +14,36 @@ describe('Smoke Test', () => {
     cy.get('.MuiButtonBase-root').click()
     cy.get('.MuiToolbar-root > :nth-child(2) > .MuiButton-label').click();
     cy.contains('From: Saif');
-    cy.contains('Topic: MSCI 334');
-    cy.contains('Content: Can anyone help me understand example 3 from lecture 3.4?');
-    cy.get(':nth-child(8) > .MuiButton-label').click()
-    cy.contains('Welcome to MSCI Connect!');
+    cy.contains('Title: Sprint 1 Extended!');
+    cy.contains('Topic: MSCI 342');
+    cy.contains('Content: New due date is Wed 2023-03-01');
+
 
 
   });
+
+  it('can post and delete a chat message', () => {
+ 
+    cy.visit('/chat');
+    cy.get(':nth-child(4) > div > .MuiButtonBase-root > .MuiIconButton-label > .MuiSvgIcon-root').click()
+    cy.get('.MuiTextField-root > .MuiInputBase-root > .MuiInputBase-input').click().type('CypressTESTABC')
+    cy.get('.MuiDialogContent-root > [style="min-width: 300px;"] > .MuiInputBase-root > #sortBySelector').click()
+    cy.get('[data-value="General"]').click()
+    cy.get('.MuiDialogActions-root > :nth-child(2) > .MuiButton-label').click()
+    cy.get('.MuiToolbar-root > :nth-child(2) > .MuiButton-label').click();
+    cy.visit('/chat');
+    cy.contains('CypressTESTABC');
+    cy.get(':nth-child(3) > .MuiPaper-root > .MuiCardContent-root > :nth-child(1) > :nth-child(1) > :nth-child(3) > div > .MuiButtonBase-root > .MuiIconButton-label > .MuiSvgIcon-root > path').click()
+    cy.contains('CypressTESTABC').should('not.exist')
+
+
+  });
+
+
+
+
+
+
+
+
   });

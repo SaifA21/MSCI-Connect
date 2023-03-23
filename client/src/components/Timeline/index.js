@@ -38,6 +38,47 @@ var rowsPerPage = 5;
 
 console.warn = () => {};
 
+
+const Star = (props) => {
+  const{currentUser} = useAuth()
+
+
+
+  const callApiPinTimelineUpdate = async () => {
+  
+    const url = serverURL + "/api/pinTimeline"
+  
+    const response = await fetch(url, {
+      method: "POST",//DELETE/PATCH
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({itemID: props.itemID})
+  
+    });
+    const body = await response.json();
+    if (response.status != 200) throw Error(body.update);
+    return body;
+  }
+
+  
+  const handleTimelineVote = () => {
+    callApiPinTimelineUpdate(props);
+    console.log(props.itemID);
+  };
+   
+
+  
+  return(
+    <div> 
+      
+      <IconButton  onClick={handleTimelineVote} color = 'primary' aria-label="add" >
+        <StarBorderIcon></StarBorderIcon>
+        </IconButton>
+    </div>
+  )
+  }
+
 const HappyButton = (props) => {
   const{currentUser} = useAuth()
 
@@ -282,6 +323,9 @@ export default function Timeline() {
   const [type, setType] = React.useState('');
   const [topic, setTopic] = React.useState('');
   const [date, setDate] = React.useState('');
+  const [tag, setTag] = React.useState('');
+  
+  
 
   var item = {
     firebaseID: currentUser.uid,
@@ -335,25 +379,12 @@ export default function Timeline() {
     return body;
   }
 
-  return (
-    <div>
-    {currentUser.uid!=null && (
+ 
 
-    <div>
-    <Navbar></Navbar>
-    {allowed==1 &&
-      (<AddTimelineItem item={item} topic = {setTopic} name = {setItemName} type = {setType} date = {setDate}>
-      </AddTimelineItem>)
-    }
-    <TimelineTable></TimelineTable>
-    </div>)}
-    </div>
-  )
-}
  
 
     
-const TimelineTable = () => {
+const TimelineTable = (props) => {
 
  
 
@@ -362,27 +393,36 @@ const TimelineTable = () => {
   const [rows, setRows] = React.useState([]);
   
   React.useEffect(() =>{
-      getTimeline();
-    },[])
+      getTimeline(tag);
+      console.log(tag)
+    },[tag])
 
-    const getTimeline =  () => {
-      callApiGetTimeline()
+    const getTimeline =  async(tag) => {
+
+      await callApiGetTimeline(tag)
         .then(res => {
           var parsed = JSON.parse(res.express);
           setRows(parsed)
+          console.log(parsed)
           rowsPerPage = parsed.length
           
         })
     
     } 
     
-    const callApiGetTimeline = async () => {
+    const callApiGetTimeline = async (tag) => {
+
       const url = serverURL + "/api/getTimeline"
-      const response = await fetch(url, { method: "POST"});
+
+        const response = await fetch(url, {method: "POST", headers: {
+      "Content-Type": "application/json",
+
+    },body: JSON.stringify({ tag: tag})});
+
       const body = await response.json();
 
       if (response.status != 200) throw Error(body.message);
-      
+      console.log(body)
       return body;
     
     }
@@ -608,9 +648,7 @@ const TimelineTable = () => {
                         
                         
                         <TableCell padding="checkbox">
-                          <IconButton color = 'primary' aria-label="add">
-                            <StarBorderIcon></StarBorderIcon>
-                          </IconButton>
+                        <Star itemID = {row.itemID}></Star>
 
                           
                         
@@ -688,6 +726,49 @@ const TimelineTable = () => {
     );
 
   }
+  const TagFilter = (props) => {
+
+    return(
+    <FormControl variant="filled" style={{minWidth: 300}}>
+          <InputLabel id="sort">Special Tags:</InputLabel>
+          <Select
+            labelId="sortBySelector"
+            id="sortBySelector"
+            //value={age}
+            onChange={(event)=>{
+              props.tagSelection(event.target.value)
+              console.log(event.target.value)
+          
+
+            }}
+          >
+            <MenuItem value={0}>None</MenuItem>
+            <MenuItem value={10}>Pinned</MenuItem>
+           
+          </Select>
+        </FormControl>
+    )
+  }
+
+  return (
+    <div>
+    {currentUser.uid!=null && (
+
+    <div>
+    <Navbar></Navbar>
+   
+    {allowed==1 &&
+      (<AddTimelineItem item={item} topic = {setTopic} name = {setItemName} type = {setType} date = {setDate}>
+      </AddTimelineItem>)
+    }
+    <TagFilter tagSelection = {setTag} ></TagFilter>
+    <TimelineTable></TimelineTable>
+    
+    </div>)}
+    </div>
+  )
+
+}
 
 const AddTimelineItem = (props) => {
 
@@ -784,6 +865,8 @@ const AddTimelineItem = (props) => {
       );
   
   }
+
+
 
   const Selection = (props) => {
 

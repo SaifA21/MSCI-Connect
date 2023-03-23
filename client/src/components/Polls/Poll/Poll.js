@@ -3,6 +3,8 @@ import { Typography, Card, CardActions, CardContent, Grid, AppBar, Box, Toolbar,
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import IconButton from '@material-ui/core/IconButton';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useState } from 'react';
 
 
 const serverURL = '';
@@ -11,8 +13,51 @@ const Poll = (props) => {
   const onclick = () => {
     console.log('clicked')
   }
+  const{currentUser} = useAuth()
+  const[allowed,setAllowed]=useState(0)
+  const[permitted,setPermitted]=useState({admin:0})
+  const[admin, setAdmin]=useState([{admin:0}])
 
+  React.useEffect(() =>{
+    checkAdmin();
+    console.log(admin)
+  },[])
 
+  React.useEffect(() =>{
+    setPermitted(admin[0]);
+  },[admin])
+  
+  React.useEffect(() =>{
+    setAllowed(permitted.admin);
+  },[permitted])
+
+  const checkAdmin = () => {
+    callApiCheckAdmin()
+    .then(res => {
+        var parsed = JSON.parse(res.express);
+        console.log(parsed)
+        setAdmin(parsed)
+      }
+    ).then(console.log(admin))
+  }
+  
+  const callApiCheckAdmin = async (props) => {
+    console.log('running')
+    const url = serverURL + "/api/checkAdmin";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({firebaseID: currentUser.uid})
+  
+    });
+    
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    
+    return body;
+  }
 
   const [vote, setVote] = React.useState('');
 
@@ -106,9 +151,9 @@ const Poll = (props) => {
         </FormControl>
 
         <ButtonSubmitVote pollID={props.pollID} vote={vote} />
-
+        {allowed==1 &&
         <PinPoll></PinPoll>
-
+        }
       </CardActions>
     </Card>
   );

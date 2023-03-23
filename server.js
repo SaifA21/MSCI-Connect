@@ -419,7 +419,16 @@ app.post('/api/getTimeline', (req,res) => {
 
 	let connection = mysql.createConnection(config);
 
-	let sql = `select * from sabuosba.TimelineItems where date > CURRENT_TIMESTAMP order by date asc`
+	let tagFilter;
+	if(req.body.tag=="10"){
+		tagFilter="and pinned = '1'";
+	}else{
+		tagFilter=""
+	}
+
+
+	let sql = `select * from sabuosba.TimelineItems where date > CURRENT_TIMESTAMP ${tagFilter} order by date asc`
+	console.log(sql)
 
 
 	connection.query(sql,(error, results, fields) => {
@@ -723,6 +732,27 @@ app.post('/api/pinNewsUpdate', (req,res) => {
 	console.log("api reached");
 	let sql = `UPDATE NewsUpdates SET pinned = 1 WHERE updateID=${req.body.updateID};`
 	console.log(req.body.updateID);
+
+	connection.query(sql,(error, results, fields) => {
+		if (error){
+			return console.error(error.message);
+		}
+
+		//console.log(results);
+		let string = JSON.stringify(results)
+		res.send({express: string})
+
+	});
+	connection.end();
+})
+
+
+/////////////////////////////////////////////////////////////////////////////////
+app.post('/api/pinTimeline', (req,res) => {
+	let connection = mysql.createConnection(config);
+	console.log("api reached");
+	let sql = `UPDATE TimelineItems SET pinned = 1 WHERE itemID=${req.body.itemID};`
+	console.log(req.body.itemID);
 
 	connection.query(sql,(error, results, fields) => {
 		if (error){

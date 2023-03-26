@@ -176,6 +176,7 @@ const ButtonSubmitVote = (props) => {
 
       }
       ).then(console.log(props.vote))
+
   }
 
   const callAddPollVote = async (props) => {
@@ -199,6 +200,8 @@ const ButtonSubmitVote = (props) => {
   const handleSubmitVote = () => {
     addPollVote();
     console.log(props.vote);
+    window.location.reload();
+
   };
 
   return (
@@ -213,49 +216,3 @@ const ButtonSubmitVote = (props) => {
 
 export default (Poll);
 
-
-
-  //<ButtonMailingList update ={update} />
-
-/*
-const ButtonMailingList= (props) => {
-
-const addMailingList =  () => {
-  callApiAddMailingList()
-    .then(res => {
-      var parsed = JSON.parse(res.express);
-    })
- 
-} 
- 
-const callApiAddMailingList = async () => {
-
-  const url = serverURL + "/api/addMailingList"
- 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(props.update)
- 
-  });
-  const body = await response.json();
-  if (response.status != 200) throw Error(body.update);
-  return body;
-}
-
-const handleMailingList = () => {
-  addMailingList();
-};
-
-return(
-  <div> 
-    <Button onClick={handleMailingList}>Subscribe to Mailing List</Button>
-  </div>
-)
-}
-
-
-
-*/

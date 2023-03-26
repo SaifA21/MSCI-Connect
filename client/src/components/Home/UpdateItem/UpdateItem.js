@@ -20,6 +20,8 @@ const  UpdateItem = (props) => {
       .then(res => {
         var parsed = JSON.parse(res.express);
       })
+
+      window.location.reload();
   
     }
 
@@ -46,6 +48,8 @@ const  UpdateItem = (props) => {
       .then(res => {
         var parsed = JSON.parse(res.express);
       })
+
+      window.location.reload();
   
     }
 

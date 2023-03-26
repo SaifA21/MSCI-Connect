@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import SubmitButton from './SubmitButton';
+import EmailField from './EmailField';
 
 
 
@@ -67,10 +69,8 @@ export default function Reset() {
             </Grid>
 
             <Grid item > 
-              <Email
-                handle = {setEmail}
-                error = {emailError}>
-              </Email>
+              <EmailField handle = {setEmail} error = {emailError}></EmailField>
+            
             </Grid>
 
 
@@ -80,7 +80,7 @@ export default function Reset() {
 
 
             <Grid item > 
-                <Button variant='contained' onClick = {handleSubmit}>Reset</Button>
+                <SubmitButton handleSubmit={handleSubmit}></SubmitButton>
             </Grid>
 
             <Grid item > 
@@ -96,18 +96,3 @@ export default function Reset() {
         </Grid>)
 }
 
-const Email = (props) => {
-
-  return(
-    <TextField 
-      id="outlined-basic" 
-      label="Email" 
-      variant="filled" 
-      error={props.error === '' ? false : true} 
-      onChange={(event) => {props.handle(event.target.value)}} 
-      style={{minWidth: 300}} 
-      helperText = {props.error}
-    />
-  )
-
-}

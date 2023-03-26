@@ -332,6 +332,7 @@ const MessageItem = (props) => {
               </Typography>
               
               <ThumbsUp chatID = {props.chatID}></ThumbsUp>
+              <Typography>{props.upvote}</Typography>
                 
                 <ThumbsDown chatID = {props.chatID}></ThumbsDown>
 

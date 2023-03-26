@@ -209,7 +209,7 @@ export default function Chat() {
 
                 <br></br>
 
-                <MessageItem chatID={item.chatID} author={item.username} topic={item.class} content={item.content} reported={item.reported} user_id={item.author}>
+                <MessageItem upvote={item.upvote} chatID={item.chatID} author={item.username} topic={item.class} content={item.content} reported={item.reported} user_id={item.author}>
 
                 </MessageItem>
 

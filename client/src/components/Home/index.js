@@ -275,7 +275,7 @@ const NewsUpdates = (props) => {
             <br></br>
             
 
-            <UpdateItem allowed={allowed} updateID={item.updateID} author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
+            <UpdateItem upVoteCount={item.upVoteCount} allowed={allowed} updateID={item.updateID} author={item.username} title={item.title} content={item.content} class={item.class}></UpdateItem>
 
             <br></br>
           </div>

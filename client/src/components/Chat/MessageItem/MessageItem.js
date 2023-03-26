@@ -150,6 +150,7 @@ const ThumbsUp = (props) => {
   const handleChatVote = () => {
     console.log(props.chatID);
     addChatVote(props);
+    window.location.reload();
   };
    
 
@@ -199,6 +200,8 @@ const ThumbsUp = (props) => {
     const handleChatVote = () => {
       console.log(props.chatID);
       addChatVote(props);
+      window.location.reload();
+
     };
      
   
@@ -278,7 +281,7 @@ const MessageItem = (props) => {
         .then(res => {
           var parsed = JSON.parse(res.express);
         })
-      window.location.reload(); //Page does not refresh properly
+      window.location.reload(); 
     };
 
 

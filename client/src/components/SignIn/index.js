@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import Email from './EmailField';
+import SignInButton from './SignInButton';
 
 
 
@@ -99,7 +100,7 @@ export default function SignIn() {
 
 
             <Grid item > 
-                <Button variant='contained' onClick = {handleSubmit}>Sign In</Button>
+                <SignInButton onClick = {handleSubmit}>Sign In</SignInButton>
             </Grid>
 
             <Grid item > 

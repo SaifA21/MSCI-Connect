@@ -1,14 +1,14 @@
+import {render, screen} from '@testing-library/react';
 import renderer from 'react-test-renderer';
-import Poll from './Poll.js'
+import Text from './Text.js'
 
 
-//Unit test written by Sajeen Selvakamalan
-
-describe('Poll Component', () => {
+//UNIT TEST BY SAJEEN SELVAKAMALAN
+describe('Text Component', () => {
 
     it('renders correctly', () => {
         const tree = renderer
-          .create(<Poll></Poll>)
+          .create(<Text></Text>)
           .toJSON();
         expect(tree).toMatchSnapshot();
       });

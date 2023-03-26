@@ -65,6 +65,8 @@ const Star = (props) => {
   const handleTimelineVote = () => {
     callApiPinTimelineUpdate(props);
     console.log(props.itemID);
+    window.location.reload();
+
   };
    
 
@@ -110,6 +112,8 @@ const HappyButton = (props) => {
   const handleTimelineVote = () => {
     addTimeLineVote(props);
     console.log(props.itemID);
+    window.location.reload();
+
   };
    
 
@@ -157,6 +161,7 @@ const HappyButton = (props) => {
     const handleTimelineVote = () => {
       addTimeLineVote(props);
       console.log(props.itemID);
+      window.location.reload();
     };
      
   
@@ -204,6 +209,8 @@ const HappyButton = (props) => {
       const handleTimelineVote = () => {
         addTimeLineVote(props);
         console.log(props.itemID);
+        window.location.reload();
+
       };
        
     
@@ -251,6 +258,8 @@ const HappyButton = (props) => {
         const handleTimelineVote = () => {
           addTimeLineVote(props);
           console.log(props.itemID);
+          window.location.reload();
+
         };
          
       
@@ -298,6 +307,7 @@ const HappyButton = (props) => {
           const handleTimelineVote = () => {
             addTimeLineVote(props);
             console.log(props.itemID);
+            window.location.reload();
           };
            
         
@@ -806,11 +816,14 @@ const AddTimelineItem = (props) => {
     const handleClose = () => {
       
       setOpen(false);
+      
     };
   
     const handlePost = () => {
       addTimeline()
       setOpen(false);
+      window.location.reload();
+
     };
   
   

@@ -331,11 +331,29 @@ const MessageItem = (props) => {
                 <br />
               </Typography>
               
-              <ThumbsUp chatID = {props.chatID}></ThumbsUp>
-              <Typography>{props.upvote}</Typography>
-                
-                <ThumbsDown chatID = {props.chatID}></ThumbsDown>
+              <Grid
+              container spacing={2}
+              direction="row"
+              alignItems="center"
+  
+              >
 
+
+
+              < Grid item>
+              <ThumbsUp chatID = {props.chatID}></ThumbsUp>
+              </Grid>
+
+              <Grid item>
+              <Typography>{props.upvote}</Typography>
+              </Grid>
+
+              <Grid item>
+              <ThumbsDown chatID = {props.chatID}></ThumbsDown>
+              </Grid>
+            
+            
+            </Grid>
             </Grid>
 
             < Grid item>

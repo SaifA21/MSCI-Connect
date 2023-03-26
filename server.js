@@ -288,7 +288,7 @@ app.post('/api/loadUpdates', (req,res) => {
 	}
 	console.log(sort)
 	
-	let sql = `select  updateID, title, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${any} ${filter} ${combo} ${tagFilter} ${sort}`
+	let sql = `select  updateID, title, upVoteCount, content, class, pinned, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.NewsUpdates.author) as username from sabuosba.NewsUpdates ${any} ${filter} ${combo} ${tagFilter} ${sort}`
 
 
 	console.log(sql);
@@ -391,7 +391,7 @@ app.post('/api/loadMessages', (req,res) => {
 
 
 
-	let sql = `select  chatID, author, content, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where (reported = 0 or reported = 1 or reported = 2) ${filter} ${userFilter} ${sort} `
+	let sql = `select  chatID, author, content, upvote, class, pinned, reported, (select username from sabuosba.Users where sabuosba.Users.userID=sabuosba.Chats.author) as username from sabuosba.Chats where (reported = 0 or reported = 1 or reported = 2) ${filter} ${userFilter} ${sort} `
 
 
 	//console.log(sql)
@@ -570,7 +570,13 @@ app.post('/api/addChatVote', (req,res) => {
 
 	((SELECT userID FROM sabuosba.Users WHERE firebaseID = '${req.body.firebaseID}'),"${req.body.itemID}", "${req.body.voteTimeline}");`
 */
-	let sql = `UPDATE Chats SET ${req.body.voteChat} = ${req.body.voteChat} + 1 WHERE chatID='${req.body.chatID}';`
+	let sql
+	if (req.body.voteChat=="upvote"){
+		sql = `UPDATE Chats SET upvote = upvote + 1 WHERE chatID='${req.body.chatID}';`
+	}else{
+		sql = `UPDATE Chats SET upvote = upvote - 1 WHERE chatID='${req.body.chatID}';`
+	}
+	
 
 	
 

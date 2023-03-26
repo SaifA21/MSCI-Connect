@@ -212,13 +212,12 @@ const  UpdateItem = (props) => {
 
             
 
-           <IconButton color = 'primary' aria-label="add" onClick={onclickDown}>
+           <IconButton color = 'primary' aria-label="add" onClick={onclickUp}>
 
               <ThumbUpAltIcon style={{ fontSize: 20 }}/>
            </IconButton>
-           <IconButton color = 'primary' aria-label="add" onClick={onclickUp}>
-
-
+           <Typography>{props.upVoteCount}</Typography>
+           <IconButton color = 'primary' aria-label="add" onClick={onclickDown}>
               <ThumbDownIcon style={{ fontSize: 20 }}/>
            </IconButton>
            {props.allowed==1 &&

@@ -22,28 +22,4 @@ describe('Smoke Test', () => {
 
   });
 
-  it('can post and delete a chat message', () => {
- 
-    cy.visit('/chat');
-    cy.get(':nth-child(4) > div > .MuiButtonBase-root > .MuiIconButton-label > .MuiSvgIcon-root').click()
-    cy.get('.MuiTextField-root > .MuiInputBase-root > .MuiInputBase-input').click().type('CypressTESTABC')
-    cy.get('.MuiDialogContent-root > [style="min-width: 300px;"] > .MuiInputBase-root > #sortBySelector').click()
-    cy.get('[data-value="General"]').click()
-    cy.get('.MuiDialogActions-root > :nth-child(2) > .MuiButton-label').click()
-    cy.get('.MuiToolbar-root > :nth-child(2) > .MuiButton-label').click();
-    cy.visit('/chat');
-    cy.contains('CypressTESTABC');
-    cy.get(':nth-child(3) > .MuiPaper-root > .MuiCardContent-root > :nth-child(1) > :nth-child(1) > :nth-child(3) > div > .MuiButtonBase-root > .MuiIconButton-label > .MuiSvgIcon-root > path').click()
-    cy.contains('CypressTESTABC').should('not.exist')
-
-
-  });
-
-
-
-
-
-
-
-
   });

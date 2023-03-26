@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`email text field renders correctly 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root"
+  style={
+    Object {
+      "minWidth": 300,
+    }
+  }
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-filled Mui-error Mui-error"
+    data-shrink={false}
+    htmlFor="outlined-basic"
+    id="outlined-basic-label"
+  >
+    Email
+  </label>
+  <div
+    className="MuiInputBase-root MuiFilledInput-root MuiFilledInput-underline Mui-error Mui-error MuiInputBase-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={true}
+      autoFocus={false}
+      className="MuiInputBase-input MuiFilledInput-input"
+      disabled={false}
+      id="outlined-basic"
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={false}
+      type="text"
+    />
+  </div>
+</div>
+`;

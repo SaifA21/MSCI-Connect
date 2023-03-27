@@ -48,9 +48,12 @@ cd client
 
 yarn test 
 
-  OR run the command below to run Cypress e2e tests making sure to select the smoke.cy file in the browser:
+  OR run the command below to run Cypress e2e tests in the browser:
 
 yarn cypress
+
+There are 2 Cypress Specs and it is advisable to run the smoke test before the chat test. 
+Note: Smoke test requires user to be initially signed out, this can be dine by manually signing out in the Cypress browser or clearing the cookies in the cypress browser.
 
 
  
